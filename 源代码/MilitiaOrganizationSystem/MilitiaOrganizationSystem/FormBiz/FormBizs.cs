@@ -106,7 +106,7 @@ namespace MilitiaOrganizationSystem
             {
                 Directory.CreateDirectory("export");
             }
-            sqlBiz.exportAsFile("export/militia");
+            sqlBiz.exportAsFile("export/militia");//导入导出单数据库
             zip.addFileOrFolder("export");
             Directory.Delete("export", true);//删除
             
