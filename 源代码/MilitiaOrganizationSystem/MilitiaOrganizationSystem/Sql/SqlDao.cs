@@ -37,17 +37,11 @@ namespace MilitiaOrganizationSystem
             {
                 DefaultDatabase = dbName
             };
-            //System.Windows.MessageBox.Show("hello");
             store.Initialize();
-            //System.Windows.MessageBox.Show("why?");
             new Militias_CredentialNumbers().Execute(store);
-            //System.Windows.MessageBox.Show("yes?");
             new Militias_Groups().Execute(store);
-            //System.Windows.MessageBox.Show("new?");
             new Militias_All().Execute(store);
-            //System.Windows.MessageBox.Show("sdfsd?");
             new Militias_ConflictCredentialNumbers().Execute(store);
-            //System.Windows.MessageBox.Show("yes?");
             
         }
         

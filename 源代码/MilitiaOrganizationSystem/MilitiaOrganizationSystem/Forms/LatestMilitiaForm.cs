@@ -65,6 +65,11 @@ namespace MilitiaOrganizationSystem
             {//在最前面新添加
                 lvi = new ListViewItem();
                 lvi.Tag = militia;
+                if(latestMilitias_listview.Items.Count >= 100)
+                {//最新操作的民兵，显示上限
+                    latestMilitias_listview.Items.RemoveAt(latestMilitias_listview.Items.Count - 1);
+                    //移除最末
+                }
             } else
             {
                 lvi.Remove();

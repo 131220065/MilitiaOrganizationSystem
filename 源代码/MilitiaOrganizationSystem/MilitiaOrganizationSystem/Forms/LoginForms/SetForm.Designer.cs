@@ -78,9 +78,9 @@
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.label2.Location = new System.Drawing.Point(32, 105);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(168, 16);
+            this.label2.Size = new System.Drawing.Size(104, 16);
             this.label2.TabIndex = 2;
-            this.label2.Text = "请设置用户名和密码：";
+            this.label2.Text = "请设置密码：";
             // 
             // label3
             // 
@@ -98,9 +98,9 @@
             this.label4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.Location = new System.Drawing.Point(107, 174);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(49, 14);
+            this.label4.Size = new System.Drawing.Size(63, 14);
             this.label4.TabIndex = 4;
-            this.label4.Text = "密码：";
+            this.label4.Text = "新密码：";
             // 
             // label5
             // 
