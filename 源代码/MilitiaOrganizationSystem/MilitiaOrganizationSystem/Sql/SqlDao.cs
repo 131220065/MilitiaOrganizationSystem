@@ -23,11 +23,93 @@ namespace MilitiaOrganizationSystem
 
         private const int timeoutseconds = 600;
 
+        //private RootNode root = null;//字典树的根
+
+        public DictTree dictTree { get; set; }
+        public ConflictDict cd { get; set; }//冲突
+
         public SqlDao(string db)
         {
             this.dbName = db;
 
             newStore();
+
+            dictTree = getDictTree();//冲突
+            cd = getConflictDict();
+        }
+
+        public DictTree getDictTree()
+        {
+            DictTree dt;
+            using (var session = store.OpenSession())
+            {
+                try
+                {
+                    dt = session.Query<DictTree>().First();
+                } catch(Exception e)
+                {
+                    dt = new DictTree();
+                    session.Store(dt);
+                    session.SaveChanges();
+                }
+            }
+            return dt;
+        }
+
+        public void saveDictTreeAndConflictDict()
+        {//保存冲突和字典树
+            using (var session = store.OpenSession())
+            {
+                session.Store(dictTree);
+                session.Store(cd);
+                session.SaveChanges();
+            }
+        }
+
+        public void insertCreditNumber(string creditNumber, char i = (char)0)
+        {//插入身份证号
+            DictTree dt = dictTree;
+            Dictionary<string, List<char>> conflictDict = cd.conflictDict;
+            char conflictI;
+            if (!dt.insert(creditNumber, (char)i, out conflictI))
+            {//如果有冲突（插入失败)
+                List<char> results;
+                if (!conflictDict.TryGetValue(creditNumber, out results))
+                {//如果没有加入冲突字典，则新建一个，再添加进冲突字典
+                    results = new List<char>();
+                    results.Add((char)i);
+                    if (!results.Contains(conflictI))
+                    {//有可能是同一数据库
+                        results.Add(conflictI);
+                    }
+                    conflictDict[creditNumber] = results;
+                }
+                else
+                {//如果已经加入了冲突字典，那么只需要添加现在的
+                    if (!results.Contains((char)i))
+                    {//有可能是同一数据库的冲突，所以
+                        results.Add((char)i);
+                    }
+                }
+            }
+        }
+
+        public ConflictDict getConflictDict()
+        {
+            ConflictDict cd;
+            using (var session = store.OpenSession())
+            {
+                try
+                {
+                    cd = session.Query<ConflictDict>().First();
+                } catch(Exception e)
+                {
+                    cd = new ConflictDict();
+                    session.Store(cd);
+                    session.SaveChanges();
+                }
+            }
+            return cd;
         }
 
         private void newStore()
@@ -41,9 +123,95 @@ namespace MilitiaOrganizationSystem
             new Militias_CredentialNumbers().Execute(store);
             new Militias_Groups().Execute(store);
             new Militias_All().Execute(store);
-            new Militias_ConflictCredentialNumbers().Execute(store);
+            //new Militias_ConflictCredentialNumbers().Execute(store);
+
+            /*using (var session = store.OpenSession())
+            {//字典树
+                root = session.Query<RootNode>().FirstOrDefault();
+                if(root == null)
+                {
+                    root = new RootNode();
+                }
+                session.Store(root);
+                session.SaveChanges();
+            }*/
             
         }
+
+        /*public void deleCreditNumber(string credinumber)
+        {//删除身份证号
+            Dictionary<string, string>[] dicts = new Dictionary<string, string>[credinumber.Length];
+            Dictionary<string, string> nodeDict = root.rootDict;
+            using (var session = store.OpenSession())
+            {
+                string nodeId;
+                Node node;
+                int i;
+                for (i = 0; i < credinumber.Length; i++)
+                {//如果身份证号已经存在，那么nodeDict一直能拿到相应的Node
+                    if (!nodeDict.TryGetValue(credinumber[i] + "", out nodeId))
+                    {//没有这个，说明一定不存在这个身份证号,则不用删除
+                        return;
+                    }
+                    node = session.Load<Node>(nodeId);
+                    nodeDict = node.nodeDict;
+                    dicts[i] = nodeDict;
+                }
+                for(i = credinumber.Length - 1; i >= 1; i--)
+                {
+                    session.Delete(dicts[i - 1][credinumber[i] + ""]);//删除Id对应的Node
+                    if(dicts[i - 1].Count > 1)
+                    {//说明还有
+                        dicts[i - 1].Remove(credinumber[i] + "");//从字典里删除
+                        break;
+                    }
+                }
+                if(i == 0)
+                {//说明下一个的个数为1，应删除
+                    session.Delete(root.rootDict[credinumber[i] + ""]);
+                    root.rootDict.Remove(credinumber[i] + "");
+                }
+                session.SaveChanges();
+            }
+        }
+
+        public bool insertCreditNumber(string credinumber, string place, out string conflictPlace)
+        {
+            using (var session = store.OpenSession())
+            {
+                Dictionary<string, string> nodeDict = root.rootDict;
+                string nodeId;
+                Node node;
+                bool isExist = true;
+                for (int i = 0; i < credinumber.Length; i++)
+                {//如果身份证号已经存在，那么nodeDict一直能拿到相应的Node
+                    if (!nodeDict.TryGetValue(credinumber[i] + "", out nodeId))
+                    {//没有这个，说明一定不存在这个身份证号
+                        isExist = false;
+                        node = new Node();//新建一个Node
+                        session.Store(node);
+                        nodeDict[credinumber[i] + ""] = node.Id;//让这个有值
+                    } else
+                    {
+                        node = session.Load<Node>(nodeId);
+                    }
+                    nodeDict = node.nodeDict;
+                }
+                nodeDict[place] = null;//最后一个结点的字典上存有数据库名
+                session.SaveChanges();//保存修改
+                if (isExist)
+                {//冲突
+                    conflictPlace = nodeDict.Keys.First();
+                    return false;//插入失败
+                }
+                else
+                {//不冲突
+                    conflictPlace = place;
+                    return true;//插入成功
+                }
+            }
+            
+        }*/
         
 
         public void saveMilitia(Militia militia)
@@ -54,6 +222,11 @@ namespace MilitiaOrganizationSystem
             }
 
             string database = militia.Place;//指定数据库
+
+            if(militia.Id == null)
+            {//说明民兵是新添加的
+                insertCreditNumber(militia.CredentialNumber);//插入并检测冲突
+            }
 
             using (var session = store.OpenSession(database))
             {
@@ -68,13 +241,14 @@ namespace MilitiaOrganizationSystem
             {
                 foreach (Militia m in mList)
                 {
-                    //if (m.Place == null)
-                    //{
+                    if (m.Place == null)
+                    {
                         m.Place = dbName;//赋值采集地
-                    //区县人武部导入才用这个，于是强制赋值采集地
-                    //}
+                    }
+                    insertCreditNumber(m.CredentialNumber);
                     bulkInsert.Store(m);
                 }
+                saveDictTreeAndConflictDict();
             }
         }
 
@@ -100,9 +274,13 @@ namespace MilitiaOrganizationSystem
                 {
                     Militia m = MilitiaReflection.stringToMilitia(line);
                     m.Id = null;//让数据库新建一个文档
+
+                    insertCreditNumber(m.CredentialNumber);
+
                     bulkInsert.Store(m);
                 }
                 sr.Close();
+                saveDictTreeAndConflictDict();
             }
             /*int sum;
             getConflictCredentialNumbers(0, 1, out sum);*/
@@ -239,16 +417,16 @@ namespace MilitiaOrganizationSystem
                 database = dbName;
             }
             store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
+            List<Militia> mList;
             using(var session = store.OpenSession(database))
             {
                 RavenQueryStatistics stats;
-                var mList =  session.Query<Militia>()
+                mList =  session.Query<Militia>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
                     .Statistics(out stats).Where(lambdaContition).Skip(skip).Take(take).ToList();
                 sum = stats.TotalResults;
-
-                return mList;
             }
+            return mList;
         }
 
         public List<Militia> getMilitias(int skip, int take, out int sum, string database = null)
@@ -258,16 +436,16 @@ namespace MilitiaOrganizationSystem
                 database = dbName;
             }
             store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
+            List<Militia> militias;
             using (var session = store.OpenSession())
             {
                 RavenQueryStatistics stats;
-                var militias = session.Query<Militia>()
+                militias = session.Query<Militia>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
                     .Statistics(out stats).Skip(skip).Take(take).ToList();
                 sum = stats.TotalResults;
-
-                return militias;
             }
+            return militias;
         }
 
         /*public Dictionary<string, Militias_Groups.Result> getGroups(int skip, int take, out int sum, string database = null)
@@ -294,9 +472,10 @@ namespace MilitiaOrganizationSystem
                 database = dbName;
             }
             store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
+            List<FacetValue> fList;
             using (var session = store.OpenSession(database))
             {
-                List<FacetValue> fList;
+                
                 var gfacetResults = session.Query<Militias_Groups.Result, Militias_Groups>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
                     .ProjectFromIndexFieldsInto<Militias_Groups.Result>()
@@ -304,8 +483,9 @@ namespace MilitiaOrganizationSystem
                 
                 fList = gfacetResults.Results["Group"].Values;
 
-                return fList;
+                
             }
+            return fList;
 
         }
 
@@ -320,6 +500,7 @@ namespace MilitiaOrganizationSystem
             var property = Expression.Property(parameter, propertyName);
             var propertyExpression = Expression.Lambda<Func<Militia, object>>(property, parameter);
             store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
+            List<FacetValue> fList;
             using (var session = store.OpenSession(database))
             {
                 var gfacetResults = session.Query<Militia, Militias_All>()
@@ -332,11 +513,12 @@ namespace MilitiaOrganizationSystem
                     return fv1;
                 });
                 System.Windows.MessageBox.Show("sum = " + fv.Hits);*/
-                return gfacetResults.Results[propertyName].Values;
+                fList = gfacetResults.Results[propertyName].Values;
             }
+            return fList;
         }
 
-        public List<Militia> getMilitiasOfGroup(string Group, int skip, int take, out int sum, string database = null)
+        /*public List<Militia> getMilitiasOfGroup(string Group, int skip, int take, out int sum, string database = null)
         {//通过指定的Group(可以是非叶结点)，查询lambda表达式限定下的民兵列表
             if (database == null)
             {
@@ -354,7 +536,7 @@ namespace MilitiaOrganizationSystem
 
                 return militias;
             }
-        }
+        }*/
 
         public List<Militias_CredentialNumbers.Result> getCredentialNumbers(int skip, int take, out int sum, string database = null)
         {//获取身份证号
@@ -363,10 +545,11 @@ namespace MilitiaOrganizationSystem
                 database = dbName;
             }
             store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
+            List<Militias_CredentialNumbers.Result> credentialNumbers;
             using (var session = store.OpenSession(database))
             {
                 RavenQueryStatistics stats;
-                var credentialNumbers = session.Query<Militias_CredentialNumbers.Result, Militias_CredentialNumbers>()
+                credentialNumbers = session.Query<Militias_CredentialNumbers.Result, Militias_CredentialNumbers>()
                     .Statistics(out stats)
                     .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
                     .Skip(skip).Take(take)
@@ -380,8 +563,9 @@ namespace MilitiaOrganizationSystem
                     r.DbName = database;
                 }*/
 
-                return credentialNumbers;
+                
             }
+            return credentialNumbers;
         }
 
         /**public List<Militias_CredentialNumbers.Result> getAllCredentialNumbers(string database = null)
@@ -431,10 +615,10 @@ namespace MilitiaOrganizationSystem
             {
                 database = dbName;
             }
-
+            List<Militia> mList;
             using (var session = store.OpenSession(database))
             {
-                var mList = session.Query<Militias_CredentialNumbers.Result, Militias_CredentialNumbers>()
+                mList = session.Query<Militias_CredentialNumbers.Result, Militias_CredentialNumbers>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
                     .Where(x => x.CredentialNumber == CredentialNumber)
                     .Skip(0).Take(1000)
@@ -442,11 +626,12 @@ namespace MilitiaOrganizationSystem
                     .ToList();
                 
 
-                return mList;
+                
             }
+            return mList;
         }
 
-        public List<Militias_ConflictCredentialNumbers.Result> getConflictCredentialNumbers(int skip, int take, out int sum)
+        /*public List<Militias_ConflictCredentialNumbers.Result> getConflictCredentialNumbers(int skip, int take, out int sum)
         {//获取所有冲突的身份证号,主数据库的
             using (var session = store.OpenSession())
             {
@@ -462,7 +647,7 @@ namespace MilitiaOrganizationSystem
 
                 return credentialNumbers;
             }
-        }
+        }*/
 
     }
 

@@ -6,8 +6,39 @@ using System.Threading.Tasks;
 
 namespace MilitiaOrganizationSystem
 {
+    /*class RootNode
+    {
+        public string Id { get; set; }
+        public Dictionary<string, string> rootDict;
+        public RootNode()
+        {
+            Id = null;
+            rootDict = new Dictionary<string, string>();
+        }
+    }
+    class Node
+    {
+        public string Id { get; set; }//存入数据库中的Id，也是dict中的value
+        public Dictionary<string, string> nodeDict;
+        public Node()
+        {
+            Id = null;
+            nodeDict = new Dictionary<string, string>();
+        }
+    }*/
+    class ConflictDict
+    {
+        public string Id { get; set; }//存入数据库的Id
+        public Dictionary<string, List<char>> conflictDict { get; set; }
+        public ConflictDict()
+        {
+            Id = null;
+            conflictDict = new Dictionary<string, List<char>>();
+        }
+    }
     class DictTree
     {//字典树，用于检测身份证号冲突，长度都一致才不会有bug
+        public string Id { get; set; }//存入数据库的Id
         private Dictionary<char, Node> root;//根结点(存首字母）
         private class Node
         {
