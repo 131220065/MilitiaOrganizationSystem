@@ -57,6 +57,7 @@ namespace MilitiaOrganizationSystem
                     return;
                 }
                 childCondition.Method = "StartsWith";
+                childCondition.Values.Clear();
                 childCondition.Values.Add(startwithCombobox.Text);
             } else if(radio_EndsWith.Checked)
             {
@@ -68,18 +69,13 @@ namespace MilitiaOrganizationSystem
                     return;
                 }
                 childCondition.Method = "EndsWith";
-                childCondition.Values.Add(endswithCombobox.Text);
+                childCondition.Values.Clear();
+                childCondition.Values.Add(startwithCombobox.Text);
             } else if(radio_Equal.Checked)
             {
-                /*if (endswithCombobox.Text == null || endswithCombobox.Text == "")
-                {
-                    MessageBox.Show("请输入数据！");
-                    endswithCombobox.Focus();
-                    closeForm = false;
-                    return;
-                }*/
                 childCondition.Method = "Equal";
-                childCondition.Values.Add(endswithCombobox.Text);
+                childCondition.Values.Clear();
+                childCondition.Values.Add(startwithCombobox.Text);
             }
         }
     }

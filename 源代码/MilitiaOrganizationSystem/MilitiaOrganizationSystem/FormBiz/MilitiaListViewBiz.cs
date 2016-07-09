@@ -195,12 +195,6 @@ namespace MilitiaOrganizationSystem
 
         }
 
-        public void loadAllMilitiaInDB()
-        {//加载数据库中所有民兵到ListView
-            
-            loadMilitiaList(sqlBiz.getAllMilitias());
-        }
-
         public void addOneMilitia(Militia militia)
         {//添加一个item
             ListViewItem lvi = new ListViewItem();
@@ -329,7 +323,7 @@ namespace MilitiaOrganizationSystem
         public void refreshCurrentPage()
         {//刷新本页
             int sum;
-            List<Militia> mList = sqlBiz.queryByContition(condition.lambdaCondition, (page - 1) * pageSize, pageSize, out sum, condition.place);
+            List<Militia> mList = sqlBiz.queryByContition(condition.lambdaCondition, (page - 1) * pageSize, pageSize, out sum);
             maxPage = sum / pageSize + (sum % pageSize == 0 ? 0 : 1);//最大页数
             if(maxPage == 0)
             {

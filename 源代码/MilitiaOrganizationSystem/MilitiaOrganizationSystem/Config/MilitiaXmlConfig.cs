@@ -133,7 +133,7 @@ namespace MilitiaOrganizationSystem
                             //不赋值
                             break;
                         default://当做string处理
-                            char[] arr = new char[] { '1', '2', '3', '4', 'a', 'b', 'c', 'd', '7', '8', '9', '5', '0', 'f', 'g', 'j', 'k' };
+                            char[] arr = new char[] { '1', '2', '3', '4', '7', '8', '9', '5', '0', '6', 'X' };//身份证号
                             string value = "";
                             for(int k = 0; k < 18; k++)
                             {

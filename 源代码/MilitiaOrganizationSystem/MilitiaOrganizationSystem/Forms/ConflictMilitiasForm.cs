@@ -14,6 +14,7 @@ namespace MilitiaOrganizationSystem
     public partial class ConflictMilitiasForm : Form
     {
         private int count;
+        private bool isStale;//数据是否陈旧
         private List<List<Militia>> mlList;
         private XmlNodeList parameters = MilitiaXmlConfig.parameters;
         private List<int> displayedParameterIndexs = MilitiaXmlConfig.getAllDisplayedParameterIndexs();
@@ -36,12 +37,18 @@ namespace MilitiaOrganizationSystem
 
         private void loadMilitiaList(List<List<Militia>> llm)
         {
+            conflictGroup_ListView.Items.Clear();//先清空再加载
+
             mlList = llm;
 
             count += mlList.Count;//count记录总数
 
             foreach (List<Militia> mList in mlList)
             {
+                if(mList.Count < 2)
+                {//小于2,不显示
+                    continue;
+                }
                 ListViewGroup lvg = conflictGroup_ListView.Groups.Add(mList[0].CredentialNumber, mList[0].CredentialNumber);
                 foreach (Militia m in mList)
                 {
@@ -54,13 +61,15 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        public ConflictMilitiasForm(List<List<Militia>> llm)
+        public ConflictMilitiasForm(List<List<Militia>> llm, bool isStale)
         {//冲突检测界面
             InitializeComponent();
 
             closeForm = true;
 
             count = 0;//最开始时是0
+
+            this.isStale = isStale;//数据是否陈旧
 
             addColumnHeader();
 
@@ -86,7 +95,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void ConflictMilitiasForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        {//关闭时
             if(!closeForm)
             {
                 e.Cancel = true;
@@ -154,22 +163,32 @@ namespace MilitiaOrganizationSystem
                     if (!lvi.Checked)
                     {
                         //FormBizs.removeMilitiaItem((Militia)lvi.Tag);
-                        FormBizs.sqlBiz.deleteMilitia((Militia)lvi.Tag);
+                        FormBizs.sqlBiz.deleteMilitia((Militia)lvi.Tag);//删除
                     }
                 }
 
                 MessageBox.Show("执行成功");
-                conflictGroup_ListView.Items.Clear();
-                int sum;
-                List<List<Militia>> llm = FormBizs.sqlBiz.getConflictMilitias(count, 30, out sum);
-                if(llm.Count == 0)
-                {
-                    MessageBox.Show("已处理完所有冲突");
-                    closeForm = true;
-                } else
-                {
-                    closeForm = false;//不关闭
-                    loadMilitiaList(llm);
+                if(isStale)
+                {//数据是陈旧的
+                    List<List<Militia>> llm = FormBizs.sqlBiz.getConflictMilitias(out isStale);
+                    if (llm.Count == 0)
+                    {
+                        if (isStale)
+                        {
+                            MessageBox.Show("索引还未计算完毕，请稍等点击“检测冲突”按钮继续进行冲突检测");
+                        }
+                        else
+                        {
+                            MessageBox.Show("已处理完所有冲突");
+                        }
+                        closeForm = true;
+                    }
+                    else
+                    {
+                        closeForm = false;//不关闭
+                        loadMilitiaList(llm);
+                    }
+
                 }
             } else
             {

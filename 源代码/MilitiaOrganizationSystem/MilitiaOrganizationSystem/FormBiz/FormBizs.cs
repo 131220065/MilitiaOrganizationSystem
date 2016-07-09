@@ -60,23 +60,7 @@ namespace MilitiaOrganizationSystem
         }*/
 
         public static void export()
-        {//导出之前，先检查冲突
-            /*List<List<Militia>> mlList = sqlBiz.getConflictMilitias();//主数据库
-            if (mlList.Count > 0)
-            {//检测到冲突
-                ConflictMilitiasForm cmf = new ConflictMilitiasForm(mlList);
-                if (cmf.ShowDialog() != DialogResult.OK)
-                {
-                    MessageBox.Show("没有处理完冲突，请处理完冲突再导出！");
-                    return;
-                }
-            } else
-            {
-                MessageBox.Show("没有检查到冲突,可以导出");
-            }*/
-
-
-
+        {//导出
             FolderBrowserDialog fbdlg = new FolderBrowserDialog();
             fbdlg.Description = "请选择要导出的文件路径";
             if (fbdlg.ShowDialog() == DialogResult.OK)
@@ -84,24 +68,12 @@ namespace MilitiaOrganizationSystem
                 string folder = fbdlg.SelectedPath;
                 export(folder + "\\" + LoginXmlConfig.Place + ".zip", "hello");
             }
-            MessageBox.Show("导出成功");
         }
 
         private static void export(string fileName, string psd)
         {//fileName为导出文件，psd为压缩密码
+            DateTime startExportTime = DateTime.Now;
             Zip zip = new Zip(fileName, psd, 6);
-            /*if(LoginXmlConfig.ClientType == "基层")
-            {
-                List<string> exportMilitiaFiles = sqlBiz.exportAsXmlFile(exportMilitiaFileName);//为文件
-                foreach (string exportFile in exportMilitiaFiles)
-                {
-                    zip.addFileOrFolder(exportFile);
-                    File.Delete(exportFile);//加入压缩文件后，删去文件
-                }
-            } else
-            {//区县人武部，市军分区，省军分区
-                sqlBiz.exportZip(zip);
-            }*/
             if (!Directory.Exists("export"))
             {
                 Directory.CreateDirectory("export");
@@ -109,38 +81,15 @@ namespace MilitiaOrganizationSystem
             sqlBiz.exportAsFile("export/militia");//导入导出单数据库
             zip.addFileOrFolder("export");
             Directory.Delete("export", true);//删除
-            
-            
+
             zip.addFileOrFolder(GroupXmlConfig.xmlGroupFile);//导出分组文件
-            zip.close();
+            zip.close();//导出完毕
+            MessageBox.Show("导出完毕, time = " + (DateTime.Now - startExportTime));
         }
 
-        /**public static void importOne(string importFolder)
-        {
-
-            List<string> importedDatabases = null;
-            
-            string x = "";//客户端类别
-            if(x == "基层")
-            {
-                return;
-            }
-            if (x == "区县")
-            {
-                sqlBiz.importFromMilitiaXml(importFolder + "\\" + exportMilitiaFileName);
-            }
-            else
-            {//复制数据库文件夹到DataBases
-                importedDatabases = sqlBiz.importFromSource(importFolder);//导入成功的所有数据库名
-            }
-
-            groupBiz.addXmlGroupTask(importFolder + "\\" + exportGroupFileName, importedDatabases);//导入分组任务
-
-        }*/
-
         public static void import()
-        {
-            MessageBox.Show("开始导入， time = " + DateTime.Now);
+        {//导入
+            DateTime startImportTime = DateTime.Now;
             OpenFileDialog ofdlg = new OpenFileDialog();
             ofdlg.Multiselect = true;//支持多选
             ofdlg.Filter = "民兵编组系统导出文件(*.dump)|*.*";
@@ -152,19 +101,9 @@ namespace MilitiaOrganizationSystem
                     importOne(file, "hello");
                 }
             }
-            MessageBox.Show("导入完毕， time = " + DateTime.Now);
-            List<List<Militia>> mlList = sqlBiz.getConflictMilitias();
-            MessageBox.Show("拿到冲突, time = " + DateTime.Now);
-            if (mlList.Count == 0)
-            {
-                MessageBox.Show("没有检测到冲突");
-            }
-            else
-            {
-                MessageBox.Show("检测到冲突");
-                ConflictMilitiasForm cmf = new ConflictMilitiasForm(mlList);
-                cmf.ShowDialog();
-            }
+            MessageBox.Show("导入完毕， time = " + (DateTime.Now - startImportTime));
+
+            detectConflict();//检测冲突
 
             groupBiz.refresh();//刷新分组界面显示
         }
@@ -175,32 +114,41 @@ namespace MilitiaOrganizationSystem
             {
                 Directory.CreateDirectory("import");
             }
+
             UnZip unzip = new UnZip(importFile, "import", psd);//解压到数据库中
-            List<string> importedDatabases = sqlBiz.importUnzip(unzip);//开始解压
-            unzip.close();
+            unzip.unzipAll();//开始解压
+            unzip.close();//解压完毕
+
             string[] files = Directory.GetFiles("import/export");
             foreach(string file in files)
             {
                 sqlBiz.importFormFile(file);
             }
             groupBiz.addXmlGroupTask("import/" + GroupXmlConfig.xmlGroupFile);
-            Directory.Delete("import", true);
-            /*string[] files = Directory.GetFiles("import");
-            foreach(string file in files)
-            {//导入militiaXml或者GroupXml
-                if(Path.GetFileName(file).StartsWith(Path.GetFileName(exportMilitiaFileName)))
-                {//militiaList
-                    sqlBiz.importFromMilitiaXml(file);
-                } else if(file == exportGroupFileName)
-                {
-                    groupBiz.addXmlGroupTask(file);
-                }
-                //导入之后，删去
-                File.Delete(file);
-            }
+            Directory.Delete("import", true);//导入完毕后删除
+        }
 
-            string[] databases = Directory.GetDirectories("import");
-            sqlBiz.restoreDbs(databases.ToList());*/
+        public static void detectConflict()
+        {//检查冲突
+            bool isStale;
+            List<List<Militia>> mlList = sqlBiz.getConflictMilitias(out isStale);
+            if (mlList.Count == 0)
+            {
+                if (isStale)
+                {//索引还未计算完毕
+                    MessageBox.Show("索引未计算完毕，请稍候点击界面上的“检测冲突”按钮进行冲突检测");
+                }
+                else
+                {
+                    MessageBox.Show("没有检测到冲突");
+                }
+            }
+            else
+            {
+                MessageBox.Show("检测到冲突");
+                ConflictMilitiasForm cmf = new ConflictMilitiasForm(mlList, isStale);
+                cmf.ShowDialog();
+            }
         }
     }
 }
