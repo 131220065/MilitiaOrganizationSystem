@@ -90,6 +90,7 @@ namespace MilitiaOrganizationSystem
         public static void import()
         {//导入
             DateTime startImportTime = DateTime.Now;
+            DictTree dt = new DictTree();//用于检测冲突
             OpenFileDialog ofdlg = new OpenFileDialog();
             ofdlg.Multiselect = true;//支持多选
             ofdlg.Filter = "民兵编组系统导出文件(*.dump)|*.*";
@@ -98,17 +99,17 @@ namespace MilitiaOrganizationSystem
                 string[] files = ofdlg.FileNames;
                 foreach (string file in files)
                 {
-                    importOne(file, "hello");
+                    importOne(file, "hello", dt);
                 }
             }
             MessageBox.Show("导入完毕， time = " + (DateTime.Now - startImportTime));
 
-            detectConflict();//检测冲突
+            showConflicts(dt);//检测冲突
 
             groupBiz.refresh();//刷新分组界面显示
         }
 
-        private static void importOne(string importFile, string psd)
+        private static void importOne(string importFile, string psd, DictTree dt)
         {//导入一个
             if(!Directory.Exists("import"))
             {
@@ -122,15 +123,22 @@ namespace MilitiaOrganizationSystem
             string[] files = Directory.GetFiles("import/export");
             foreach(string file in files)
             {
-                sqlBiz.importFormFile(file);
+                sqlBiz.importFormFile(file, dt);
             }
             groupBiz.addXmlGroupTask("import/" + GroupXmlConfig.xmlGroupFile);
             Directory.Delete("import", true);//导入完毕后删除
         }
 
         public static void detectConflict()
+        {
+            DictTree dt = new DictTree();
+            sqlBiz.detectConflicts(dt);
+            showConflicts(dt);
+        }
+
+        public static void showConflicts(DictTree dt)
         {//检查冲突
-            bool isStale;
+            /*bool isStale;
             List<List<Militia>> mlList = sqlBiz.getConflictMilitias(out isStale);
             if (mlList.Count == 0)
             {
@@ -148,7 +156,24 @@ namespace MilitiaOrganizationSystem
                 MessageBox.Show("检测到冲突");
                 ConflictMilitiasForm cmf = new ConflictMilitiasForm(mlList, isStale);
                 cmf.ShowDialog();
+            }*/
+            List<List<Militia>> mlList = new List<List<Militia>>();
+            Dictionary<string, List<string>> conflictDict = dt.conflictDict;
+            foreach(List<string> ids in conflictDict.Values)
+            {
+                List<Militia> mList = sqlBiz.loadMilitias(ids);
+                mlList.Add(mList);
             }
+            if(mlList.Count == 0)
+            {
+                MessageBox.Show("没有检查到冲突");
+            } else
+            {
+                MessageBox.Show("检测到冲突");
+                ConflictMilitiasForm cmf = new ConflictMilitiasForm(mlList, true);
+                cmf.ShowDialog();
+            }
+            
         }
     }
 }

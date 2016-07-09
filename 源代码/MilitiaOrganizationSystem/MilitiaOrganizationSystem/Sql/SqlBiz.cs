@@ -58,12 +58,22 @@ namespace MilitiaOrganizationSystem
         {
             sqlDao.exportToFile(file);
         }
-        public void importFormFile(string file)
+        public void importFormFile(string file, DictTree dt)
         {
-            sqlDao.importFromFile(file);
+            sqlDao.importFromFile(file, dt);
         }
 
-        public List<List<Militia>> getConflictMilitias(out bool isStale)
+        public List<Militia> loadMilitias(List<string> ids)
+        {
+            return sqlDao.loadMilitias(ids);
+        }
+
+        public void detectConflicts(DictTree dt)
+        {
+            sqlDao.detectConflicts(dt);
+        }
+
+        /*public List<List<Militia>> getConflictMilitias(out bool isStale)
         {//动态聚合来查冲突
             List<List<Militia>> mLList = new List<List<Militia>>();
 
@@ -76,7 +86,7 @@ namespace MilitiaOrganizationSystem
             }
             
             return mLList;
-        }
+        }*/
 
         public Dictionary<string, FacetValue> getGroupNums()
         {//获取某些数据库中的所有组中民兵的个数

@@ -84,7 +84,20 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        public void importFromFile(string file)
+        public List<Militia> loadMilitias(List<string> ids)
+        {
+            using (var session = store.OpenSession())
+            {
+                List<Militia> mList = new List<Militia>();
+                foreach(string id in ids)
+                {
+                    mList.Add(session.Load<Militia>(id));
+                }
+                return mList;
+            }
+        }
+
+        public void importFromFile(string file, DictTree dt)
         {//从文件中批量导入民兵数据
             using (var bulkInsert = store.BulkInsert())
             {
@@ -95,6 +108,7 @@ namespace MilitiaOrganizationSystem
                     Militia m = MilitiaReflection.stringToMilitia(line);
                     m.Id = null;//让数据库新建一个文档
                     bulkInsert.Store(m);
+                    dt.insertAndDetectConflicts(m);
                 }
                 sr.Close();
             }
@@ -193,6 +207,29 @@ namespace MilitiaOrganizationSystem
             }
         }
 
+        public void  detectConflicts(DictTree dt)
+        {
+            using (var session = store.OpenSession())
+            {
+                RavenQueryStatistics stats;
+                var rList = session.Query<Militias_CredentialNumbers.Result, Militias_CredentialNumbers>()
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
+                    .Statistics(out stats)
+                    .ProjectFromIndexFieldsInto<Militias_CredentialNumbers.Result>();
+
+                System.Windows.MessageBox.Show("拿到了count = " + rList.Count() + stats.IsStale);
+                foreach(Militias_CredentialNumbers.Result r in rList)
+                {
+                    if(r.CredentialNumber.StartsWith("511602199411233632"))
+                    {
+                        System.Windows.MessageBox.Show("y");
+                    }
+                    dt.insertAndDetectConflicts(r.CredentialNumber, r.Id);
+                }
+                
+            }
+        }
+
         public List<FacetValue> getGroupNums()
         {//通过静态索引查询组内民兵个数,组的叶节点总个数不超过一万
             using (var session = store.OpenSession())
@@ -210,7 +247,7 @@ namespace MilitiaOrganizationSystem
 
         }
 
-        public List<FacetValue> getConflictNums(out bool isStale)
+        /*public List<FacetValue> getConflictNums(out bool isStale)
         {//用动态聚合的方式检测冲突
             using (var session = store.OpenSession())
             {
@@ -225,7 +262,7 @@ namespace MilitiaOrganizationSystem
                 isStale = stats.IsStale;
                 return fList.ToList();
             }
-        }
+        }*/
 
         public List<FacetValue> getAggregateNums(Expression<Func<Militia, bool>> lambdaContition, string propertyName)
         {//统计,默认类的个数不超过一万
@@ -246,7 +283,7 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        public List<Militia> getMilitiasByCredentialNumber(string CredentialNumber, out bool isStale)
+        /*public List<Militia> getMilitiasByCredentialNumber(string CredentialNumber, out bool isStale)
         {//根据身份证号获取民兵
             //这个也要等待最新
             using (var session = store.OpenSession())
@@ -263,7 +300,7 @@ namespace MilitiaOrganizationSystem
                 isStale = stats.IsStale;
                 return mList;
             }
-        }
+        }*/
 
     }
 
@@ -272,8 +309,7 @@ namespace MilitiaOrganizationSystem
         public class Result
         {
             public string CredentialNumber { get; set; } //身份证号
-            
-            public string DbName { get; set; } //数据库名，之后冲突检测的时候使用
+            public string Id { get; set; }
         }
 
         public Militias_CredentialNumbers()
@@ -282,7 +318,7 @@ namespace MilitiaOrganizationSystem
                               select new
                               {
                                   CredentialNumber = militia.CredentialNumber,
-                                  DbName = militia.Place
+                                  Id = militia.Id
                               };
         }
     }

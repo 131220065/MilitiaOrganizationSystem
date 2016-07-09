@@ -89,7 +89,7 @@ namespace MilitiaOrganizationSystem
 
         private void importFromXml_Click(object sender, EventArgs e)
         {//测试所用，实际上是加载主数据库所有的民兵
-            sqlBiz.BulkInsertMilitias(MilitiaXmlConfig.generateMilitias(50000));
+            sqlBiz.BulkInsertMilitias(MilitiaXmlConfig.generateMilitias(1000));
             MessageBox.Show("生成5000个民兵成功");
         }
 

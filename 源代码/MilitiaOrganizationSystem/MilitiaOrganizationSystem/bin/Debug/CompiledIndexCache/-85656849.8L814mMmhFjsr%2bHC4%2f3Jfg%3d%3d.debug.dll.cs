@@ -17,7 +17,7 @@ public class Index_Militias_CredentialNumbers : Raven.Database.Linq.AbstractView
 		this.ViewText = @"from militia in docs.Militias
 select new {
 	CredentialNumber = militia.CredentialNumber,
-	DbName = militia.Place
+	Id = militia.__document_id
 }";
 		this.ForEntityNames.Add("Militias");
 		this.AddMapDefinition(docs => 
@@ -25,17 +25,15 @@ select new {
 			where string.Equals(militia["@metadata"]["Raven-Entity-Name"], "Militias", System.StringComparison.InvariantCultureIgnoreCase)
 			select new {
 				CredentialNumber = militia.CredentialNumber,
-				DbName = militia.Place,
+				Id = militia.__document_id,
 				__document_id = militia.__document_id
 			});
 		this.AddField("CredentialNumber");
-		this.AddField("DbName");
+		this.AddField("Id");
 		this.AddField("__document_id");
 		this.AddQueryParameterForMap("CredentialNumber");
-		this.AddQueryParameterForMap("Place");
 		this.AddQueryParameterForMap("__document_id");
 		this.AddQueryParameterForReduce("CredentialNumber");
-		this.AddQueryParameterForReduce("Place");
 		this.AddQueryParameterForReduce("__document_id");
 	}
 }

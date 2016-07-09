@@ -168,7 +168,7 @@ namespace MilitiaOrganizationSystem
                 }
 
                 MessageBox.Show("执行成功");
-                if(isStale)
+                /*if(isStale)
                 {//数据是陈旧的
                     List<List<Militia>> llm = FormBizs.sqlBiz.getConflictMilitias(out isStale);
                     if (llm.Count == 0)
@@ -189,7 +189,7 @@ namespace MilitiaOrganizationSystem
                         loadMilitiaList(llm);
                     }
 
-                }
+                }*/
             } else
             {
                 closeForm = false;
