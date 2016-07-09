@@ -70,12 +70,12 @@ namespace MilitiaOrganizationSystem
                 }
                 childCondition.Method = "EndsWith";
                 childCondition.Values.Clear();
-                childCondition.Values.Add(startwithCombobox.Text);
+                childCondition.Values.Add(endswithCombobox.Text);
             } else if(radio_Equal.Checked)
             {
                 childCondition.Method = "Equal";
                 childCondition.Values.Clear();
-                childCondition.Values.Add(startwithCombobox.Text);
+                childCondition.Values.Add(equalCombobox.Text);
             }
         }
     }
