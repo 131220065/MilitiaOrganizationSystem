@@ -92,7 +92,7 @@ namespace MilitiaOrganizationSystem
                 }
 
                 return mList;
-            } catch(Exception e)
+            } catch
             {//有任何异常，即返回null
                 return null;
             }

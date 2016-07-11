@@ -36,6 +36,9 @@
             // 
             // latestMilitias_listview
             // 
+            this.latestMilitias_listview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.latestMilitias_listview.FullRowSelect = true;
             this.latestMilitias_listview.Location = new System.Drawing.Point(12, 12);
             this.latestMilitias_listview.Name = "latestMilitias_listview";

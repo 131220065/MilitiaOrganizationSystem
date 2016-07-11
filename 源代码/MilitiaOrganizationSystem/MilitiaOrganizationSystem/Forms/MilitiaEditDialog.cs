@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -17,6 +18,8 @@ namespace MilitiaOrganizationSystem
         private List<int> parameterIndexs;//需编辑的参数下标
         private XmlNodeList parameters;
         private Militia militia;
+
+        private bool closeForm = true;//是否关闭，在将要关闭时会起作用
 
         public MilitiaEditDialog()
         {
@@ -82,7 +85,16 @@ namespace MilitiaOrganizationSystem
                 tlp.RowStyles[i].Height = 30;
             }
 
-            
+            FormClosing += MilitiaEditDialog_FormClosing;
+        }
+
+        private void MilitiaEditDialog_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!closeForm)
+            {
+                closeForm = true;
+                e.Cancel = true;
+            }
         }
 
         private void ComboBox_MouseClick(object sender, MouseEventArgs e)
@@ -97,6 +109,8 @@ namespace MilitiaOrganizationSystem
 
         public DialogResult showEditDlg(Militia oneMilitia, int focusIndex = 0)
         {//show编辑框
+            closeForm = true;//先可以直接关闭
+
             militia = oneMilitia;
             MilitiaReflection mr = new MilitiaReflection(militia);//反射
 
@@ -111,7 +125,7 @@ namespace MilitiaOrganizationSystem
                     strValue = mr.getProperty(xmlNode.Attributes["property"].Value).ToString();
 
                 }
-                catch (Exception e)
+                catch
                 {
 
                 }
@@ -160,6 +174,18 @@ namespace MilitiaOrganizationSystem
                 MessageBox.Show("MilitiaEditDialog类使用错误！");
                 return;
             }
+            XmlNode crediNumberNode = MilitiaXmlConfig.getNodeByProperty("CredentialNumber");
+            ComboBox crediCombobox = cList.Where(x => (XmlNode)x.Tag == crediNumberNode).First();
+            //取到身份证号的输入框
+            Regex regex = new Regex("^[0-9X]{18}$");
+            if (!regex.IsMatch(crediCombobox.Text))
+            {//检查身份证号的格式是否正确，只要不引起数据库冲突检测异常即可（字典树）
+                MessageBox.Show("身份证号输入有误，请检查！\n（身份证号长度必须为18位并且只能由数字和X组成）");
+                crediCombobox.Focus();
+                closeForm = false;
+                return;
+            }
+
             MilitiaReflection mr = new MilitiaReflection(militia);//反射
 
             foreach(ComboBox cbb in cList)

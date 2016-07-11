@@ -143,7 +143,7 @@ namespace MilitiaOrganizationSystem
                 {
                     value = mr.getProperty(node.Attributes["property"].Value).ToString();
                 }
-                catch (Exception e)
+                catch
                 {
 
                 }
@@ -613,7 +613,7 @@ namespace MilitiaOrganizationSystem
                 {
                     FormBizs.groupBiz.addXmlGroupTask(file);
                 }
-                catch (Exception xmlExeption)
+                catch
                 {
                     MessageBox.Show("导入xml文件出现异常！", "异常警告", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

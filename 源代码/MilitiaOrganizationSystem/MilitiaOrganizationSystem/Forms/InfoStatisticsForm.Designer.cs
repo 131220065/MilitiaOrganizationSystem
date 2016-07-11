@@ -91,6 +91,7 @@
             // statisticsListBox
             // 
             this.statisticsListBox.FormattingEnabled = true;
+            this.statisticsListBox.HorizontalScrollbar = true;
             this.statisticsListBox.ItemHeight = 12;
             this.statisticsListBox.Location = new System.Drawing.Point(366, 50);
             this.statisticsListBox.Name = "statisticsListBox";

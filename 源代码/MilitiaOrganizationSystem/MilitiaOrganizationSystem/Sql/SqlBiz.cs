@@ -121,17 +121,23 @@ namespace MilitiaOrganizationSystem
                 Directory.CreateDirectory(folder);
             }
             List<string> databases = getDatabases();
-            foreach(string database in databases)
+            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
+            pbf.Show();//显示进度条
+            for(int i = 0; i < databases.Count; i++)
             {
+                pbf.Increase(1, "开始导出第" + (i + 1) + "个数据库");
+                string database = databases[i];
                 sqlDao.backupOneDB(database, folder);
             }
             while (!isAllDbBackupCompleted()) ;//等待全部完成
+            pbf.Increase(1, "导出完毕");
         }
 
         public bool isAllDbBackupCompleted()
         {
             bool isRunning = false;
             List<string> databases = getDatabases();
+            
             foreach(string database in databases)
             {//只要有一个数据库正在备份，那么ISRunning就为true
                 isRunning = isRunning || sqlDao.isBackupRunning(database);
@@ -142,11 +148,13 @@ namespace MilitiaOrganizationSystem
         public void restoreDbs(string folder)
         {//恢复folder下的所有数据库
             string[] databaseFolders = Directory.GetDirectories(folder);
-
+            ProgressBarForm pbf = new ProgressBarForm(databaseFolders.Length);
+            pbf.Show();
             foreach (string database in databaseFolders)
             {
                 //等会在这里写个trycatch
                 sqlDao.restoreOneDB(database);
+                pbf.Increase(1, "导入" + database + "数据库成功");
             }
         }
 
@@ -181,9 +189,16 @@ namespace MilitiaOrganizationSystem
             StreamWriter sw = new StreamWriter(file);
             int sum;
             List<Militia> mList = sqlDao.getMilitias(0, 10000, out sum);
-            foreach (Militia m in mList)
+            ProgressBarForm pbf = new ProgressBarForm(mList.Count / 100);
+            pbf.Show();
+            for (int i = 0; i < mList.Count; i++)
             {
+                Militia m = mList[i];
                 sw.WriteLine(MilitiaReflection.militiaToString(m));
+                if((i + 1) % 100 == 0)
+                {
+                    pbf.Increase(1, "已导出100个民兵");
+                }
             }
             sw.Close();
         }
@@ -191,12 +206,23 @@ namespace MilitiaOrganizationSystem
         {//从文件中导入，仅区县人武部调用
             StreamReader sr = new StreamReader(file);
             string line;
-            while((line = sr.ReadLine()) != null)
+            ProgressBarForm pbf = new ProgressBarForm(1);
+            pbf.Show();//进度条
+            int i = 0;
+            while ((line = sr.ReadLine()) != null)
             {
                 Militia m = MilitiaReflection.stringToMilitia(line);
                 m.Id = null;//赋值为null，然后让数据库重新分配id
                 sqlDao.saveMilitia(m);
+
+                i++;
+                if(i % 100 == 0)
+                {
+                    pbf.setMaxValue(i / 100 + 1);
+                    pbf.Increase(1, "导入了100个民兵");
+                }
             }
+            pbf.Increase(1, "导入完毕");
             sr.Close();
         }
 

@@ -135,7 +135,7 @@ namespace MilitiaOrganizationSystem
                 {
                     value = mr.getProperty(node.Attributes["property"].Value).ToString();
                 }
-                catch (Exception e)
+                catch
                 {
 
                 }

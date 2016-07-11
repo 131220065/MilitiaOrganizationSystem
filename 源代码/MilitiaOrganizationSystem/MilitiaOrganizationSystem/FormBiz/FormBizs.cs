@@ -24,7 +24,6 @@ namespace MilitiaOrganizationSystem
 
         public static LatestMilitiaForm latestMilitiaForm = new LatestMilitiaForm();
 
-
         public static void updateMilitiaItem(Militia militia)
         {//更新所有民兵ListView上的Item
             foreach(MilitiaListViewBiz mlvb in mListBizs)
@@ -57,6 +56,7 @@ namespace MilitiaOrganizationSystem
                 }
             }
             Directory.CreateDirectory(exportFolder);
+
             if (LoginXmlConfig.ClientType == "基层")
             {
                 sqlBiz.exportAsFile(exportFolder + "\\" + exportMilitiaFileName);
@@ -89,8 +89,6 @@ namespace MilitiaOrganizationSystem
 
             exportAsFolder("export");
 
-            MessageBox.Show("备份时间为：" + (DateTime.Now - startExportTime));
-
             zip.addFileOrFolder("export");
             zip.close();
 
@@ -98,7 +96,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public static void exportToFolder()
-        {
+        {//导出到文件夹
             FolderBrowserDialog fbdlg = new FolderBrowserDialog();
             fbdlg.Description = "请选择要导出的文件路径";
             if (fbdlg.ShowDialog() == DialogResult.OK)
@@ -169,7 +167,10 @@ namespace MilitiaOrganizationSystem
                 try
                 {
                     string folder = fbd.SelectedPath;
+
+
                     DateTime startImportTime = DateTime.Now;
+
                     importFormFolder(folder);
 
                     //detectConflicts();//检测冲突
@@ -199,6 +200,7 @@ namespace MilitiaOrganizationSystem
                 try
                 {
                     DateTime startImportTime = DateTime.Now;
+
                     foreach (string file in files)
                     {
                         importFromFile(file, "hello");

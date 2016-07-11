@@ -111,7 +111,7 @@ namespace MilitiaOrganizationSystem
                 {
                     return PCD_ID;
                 }
-            } catch(Exception e)
+            } catch
             {
                 return PCD_ID;
             }

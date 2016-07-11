@@ -48,7 +48,6 @@ namespace MilitiaOrganizationSystem
             new Militias_CredentialNumbers().Execute(store);
             new Militias_Groups().Execute(store);
             new Militias_All().Execute(store);
-            
         }
         
 
@@ -269,7 +268,7 @@ namespace MilitiaOrganizationSystem
     }
 
     public class Militias_CredentialNumbers : AbstractIndexCreationTask<Militia>
-    {
+    {//身份证号索引
         public class Result
         {
             public string CredentialNumber { get; set; } //身份证号
@@ -286,7 +285,7 @@ namespace MilitiaOrganizationSystem
     }
 
     public class Militias_Groups : AbstractIndexCreationTask<Militia>
-    {
+    {//分组所用的索引
         public class Result
         {
             public string Group { get; set; } //组名

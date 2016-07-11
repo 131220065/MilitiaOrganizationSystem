@@ -136,15 +136,11 @@ namespace MilitiaOrganizationSystem
                 case "group":
                     ccForm = new ChildConditionForm_group(cc);
                     break;
-                case "int":
-                    return DialogResult.Cancel;
-                    break;
                 case "place":
                     ccForm = new ChildConditionForm_place(cc);
                     break;
                 default:
-
-                    break;
+                    return DialogResult.Cancel;//不做任何事
             }
             return ccForm.ShowDialog();
         }

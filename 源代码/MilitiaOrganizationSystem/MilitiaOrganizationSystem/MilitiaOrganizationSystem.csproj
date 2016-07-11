@@ -203,6 +203,12 @@
     <Compile Include="Forms\LoginForms\ModifyPsdForm.Designer.cs">
       <DependentUpon>ModifyPsdForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProgressBarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgressBarForm.Designer.cs">
+      <DependentUpon>ProgressBarForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config\LoginXmlConfig.cs" />
@@ -280,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForms\ModifyPsdForm.resx">
       <DependentUpon>ModifyPsdForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProgressBarForm.resx">
+      <DependentUpon>ProgressBarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
