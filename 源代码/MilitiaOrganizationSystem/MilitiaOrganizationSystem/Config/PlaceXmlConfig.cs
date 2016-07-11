@@ -116,5 +116,23 @@ namespace MilitiaOrganizationSystem
                 return PCD_ID;
             }
         }
+
+        public static List<string> getJiangsuPCDID()
+        {//获取所有江苏省的区县的PCDID,测试用
+            List<string> ids = new List<string>();
+            string provinceId = "10";
+            XmlNodeList jiangsuCities = cities("10");
+            foreach(XmlNode city in jiangsuCities)
+            {
+                string cityId = city.Attributes["ID"].Value;
+                XmlNodeList ds = districts(cityId);
+                foreach(XmlNode d in ds)
+                {
+                    string districId = d.Attributes["ID"].Value;
+                    ids.Add(provinceId + "-" + cityId + "-" + districId);
+                }
+            }
+            return ids;
+        }
     }
 }

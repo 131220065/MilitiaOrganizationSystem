@@ -43,12 +43,14 @@
             this.dele = new System.Windows.Forms.ToolStripMenuItem();
             this.importFromXml = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_importXMLGroupTask = new System.Windows.Forms.ToolStripMenuItem();
-            this.export = new System.Windows.Forms.ToolStripMenuItem();
-            this.import = new System.Windows.Forms.ToolStripMenuItem();
             this.options = new System.Windows.Forms.ToolStripMenuItem();
             this.doConflict = new System.Windows.Forms.ToolStripMenuItem();
             this.latestMilitias = new System.Windows.Forms.ToolStripMenuItem();
             this.stastistics = new System.Windows.Forms.ToolStripMenuItem();
+            this.import = new System.Windows.Forms.ToolStripMenuItem();
+            this.importDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.export = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCondition = new System.Windows.Forms.Label();
             this.nextPage = new System.Windows.Forms.Button();
             this.currentPage = new System.Windows.Forms.Button();
@@ -60,8 +62,7 @@
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.importDirectory = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).BeginInit();
@@ -146,7 +147,8 @@
             this.add,
             this.modify,
             this.dele,
-            this.importFromXml});
+            this.importFromXml,
+            this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem});
             this.btn_militaInfomation.Name = "btn_militaInfomation";
             this.btn_militaInfomation.Size = new System.Drawing.Size(68, 21);
             this.btn_militaInfomation.Text = "民兵信息";
@@ -154,28 +156,28 @@
             // add
             // 
             this.add.Name = "add";
-            this.add.Size = new System.Drawing.Size(168, 22);
+            this.add.Size = new System.Drawing.Size(344, 22);
             this.add.Text = "添加";
             this.add.Click += new System.EventHandler(this.add_Click);
             // 
             // modify
             // 
             this.modify.Name = "modify";
-            this.modify.Size = new System.Drawing.Size(168, 22);
+            this.modify.Size = new System.Drawing.Size(344, 22);
             this.modify.Text = "编辑";
             this.modify.Click += new System.EventHandler(this.modify_Click);
             // 
             // dele
             // 
             this.dele.Name = "dele";
-            this.dele.Size = new System.Drawing.Size(168, 22);
+            this.dele.Size = new System.Drawing.Size(344, 22);
             this.dele.Text = "删除";
             this.dele.Click += new System.EventHandler(this.dele_Click);
             // 
             // importFromXml
             // 
             this.importFromXml.Name = "importFromXml";
-            this.importFromXml.Size = new System.Drawing.Size(168, 22);
+            this.importFromXml.Size = new System.Drawing.Size(344, 22);
             this.importFromXml.Text = "从xml文件中导入";
             this.importFromXml.Click += new System.EventHandler(this.importFromXml_Click);
             // 
@@ -185,20 +187,6 @@
             this.btn_importXMLGroupTask.Size = new System.Drawing.Size(112, 21);
             this.btn_importXMLGroupTask.Text = "导入xml分组任务";
             this.btn_importXMLGroupTask.Click += new System.EventHandler(this.importXMLGroupTask_Click);
-            // 
-            // export
-            // 
-            this.export.Name = "export";
-            this.export.Size = new System.Drawing.Size(68, 21);
-            this.export.Text = "导出文件";
-            this.export.Click += new System.EventHandler(this.export_Click);
-            // 
-            // import
-            // 
-            this.import.Name = "import";
-            this.import.Size = new System.Drawing.Size(68, 21);
-            this.import.Text = "导入文件";
-            this.import.Click += new System.EventHandler(this.import_Click);
             // 
             // options
             // 
@@ -227,6 +215,34 @@
             this.stastistics.Size = new System.Drawing.Size(44, 21);
             this.stastistics.Text = "统计";
             this.stastistics.Click += new System.EventHandler(this.stastistics_Click);
+            // 
+            // import
+            // 
+            this.import.Name = "import";
+            this.import.Size = new System.Drawing.Size(68, 21);
+            this.import.Text = "导入文件";
+            this.import.Click += new System.EventHandler(this.import_Click);
+            // 
+            // importDirectory
+            // 
+            this.importDirectory.Name = "importDirectory";
+            this.importDirectory.Size = new System.Drawing.Size(80, 21);
+            this.importDirectory.Text = "导入文件夹";
+            this.importDirectory.Click += new System.EventHandler(this.importDirectory_Click);
+            // 
+            // export
+            // 
+            this.export.Name = "export";
+            this.export.Size = new System.Drawing.Size(68, 21);
+            this.export.Text = "导出文件";
+            this.export.Click += new System.EventHandler(this.export_Click);
+            // 
+            // exportDirectory
+            // 
+            this.exportDirectory.Name = "exportDirectory";
+            this.exportDirectory.Size = new System.Drawing.Size(80, 21);
+            this.exportDirectory.Text = "导出文件夹";
+            this.exportDirectory.Click += new System.EventHandler(this.exportDirectory_Click);
             // 
             // labelCondition
             // 
@@ -354,19 +370,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // importDirectory
+            // 生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem
             // 
-            this.importDirectory.Name = "importDirectory";
-            this.importDirectory.Size = new System.Drawing.Size(80, 21);
-            this.importDirectory.Text = "导入文件夹";
-            this.importDirectory.Click += new System.EventHandler(this.importDirectory_Click);
-            // 
-            // exportDirectory
-            // 
-            this.exportDirectory.Name = "exportDirectory";
-            this.exportDirectory.Size = new System.Drawing.Size(80, 21);
-            this.exportDirectory.Text = "导出文件夹";
-            this.exportDirectory.Click += new System.EventHandler(this.exportDirectory_Click);
+            this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem.Name = "生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem";
+            this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem.Size = new System.Drawing.Size(344, 22);
+            this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem.Text = "生成江苏省所有区县数据库并每个插入5000个数据";
+            this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem.Click += new System.EventHandler(this.生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem_Click);
             // 
             // CityForm
             // 
@@ -433,6 +442,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem importDirectory;
         private System.Windows.Forms.ToolStripMenuItem exportDirectory;
+        private System.Windows.Forms.ToolStripMenuItem 生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem;
     }
 }
 

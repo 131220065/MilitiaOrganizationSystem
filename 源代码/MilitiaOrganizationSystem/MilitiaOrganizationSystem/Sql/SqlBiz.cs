@@ -327,5 +327,18 @@ namespace MilitiaOrganizationSystem
             return fDict;
         }
 
+        public void gennerateAllJiangsuDatabasesAndinsert5000each()
+        {//生成所有江苏省的区县数据库，并每个插入5000个民兵
+            List<string> databases = PlaceXmlConfig.getJiangsuPCDID();
+            foreach (string database in databases)
+            {
+                List<Militia> mList = MilitiaXmlConfig.generateMilitias(5000);
+                foreach(Militia m in mList)
+                {
+                    sqlDao.saveMilitia(m, database);
+                }
+            }
+        }
+
     }
 }

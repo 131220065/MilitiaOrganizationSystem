@@ -49,6 +49,24 @@ namespace MilitiaOrganizationSystem
             new Militias_Groups().Execute(store);
             new Militias_All().Execute(store);
         }
+
+        public void saveMilitia(Militia militia, string datebase)
+        {//测试所用，保存民兵到指定数据库,数据库可以不存在
+            militia.Place = datebase;
+            bool isExist = true;
+            if (!Directory.Exists("Databases/" + datebase)) {
+                //说明不存在
+                isExist = false;
+            }
+            store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(datebase);
+            if(!isExist)
+            {//不存在的话，还得建立索引
+                new Militias_CredentialNumbers().Execute(store.DatabaseCommands.ForDatabase(datebase), store.Conventions);
+                new Militias_Groups().Execute(store.DatabaseCommands.ForDatabase(datebase), store.Conventions);
+                new Militias_All().Execute(store.DatabaseCommands.ForDatabase(datebase), store.Conventions);
+            }
+            saveMilitia(militia);
+        }
         
 
         public void saveMilitia(Militia militia)

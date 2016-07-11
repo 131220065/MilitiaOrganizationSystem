@@ -183,5 +183,10 @@ namespace MilitiaOrganizationSystem
         {
             FormBizs.exportToFolder();
         }
+
+        private void 生成江苏省所有区县数据库并每个插入5000个数据ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sqlBiz.gennerateAllJiangsuDatabasesAndinsert5000each();
+        }
     }
 }
