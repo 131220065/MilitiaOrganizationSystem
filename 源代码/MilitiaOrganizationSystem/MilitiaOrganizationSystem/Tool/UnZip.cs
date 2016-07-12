@@ -9,19 +9,22 @@ using System.IO;
 namespace MilitiaOrganizationSystem
 {
     public class UnZip
-    {//解压缩
+    {
+        //解压缩
         private ZipInputStream s;
         private string path;//要压缩到的文件夹路径
 
         public UnZip(string zipFile, string fileDir, string psd)
-        {//加密解压缩
+        {
+            //加密解压缩
             path = fileDir;
             s = new ZipInputStream(File.OpenRead(zipFile.Trim()));
             s.Password = md5.encrypt(psd);
         }
 
         public List<string> unzipAll()
-        {//返回成功的一级子文件夹的名称，在这个工程里面，实际上就是databases
+        {
+            //返回成功的一级子文件夹的名称，在这个工程里面，实际上就是databases
             List<string> databases = new List<string>();
             ZipEntry theEntry;
             while ((theEntry = s.GetNextEntry()) != null)
@@ -30,15 +33,19 @@ namespace MilitiaOrganizationSystem
                 int index = theEntry.Name.IndexOf('\\');
                 string rootDir = index >= 0 ? theEntry.Name.Substring(0, index) : "";
                 if (rootDir == "")
-                {//是一级文件,这个项目中，一级文件只有导出的xmlFile(分组或民兵数据)
+                {
+                    //是一级文件,这个项目中，一级文件只有导出的xmlFile(分组或民兵数据)
                     streamWriter = File.Create(path + "\\" + theEntry.Name);
                 }
                 else
-                {//是多级文件
+                {
+                    //是多级文件
                     if (!databases.Contains(rootDir))
-                    {//加入databases
+                    {
+                        //加入databases
                         if(Directory.Exists(path + "\\" + rootDir))
-                        {//还没有包含在databases中，说明第一次访问这个rootDir，但是如果它已经存在，说明产生了冲突
+                        {
+                            //还没有包含在databases中，说明第一次访问这个rootDir，但是如果它已经存在，说明产生了冲突
                             continue;
                         }
                         databases.Add(rootDir);

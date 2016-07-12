@@ -28,12 +28,14 @@ namespace MilitiaOrganizationSystem
 
             for (int i = 0; i < paraNode.ChildNodes.Count; i++)
             {
+                //载入选项
                 XmlNode selectNode = paraNode.ChildNodes[i];
                 propertyvaluesListbox.Items.Add(selectNode.Attributes["name"].Value);
             }
 
             foreach(string value in cc.Values)
-            {//设置选中
+            {
+                //设置选中
                 XmlNode selectChildNode = paraNode.SelectSingleNode("selection[@value='" + value + "']");
 
                 for (int i = 0; i < paraNode.ChildNodes.Count; i++)
@@ -49,9 +51,11 @@ namespace MilitiaOrganizationSystem
         }
 
         private void btn_ok_Click(object sender, EventArgs e)
-        {//ok,条件赋值
+        {
+            //条件赋值
             if (propertyvaluesListbox.CheckedIndices.Count == 0)
-            {//没有选择条件
+            {
+                //没有选择条件
                 MessageBox.Show("必须选择一个值！");
                 closeForm = false;
                 return;
