@@ -64,8 +64,13 @@ namespace MilitiaOrganizationSystem
             else
             {
                 sqlBiz.backupAllDb(exportFolder);
+                sqlBiz.exportCredentialNumbersToFolder(exportFolder);//导出身份证号
             }
+            ProgressBarForm pbf = new ProgressBarForm(2);
+            pbf.Show();
+            pbf.Increase(1, "正在导出分组任务...");
             groupBiz.exportXmlGroupTask(exportFolder + "\\" + exportGroupFileName);
+            pbf.Increase(1, "导出分组任务完毕");
         }
 
         private static void exportAsZipFile(string zipFile)
@@ -89,8 +94,14 @@ namespace MilitiaOrganizationSystem
 
             exportAsFolder("export");
 
+            ProgressBarForm pbf = new ProgressBarForm(2);
+            pbf.Show();
+            pbf.Increase(1, "正在压缩...");
+
             zip.addFileOrFolder("export");
             zip.close();
+
+            pbf.Increase(1, "压缩完毕");
 
             MessageBox.Show("总时间为: " + (DateTime.Now - startExportTime));
         }
@@ -142,7 +153,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private static void importFormFolder(string folder)
-        {//从文件夹中导入
+        {//从文件夹中导入,与exportAsFolder对应
             if (!Directory.Exists(folder))
             {
                 return;
@@ -153,14 +164,18 @@ namespace MilitiaOrganizationSystem
             } else
             {//其他导入数据库
                 sqlBiz.restoreDbs(folder);
+                sqlBiz.importCredentialNumbersFromFolder(folder);//导入身份证号
             }
 
+            ProgressBarForm pbf = new ProgressBarForm(2);
+            pbf.Show();
+            pbf.Increase(1, "正在导入分组任务...");
             groupBiz.addXmlGroupTask(folder + "\\" + exportGroupFileName);//导入分组任务
-
+            pbf.Increase(1, "导入分组任务完毕");
         }
 
         public static void importFromFolder()
-        {//从文件夹导入
+        {//从文件夹导入(对外)
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             if(fbd.ShowDialog() == DialogResult.OK)
             {
@@ -175,8 +190,11 @@ namespace MilitiaOrganizationSystem
 
                     //detectConflicts();//检测冲突
                     //从文件夹导入还是不自动检查冲突了吧
-
+                    ProgressBarForm pbf = new ProgressBarForm(2);
+                    pbf.Show();
+                    pbf.Increase(1, "正在刷新分组界面...");
                     groupBiz.refresh();//刷新分组显示
+                    pbf.Increase(1, "分组界面刷新完毕");
 
                     MessageBox.Show("totalTime = " + (DateTime.Now - startImportTime));
                     MessageBox.Show("导入成功");
@@ -201,17 +219,25 @@ namespace MilitiaOrganizationSystem
                 {
                     DateTime startImportTime = DateTime.Now;
 
+                    ProgressBarForm pbf = new ProgressBarForm(files.Length + 1);
+                    pbf.Show();
+                    pbf.Increase(1, "正在导入...");
+
                     foreach (string file in files)
                     {
                         importFromFile(file, "hello");
+                        pbf.Increase(1, "导入" + Path.GetFileName(file) + "完毕");
                     }
 
                     importTime = DateTime.Now - startImportTime;
 
                     detectConflicts();//冲突检测
 
+                    pbf = new ProgressBarForm(2);
+                    pbf.Show();
+                    pbf.Increase(1, "正在刷新分组界面...");
                     groupBiz.refresh();//刷新分组界面显示
-
+                    pbf.Increase(1, "刷新分组界面完毕");
                     MessageBox.Show("importTime = " + importTime + ", totalUnzipTime = " + unzipTime + ", detectTime = " + detectTime
                         + "\n" + "totalTime = " + (DateTime.Now - startImportTime));
                 } catch
@@ -232,9 +258,13 @@ namespace MilitiaOrganizationSystem
             }
             Directory.CreateDirectory("import");
             DateTime startUnzipTime = DateTime.Now;
+            ProgressBarForm pbf = new ProgressBarForm(2);
+            pbf.Show();
+            pbf.Increase(1, "正在解压...");
             UnZip unzip = new UnZip(importFile, "import", psd);//解压到数据库中
             unzip.unzipAll();//解压所有
             unzip.close();
+            pbf.Increase(1, "解压完毕");
             unzipTime += DateTime.Now - startUnzipTime;
 
             //解压完毕后

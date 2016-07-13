@@ -28,6 +28,9 @@ namespace MilitiaOrganizationSystem
         public int page { get; set; }//第几页
         public int maxPage { get; set; }//在加载第一页的时候初始化，为最大页数
 
+        private string currentDatabase;
+        private int currentSkip;//当前数据库和所跳过的数量
+
 
         public MilitiaListViewBiz(ListView listView, SqlBiz sBz, Condition condition)
         {
@@ -41,7 +44,7 @@ namespace MilitiaOrganizationSystem
             pageSize = 20;
 
             bindEvent();
-            refreshCurrentPage();
+            firstPage();
             
             FormBizs.mListBizs.Add(this);//添加到biz池中
         }
@@ -247,7 +250,6 @@ namespace MilitiaOrganizationSystem
             foreach(ListViewItem lvi in militia_ListView.SelectedItems)
             {
                 Militia militia = (Militia)lvi.Tag;
-                //militia_ListView.Items.Remove(lvi);
                 sqlBiz.deleteMilitia(militia);  
             }
         }
@@ -326,55 +328,111 @@ namespace MilitiaOrganizationSystem
             if (cf.ShowDialog() == DialogResult.OK)
             {
                 conditionLabel.Text = condition.ToString();
-                page = 1;//改变条件后，回到首页
-                refreshCurrentPage();
+                firstPage();
             }
         }
 
         public void refreshCurrentPage()
         {//刷新本页
-            int sum;
-            List<Militia> mList = sqlBiz.queryByContition(condition.lambdaCondition, (page - 1) * pageSize, pageSize, out sum, condition.place);
-            maxPage = sum / pageSize + (sum % pageSize == 0 ? 0 : 1);//最大页数
-            if(maxPage == 0)
+            if(LoginXmlConfig.ClientType == "省军分区")
             {
-                maxPage = 1;
-            }
-            if(page > maxPage)
+                List<Militia> mList = sqlBiz.currentPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
+
+                loadMilitiaList(mList);
+            } else
             {
-                page = maxPage;
+                int sum;
+                List<Militia> mList = sqlBiz.queryByContition(condition.lambdaCondition, (page - 1) * pageSize, pageSize, out sum, condition.place);
+                maxPage = sum / pageSize + (sum % pageSize == 0 ? 0 : 1);//最大页数
+                if(maxPage == 0)
+                {
+                    maxPage = 1;
+                }
+                if(page > maxPage)
+                {   
+                    page = maxPage;
+                }
+                loadMilitiaList(mList);
             }
-            loadMilitiaList(mList);
+
+
         }
 
         public void firstPage()
         {//第一页
-            page = 1;
-            refreshCurrentPage();
+            if (LoginXmlConfig.ClientType == "省军分区")
+            {
+                List<Militia> mList = sqlBiz.firstPage(condition.lambdaCondition, condition.place, pageSize, out currentDatabase, out currentSkip);
+                loadMilitiaList(mList);
+            } else
+            {
+                page = 1;
+                refreshCurrentPage();
+            }
+
+
         }
 
         public void lastPage()
         {//上一页
-            if(page > 1)
+            if (LoginXmlConfig.ClientType == "省军分区")
             {
-                page--;
+                List<Militia> mList = sqlBiz.lastPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
+                if (mList.Count == 0)
+                {//说明是第一页
+                    firstPage();
+                }
+                else
+                {
+                    loadMilitiaList(mList);
+                }
+            } else
+            {
+                if (page > 1)
+                {
+                    page--;
+                }
+                refreshCurrentPage();
             }
-            refreshCurrentPage();
+            
         }
 
         public void nextPage()
         {//下一页
-            if(page < maxPage)
+            if (LoginXmlConfig.ClientType == "省军分区")
             {
-                page++;
+                List<Militia> mList = sqlBiz.nextPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
+                if (mList.Count == 0)
+                {//说明已经到最后一页
+                    finalPage();
+                }
+                else
+                {
+                    loadMilitiaList(mList);
+                }
+            } else
+            {
+                if (page < maxPage)
+                {
+                    page++;
+                }
+                refreshCurrentPage();
             }
-            refreshCurrentPage();
+
         }
 
         public void finalPage()
         {//最后一页
-            page = maxPage;
-            refreshCurrentPage();
+            if (LoginXmlConfig.ClientType == "省军分区")
+            {
+                List<Militia> mList = sqlBiz.finalPage(condition.lambdaCondition, condition.place, pageSize, out currentDatabase, out currentSkip);
+                loadMilitiaList(mList);
+            }
+            else
+            {
+                page = maxPage;
+                refreshCurrentPage();
+            }
         }
 
         public void toPage(int p)

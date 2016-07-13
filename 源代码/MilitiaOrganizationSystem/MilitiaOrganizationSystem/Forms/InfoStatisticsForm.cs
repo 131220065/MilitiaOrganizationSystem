@@ -122,7 +122,7 @@ namespace MilitiaOrganizationSystem
                     sumLabel.Text = sum + "人";
                     break;
                 default:
-                    FormBizs.sqlBiz.queryByContition(condition.lambdaCondition, 0, 1, out sum);
+                    //FormBizs.sqlBiz.queryByContition(condition.lambdaCondition, 0, 1, out sum);
                     sumLabel.Text = sum + "人";
                     statisticsListBox.Items.Add("总数: " + sum + "人");
                     break;

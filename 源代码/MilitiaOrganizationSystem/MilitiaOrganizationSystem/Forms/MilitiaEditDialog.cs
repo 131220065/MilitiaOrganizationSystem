@@ -185,6 +185,12 @@ namespace MilitiaOrganizationSystem
                 closeForm = false;
                 return;
             }
+            //身份证号格式正确，判断身份证号是否改变
+            if(militia.Id != null && crediCombobox.Text != militia.CredentialNumber)
+            {//民兵不是新建的，且身份证号发生了改变，则调用编辑身份证号的函数
+                FormBizs.sqlBiz.cnDao.editCrediNumber(militia.CredentialNumber, crediCombobox.Text, militia.Place);
+                //编辑并保存
+            }
 
             MilitiaReflection mr = new MilitiaReflection(militia);//反射
 

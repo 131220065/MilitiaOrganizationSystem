@@ -218,6 +218,7 @@
     <Compile Include="Forms\LoginForms\SetForm.Designer.cs">
       <DependentUpon>SetForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sql\CredentialNumberDao.cs" />
     <Compile Include="Sql\SqlBiz.cs" />
     <Compile Include="Sql\SqlDao.cs" />
     <Compile Include="FormBiz\XMLGroupDao.cs" />
@@ -320,7 +321,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

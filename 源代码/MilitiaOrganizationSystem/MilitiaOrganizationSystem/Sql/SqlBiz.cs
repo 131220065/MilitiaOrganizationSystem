@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,23 +16,33 @@ namespace MilitiaOrganizationSystem
 
         private SqlDao sqlDao;//数据访问层
 
+        public CredentialNumberDao cnDao { get; set; }//身份证号数据访问层
+
         public SqlBiz(string dbName)
         {//构造函数
             sqlDao = new SqlDao(dbName);//根据数据库实例化数据访问层
+            cnDao = new CredentialNumberDao();//初始化身份证号访问层
             FormBizs.sqlBiz = this;//程序中唯一的sqlBiz实例
         }
 
-        public void addMilitias(List<Militia> mList)
-        {//测试所用，添加几个民兵
+        public void addMilitias(List<Militia> mList, string database = null)
+        {//测试所用，添加多个民兵
+            if(database == null)
+            {
+                database = LoginXmlConfig.Place;
+            }
             foreach(Militia m in mList)
             {
                 sqlDao.saveMilitia(m);
+                cnDao.addAndSaveCrediNumber(m.CredentialNumber, database);
             }
         }
 
         public void addMilitia(Militia militia)
         {//增
             sqlDao.saveMilitia(militia);
+            cnDao.addAndSaveCrediNumber(militia.CredentialNumber, militia.Place);
+
             FormBizs.latestMilitiaForm.newOperationOn(militia, "新添加");
         }
 
@@ -46,7 +57,8 @@ namespace MilitiaOrganizationSystem
             FormBizs.groupBiz.reduceCount(militia);//删除分组任务上的treeNode
             FormBizs.removeMilitiaItem(militia);//删除民兵列表界面的lvi
             sqlDao.deleteOneMilitia(militia);
-
+            cnDao.removeCrediNumber(militia.CredentialNumber, militia.Place);
+            cnDao.saveChanges(militia.Place);
             FormBizs.latestMilitiaForm.newOperationOn(militia, "被删除");
         }
 
@@ -70,7 +82,158 @@ namespace MilitiaOrganizationSystem
             return databases;
         }
 
-        public List<Militia> queryByContition(System.Linq.Expressions.Expression<Func<Militia, bool>> lambdaContition, int skip, int take, out int sum, string Place = null)
+        public List<Militia> nextPage(Expression<Func<Militia, bool>> lambdaContition, string Place, string currentDatabase, int currentSkip, int pageSize, out string newCurrentDatabase, out int newCurrentSkip)
+        {//下一页
+            int skip = currentSkip + pageSize;
+            return currentPage(lambdaContition, Place, currentDatabase, skip, pageSize, out newCurrentDatabase, out newCurrentSkip);
+        }
+
+        public List<Militia> lastPage(Expression<Func<Militia, bool>> lambdaContition, string Place, string currentDatabase, int currentSkip, int pageSize, out string newCurrentDatabase, out int newCurrentSkip)
+        {//根据当前数据库，返回上一页
+            List<Militia> mList = new List<Militia>();//需要返回的民兵
+            List<string> databases = getDatabasesByPlace(Place);
+            int databaseIndex = databases.IndexOf(currentDatabase);
+            if (databaseIndex == -1)
+            {//不可能出现的
+                MessageBox.Show("error");
+                newCurrentDatabase = currentDatabase;
+                newCurrentSkip = currentSkip;
+                return mList;
+            }
+            int skip = currentSkip - pageSize;
+            skip = skip >= 0 ? skip : 0;//保证skip大于等于0
+            int take = currentSkip - skip;//take
+            int sum;//总数，下面会out sum赋值
+            List<Militia> militias = sqlDao.queryByContition(lambdaContition, skip, take, out sum, databases[databaseIndex]);
+            mList.InsertRange(0, militias);//从前面插入的方式
+            newCurrentDatabase = databases[databaseIndex];
+            newCurrentSkip = skip;
+            databaseIndex--;//往上一个数据库
+            while (databaseIndex >= 0 && mList.Count < pageSize)
+            {//说明不够
+                //下面语句统计本数据库数量
+                sqlDao.queryByContition(lambdaContition, 0, 1, out sum, databases[databaseIndex]);
+                skip = sum - (pageSize - mList.Count);//获取跳页的skip
+                skip = skip >= 0 ? skip : 0;//保证skip大于等于0
+                militias = sqlDao.queryByContition(lambdaContition, skip, pageSize - mList.Count, out sum, databases[databaseIndex]);
+                mList.InsertRange(0, militias);
+
+                databaseIndex--;//往上一个数据库
+            }
+            //最终，newCurrentDatabase和newSkip肯定都赋值了
+            return mList;
+        }
+
+        public List<Militia> currentPage(Expression<Func<Militia, bool>> lambdaContition, string Place, string currentDatabase, int currentSkip, int pageSize, out string newCurrentDatabase, out int newCurrentSkip)
+        {//刷新当前页
+            List<Militia> mList = new List<Militia>();//需要返回的民兵
+            List<string> databases = getDatabasesByPlace(Place);
+            int databaseIndex = databases.IndexOf(currentDatabase);
+            if (databaseIndex == -1)
+            {//不可能出现的
+                MessageBox.Show("error");
+                newCurrentDatabase = currentDatabase;
+                newCurrentSkip = currentSkip;
+                return mList;
+            }
+            
+            int sum;//总数，下面会out sum赋值
+            sqlDao.queryByContition(lambdaContition, 0, 1, out sum, databases[databaseIndex]);
+            //MessageBox.Show("sum = " + sum + "");
+            int skip = currentSkip;//现在的skip
+            
+            if (skip < sum)
+            {//小于总数，说明可以直接查
+                newCurrentDatabase = databases[databaseIndex];
+                newCurrentSkip = skip;
+            }
+            else
+            {//skip >= sum
+
+                while (databaseIndex < databases.Count && skip >= sum)
+                {//到达下一个数据库的skip
+                    skip = skip - sum;
+                    databaseIndex++;//往下一个数据库
+                    if(databaseIndex == databases.Count)
+                    {
+                        break;
+                    }
+                    sqlDao.queryByContition(lambdaContition, 0, 1, out sum, databases[databaseIndex]);
+                    
+                }
+                
+                if (databaseIndex == databases.Count)
+                {//说明传进来的是最后一页的下一页..
+                    newCurrentDatabase = currentDatabase;
+                    newCurrentSkip = currentSkip;
+                    return mList;
+                }
+                //skip < sum
+                //说明现在从这个数据库跳skip个民兵取数据，则可以得到这一页
+                newCurrentDatabase = databases[databaseIndex];
+                newCurrentSkip = skip;
+            }
+            while (databaseIndex < databases.Count && mList.Count < pageSize)
+            {//说明不够
+                //从下一个数据库取数据
+                List<Militia> militias = sqlDao.queryByContition(lambdaContition, skip, pageSize - mList.Count, out sum, databases[databaseIndex]);
+                mList.AddRange(militias);
+                databaseIndex++;//往下一个数据库
+                skip = 0;//下面如果还不够就从0开始查
+            }
+            //最终，newCurrentDatabase和newSkip肯定都赋值了
+
+            return mList;
+
+        }
+
+        public List<Militia> firstPage(Expression<Func<Militia, bool>> lambdaContition, string Place, int pageSize, out string firstDatabase, out int skip)
+        {
+            List<string> databases = getDatabasesByPlace(Place);
+
+            return currentPage(lambdaContition, Place, databases[0], 0, pageSize, out firstDatabase, out skip);
+        }
+
+        public List<Militia> finalPage(Expression<Func<Militia, bool>> lambdaContition, string Place, int pageSize, out string newCurrentDatabase, out int newCurrentSkip)
+        {//最后一页
+            List<Militia> mList = new List<Militia>();
+            List<string> databases = getDatabasesByPlace(Place);
+            int databaseIndex = databases.Count - 1;//最后一个数据库
+
+            newCurrentDatabase = "";
+            newCurrentSkip = 0;
+            if (databaseIndex < 0)
+            {
+                //不可能出现的
+                MessageBox.Show("error");
+                
+                return mList;
+            }
+            /*string finalDatabase = databases[databaseIndex];
+            int sum;
+            sqlDao.queryByContition(lambdaContition, 0, 1, out sum, finalDatabase);
+            return lastPage(lambdaContition, Place, finalDatabase, sum, pageSize, out newCurrentDatabase, out newCurrentSkip);
+            */
+            
+            int sum = 1;
+            while(databaseIndex >= 0 && mList.Count < pageSize)
+            {
+                //下面的语句获取总数量sum
+                sqlDao.queryByContition(lambdaContition, 0, 1, out sum, databases[databaseIndex]);
+                int skip = sum - (pageSize - mList.Count);//获取跳页的skip
+                skip = skip >= 0 ? skip : 0;//保证skip大于等于0
+                List<Militia> militias = sqlDao.queryByContition(lambdaContition, skip, pageSize - mList.Count, out sum, databases[databaseIndex]);
+                mList.InsertRange(0, militias);
+
+                newCurrentSkip = skip;
+                newCurrentDatabase = databases[databaseIndex];
+                databaseIndex--;//往上一个数据库
+            }
+
+            return mList;
+        }
+
+        public List<Militia> queryByContition(Expression<Func<Militia, bool>> lambdaContition, int skip, int take, out int sum, string Place = null)
         {//根据条件分页查询
             List<string> databases = getDatabasesByPlace(Place);//根据Place指定数据库组
             int[] sums = new int[databases.Count];//每个数据库下民兵的总数
@@ -112,6 +275,24 @@ namespace MilitiaOrganizationSystem
             }
             skipNum = 0;
             return sums.Length;
+        }
+
+        public void exportCredentialNumbersToFolder(string folder)
+        {//将身份证号文件以zip的形式导入folder文件夹下
+            Zip zip = new Zip(folder + "\\" + "CredentialNumbers", "hello", 1);
+            string[] credentialNumberFiles = Directory.GetFiles(CredentialNumberDao.CredinumberFolder);
+            foreach(string crediFile in credentialNumberFiles)
+            {
+                zip.addFileOrFolder(crediFile);
+            }
+            zip.close();
+        }
+
+        public void importCredentialNumbersFromFolder(string folder)
+        {//从文件夹导入身份证号文件
+            UnZip unzip = new UnZip(folder + "\\" + "CredentialNumbers", CredentialNumberDao.CredinumberFolder, "hello");
+            unzip.unzipAll();
+            unzip.close();
         }
 
         public void backupAllDb(string folder)
@@ -253,31 +434,18 @@ namespace MilitiaOrganizationSystem
                 
             List<string> databases = getDatabases();//所有数据库
 
+            int i = 0;
             foreach(string database in databases)
             {
-                List<Militias_CredentialNumbers.Result> rList = sqlDao.getCredentialNumbers(database);
-                foreach(Militias_CredentialNumbers.Result r in rList)
+                List<string> cList = cnDao.getCredinumbersOfDatabase(database);
+                foreach(string credit in cList)
                 {
-                    cd.insertAndDetectConflicts(r.CredentialNumber, database);
+                    cd.insertAndDetectConflicts(credit, database);
                 }
             }
             //冲突检测完毕
 
             return cd.conflictDict;
-
-            /*Dictionary<string, List<string>> conflictDict = cd.conflictDict;
-
-            List<List<Militia>> mlList = new List<List<Militia>>();
-            foreach(KeyValuePair<string, List<string>> kvp in conflictDict)
-            {
-                List<Militia> mList = new List<Militia>();
-                foreach(string database in kvp.Value)
-                {//通过身份证，数据库获取民兵列表
-                    mList.AddRange(sqlDao.getMilitiasByCredentialNumber(kvp.Key, database));
-                }
-                mlList.Add(mList);
-            }
-            return mlList;*/
         }
 
         public Dictionary<string, FacetValue> getGroupNums()
@@ -332,6 +500,10 @@ namespace MilitiaOrganizationSystem
             List<string> databases = PlaceXmlConfig.getJiangsuPCDID();
             foreach (string database in databases)
             {
+                if(Directory.Exists(DataDir + "\\" + database))
+                {
+                    continue;
+                }
                 List<Militia> mList = MilitiaXmlConfig.generateMilitias(5000);
                 foreach(Militia m in mList)
                 {

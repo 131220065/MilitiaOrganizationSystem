@@ -57,7 +57,7 @@ namespace MilitiaOrganizationSystem
 
         private void updatePageUpDown()
         {
-            pageUpDown.Maximum = listViewBiz.maxPage;
+            //pageUpDown.Maximum = listViewBiz.maxPage;
             pageUpDown.Value = listViewBiz.page;
         }
 

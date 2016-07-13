@@ -154,18 +154,6 @@ namespace MilitiaOrganizationSystem
             return new GroupTag(xmlNode);
         }
 
-        public string attributes(XmlNode node, string name)
-        {//node中属性name的值
-            XmlAttribute attr = node.Attributes[name];
-            if(attr != null)
-            {
-                return attr.Value;
-            } else
-            {
-                return "";
-            }
-        }
-
         private void mergeNode(XmlNode xmlNode, XmlNode xdNode)
         {//将xdNode的子节点合并到xmlNode的子节点中
             foreach(XmlNode xdChildNode in xdNode.ChildNodes)
