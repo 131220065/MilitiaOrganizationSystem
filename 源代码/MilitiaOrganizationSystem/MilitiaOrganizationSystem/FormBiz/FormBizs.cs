@@ -152,17 +152,34 @@ namespace MilitiaOrganizationSystem
             
         }
 
-        private static void importFormFolder(string folder)
+        private static bool importFormFolder(string folder)
         {//从文件夹中导入,与exportAsFolder对应
             if (!Directory.Exists(folder))
             {
-                return;
+                return false;
             }
             if (LoginXmlConfig.ClientType == "区县人武部")
             {//区县人武部导入文件
                 sqlBiz.importFormFile(folder + "\\" + exportMilitiaFileName);
             } else
             {//其他导入数据库
+                List<string> currentDatabases = sqlBiz.getDatabases();
+                string[] databaseFolders = Directory.GetDirectories(folder);
+                foreach (string databaseFolder in databaseFolders)
+                {
+                    if (currentDatabases.Contains(Path.GetFileName(databaseFolder)))
+                    {
+                        DialogResult re = MessageBox.Show("检测到有数据库冲突，将覆盖所有冲突的数据库，确认？\n覆盖意味着将删除原来相应数据库中的民兵及分组", "警告", MessageBoxButtons.OKCancel);
+                        if(re != DialogResult.OK)
+                        {
+                            return false;
+                        } else
+                        {
+                            break;//不再检测数据库冲突，直接覆盖
+                        }
+                        
+                    }
+                }
                 sqlBiz.restoreDbs(folder);
                 sqlBiz.importCredentialNumbersFromFolder(folder);//导入身份证号
             }
@@ -172,6 +189,7 @@ namespace MilitiaOrganizationSystem
             pbf.Increase(1, "正在导入分组任务...");
             groupBiz.addXmlGroupTask(folder + "\\" + exportGroupFileName);//导入分组任务
             pbf.Increase(1, "导入分组任务完毕");
+            return true;
         }
 
         public static void importFromFolder()
@@ -186,7 +204,11 @@ namespace MilitiaOrganizationSystem
 
                     DateTime startImportTime = DateTime.Now;
 
-                    importFormFolder(folder);
+                    if(!importFormFolder(folder))
+                    {
+                        MessageBox.Show("导入失败!可能" + folder + "已经存在！");
+                        return;
+                    }
 
                     //detectConflicts();//检测冲突
                     //从文件夹导入还是不自动检查冲突了吧
@@ -268,7 +290,11 @@ namespace MilitiaOrganizationSystem
             unzipTime += DateTime.Now - startUnzipTime;
 
             //解压完毕后
-            importFormFolder("import/export");
+            if(!importFormFolder("import/export"))
+            {
+                MessageBox.Show("导入失败！可能" + importFile + "已经存在");
+                return;
+            }
 
             Directory.Delete("import", true);//导入之后，删除
         }

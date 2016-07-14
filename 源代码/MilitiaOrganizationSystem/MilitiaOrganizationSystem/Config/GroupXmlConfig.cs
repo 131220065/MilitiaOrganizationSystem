@@ -49,6 +49,21 @@ namespace MilitiaOrganizationSystem
             return path;
         }
 
+        public static XmlNode getNodeByPath(string path)
+        {//根据路径获取xml结点
+            string[] nodeNames = path.Split(new char[] { '/' });
+            XmlNode node = rootNode;
+            foreach(string nodeName in nodeNames)
+            {
+                node = node.SelectSingleNode("team[@name='" + nodeName + "']");
+                if(node == null)
+                {
+                    return null;
+                }
+            }
+            return node;
+        }
+
         private static void addXmlNodeToTreeNode(XmlNode root, TreeNodeCollection rootNodes)
         {//将root下的所有节点加载到treeView中
             foreach (XmlNode node in root.ChildNodes)

@@ -149,16 +149,12 @@ namespace MilitiaOrganizationSystem
         {//importFolder是备份数据库的文件夹路径,文件夹名即为数据库名
             DirectoryInfo dirInfo = new DirectoryInfo(importFolder);
             if(Directory.Exists(SqlBiz.DataDir + "\\" + dirInfo.Name))
-            {//数据库已经存在
-                System.Windows.Forms.DialogResult re = System.Windows.Forms.MessageBox.Show("数据库" + dirInfo.Name + "已经存在,继续导入将覆盖此数据库，确认？", "警告", System.Windows.Forms.MessageBoxButtons.OKCancel);
-                if(re == System.Windows.Forms.DialogResult.OK)
-                {
-                    store.DatabaseCommands.GlobalAdmin.DeleteDatabase(dirInfo.Name, true);
-                } else
-                {
-                    return;
-                }
-
+            {//数据库已经存在,覆盖此数据库
+                //先从分组中删除此数据库中的数量
+                List<FacetValue> fvList = getAggregateNums(x => x.Id != null, "Group", dirInfo.Name);
+                FormBizs.groupBiz.removeGroupNumsOfDatabase(fvList);
+                //再删除数据库
+                store.DatabaseCommands.GlobalAdmin.DeleteDatabase(dirInfo.Name, true);
             }
             Operation operation = store.DatabaseCommands.GlobalAdmin.StartRestore(
                 new Raven.Abstractions.Data.DatabaseRestoreRequest

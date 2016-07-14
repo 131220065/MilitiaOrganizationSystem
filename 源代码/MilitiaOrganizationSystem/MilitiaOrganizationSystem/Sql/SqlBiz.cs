@@ -407,7 +407,7 @@ namespace MilitiaOrganizationSystem
             sr.Close();
         }
 
-        private List<string> getDatabases()
+        public List<string> getDatabases()
         {//获取除System之外的所有数据库名
             DirectoryInfo dirInfo = new DirectoryInfo(DataDir);
             DirectoryInfo[] dis = dirInfo.GetDirectories();

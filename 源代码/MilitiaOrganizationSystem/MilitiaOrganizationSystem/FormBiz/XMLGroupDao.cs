@@ -210,6 +210,26 @@ namespace MilitiaOrganizationSystem
                         if(xdChildNode.HasChildNodes)
                         {//有子节点
                             mergeNode(xmlChildNode, xdChildNode);
+                        } else
+                        {//本身是子节点
+                            int Count = 0;
+                            try
+                            {
+                                Count = int.Parse(xmlChildNode.Attributes["currentCount"].Value);
+                            } catch
+                            {//如果不存在currentCount，则新建
+                                XmlAttribute countAttr = xmlDoc.CreateAttribute("currentCount");
+                                countAttr.Value = "0";
+                                xmlChildNode.Attributes.Append(countAttr);
+                            }
+                            try
+                            {
+                                Count += int.Parse(xdChildNode.Attributes["currentCount"].Value);
+                            } catch
+                            {
+
+                            }
+                            xmlChildNode.Attributes["currentCount"].Value = Count.ToString();
                         }
                         isFinded = true;
                     }

@@ -198,11 +198,6 @@ namespace MilitiaOrganizationSystem
         {//减少民兵的分组上面的民兵个数
             TreeNode groupNode = getTreeNodeByText(militia.Group);
             reduceCount(groupNode, 1);
-
-            //xml
-            GroupTag gt = (GroupTag)groupNode.Tag;
-            gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
-            xmlGroupDao.saveXml();
         }
 
         public void addCount(TreeNode node, int Count)
@@ -219,13 +214,18 @@ namespace MilitiaOrganizationSystem
             }
 
             //xml
-            GroupTag gt = (GroupTag)startNode.Tag;
-            gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
-            xmlGroupDao.saveXml();
+            if (startNode != null)
+            {
+                GroupTag gt = (GroupTag)startNode.Tag;
+                gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+                xmlGroupDao.saveXml();
+            }
         }
 
         public void reduceCount(TreeNode node, int Count)
         {
+            TreeNode startNode = node;//xml
+
             while (node != null)
             {
                 GroupTag tag = (GroupTag)node.Tag;
@@ -234,6 +234,61 @@ namespace MilitiaOrganizationSystem
 
                 node = node.Parent;
             }
+
+            //xml
+            if (startNode != null)
+            {
+                GroupTag gt = (GroupTag)startNode.Tag;
+                gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+                xmlGroupDao.saveXml();
+            }
         }
+
+        public void removeGroupNumsOfDatabase(List<Raven.Abstractions.Data.FacetValue> fvList)
+        {
+            foreach(Raven.Abstractions.Data.FacetValue fv in fvList)
+            {
+                TreeNode treeNode = getTreeNodeByText(fv.Range);
+                if(treeNode != null)
+                {//减少相应数量
+                    GroupTag gt = (GroupTag)treeNode.Tag;
+                    gt.Count -= fv.Hits;
+                    treeNode.Text = gt.info();
+                    gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+                }
+            }
+            xmlGroupDao.saveXml();
+        }
+
+        /*public void syncTreeView(Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict, TreeNodeCollection Nodes)
+        {
+            foreach(TreeNode treeNode in Nodes)
+            {
+                if(treeNode.Nodes.Count == 0)
+                {//叶子节点
+                    GroupTag gt = (GroupTag)treeNode.Tag;
+                    Raven.Abstractions.Data.FacetValue fv;
+                    if(fdict.TryGetValue(treeNode.Name, out fv))
+                    {
+                        gt.Count = fv.Hits;
+                        gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+                    } else
+                    {
+                        gt.Count = 0;
+                        gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+                    }
+                    treeNode.Text = gt.info();
+                } else
+                {//非叶子结点
+                    syncTreeView(fdict, treeNode.Nodes);
+                }
+            }
+        }
+
+        public void syncTreeView(Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict)
+        {//以防万一，同步一下分组界面,在统计界面调用
+            syncTreeView(fdict, groups_treeView.Nodes);
+            xmlGroupDao.saveXml();
+        }*/
     }
 }
