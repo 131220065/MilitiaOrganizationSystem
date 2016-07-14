@@ -18,16 +18,6 @@ namespace MilitiaOrganizationSystem
 
         private TreeView groups_TreeView;//想了想还是把这个加上吧，这个类的对象应该是绑定了一个TreeView的
 
-        /**private long maxId;//组中最大id
-
-        private void setId(XmlNode node)
-        {
-            XmlAttribute idAttr = xmlDoc.CreateAttribute("Id");
-            idAttr.Value = maxId.ToString();
-            maxId++;
-            node.Attributes.SetNamedItem(idAttr);//添加id
-        }*/
-
         public void saveXml()
         {//保存xml文件
             GroupXmlConfig.saveXml();
@@ -53,14 +43,18 @@ namespace MilitiaOrganizationSystem
         }
 
         public void loadToTreeView()
-        {
+        {//加载到treeVIew上
             /*Dictionary<string, FacetValue> fDict = sqlBiz.getGroupNums();
             addXmlNodeToTreeNode(rootNode, groups_TreeView.Nodes, fDict);*/
             addXmlNodeToTreeNode(rootNode, groups_TreeView.Nodes);
         }
 
         public void addCountUpToAllParent(TreeNode tn, int Count)
-        {
+        {//让分组界面上的所有父节点的数量增加Count
+            if(tn == null)
+            {
+                return;
+            }
             while(tn.Parent != null)
             {
                 GroupTag gt = (GroupTag)tn.Parent.Tag;
@@ -94,15 +88,15 @@ namespace MilitiaOrganizationSystem
                     {
                         tag.Count = int.Parse(node.Attributes["currentCount"].Value);
                     } catch
-                    {//no currentCount, create it
+                    {//节点上没有currentCount属性，则创建它
                         XmlAttribute countAttr = xmlDoc.CreateAttribute("currentCount");
                         countAttr.Value = "0";
                         node.Attributes.Append(countAttr);
                         saveXml();
                     }
                     if(tag.Count > 0)
-                    {
-                        addCountUpToAllParent(treeNode, tag.Count);//所有父节点加
+                    {//大于0的话，就
+                        addCountUpToAllParent(treeNode, tag.Count);//所有父节点加Count
                     }
 
                     treeNode.Text = tag.info();
@@ -114,41 +108,7 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        /*private void addXmlNodeToTreeNode(XmlNode root, TreeNodeCollection rootNodes, Dictionary<string, FacetValue> fDic)
-        {//将root下的所有节点加载到treeView中
-            foreach (XmlNode node in root.ChildNodes)
-            {
-
-                TreeNode treeNode = rootNodes.Add(node.Attributes["name"].Value);
-
-                treeNode.ToolTipText = getToolTipText(node);
-
-                treeNode.Name = GroupXmlConfig.getNodePath(node);//查找TreeNode的Key
-
-                GroupTag tag = new GroupTag(node);
-
-                treeNode.Text = tag.info();
-
-                if (!node.HasChildNodes)
-                {//是叶节点,则获取此组下的民兵，并将民兵添加到treeView中
-                    //应该是获取数量，并显示到节点上
-                    FacetValue fv;
-                    if(fDic.TryGetValue(treeNode.Name, out fv))
-                    {
-                        tag.Count += fv.Hits;//本身加
-                        addCountUpToAllParent(treeNode, fv.Hits);//所有父节点加
-                    }    
-                    
-                    treeNode.Text = tag.info();              
-                }
-
-                treeNode.Tag = tag;//记录节点
-
-                addXmlNodeToTreeNode(node, treeNode.Nodes, fDic);
-            }
-        }*/
-
-        public void modifyGroupName(XmlNode node, string newName)
+        /*public void modifyGroupName(XmlNode node, string newName)
         {//编辑组名
             node.Attributes["name"].Value = newName;
             saveXml();
@@ -175,8 +135,7 @@ namespace MilitiaOrganizationSystem
         public GroupTag addGroupFromRoot(string groupName)
         {//从根节点增加组
             XmlElement xmlNode = xmlDoc.CreateElement("team");
-           
-            /**setId(xmlNode);*/
+          
  
             xmlNode.SetAttribute("name", "新建组");
             rootNode.AppendChild(xmlNode);
@@ -187,15 +146,14 @@ namespace MilitiaOrganizationSystem
         public GroupTag addGroupFromParent(XmlNode parentNode, string groupName)
         {//从父节点增加组
             XmlElement xmlNode = xmlDoc.CreateElement("team");
-
-            /**setId(xmlNode);//设置Id*/
+            
 
             xmlNode.SetAttribute("name", "新建组");
             parentNode.AppendChild(xmlNode);
             saveXml();
 
             return new GroupTag(xmlNode);
-        }
+        }*/
 
         private void mergeNode(XmlNode xmlNode, XmlNode xdNode)
         {//将xdNode的子节点合并到xmlNode的子节点中

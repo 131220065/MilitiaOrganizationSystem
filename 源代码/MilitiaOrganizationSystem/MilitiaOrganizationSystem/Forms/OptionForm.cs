@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     public partial class OptionForm : Form
-    {
+    {//设置界面
         private MilitiaListViewBiz listviewBiz = null;
         private List<int> checkedIndexs = new List<int>();//选中的下标（有顺序）
 

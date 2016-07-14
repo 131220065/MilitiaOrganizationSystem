@@ -15,20 +15,20 @@ namespace MilitiaOrganizationSystem
         [STAThread]
         static void Main()
         {
-            initial();//初始化静态类l
+            initial();//初始化静态类
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             if (LoginXmlConfig.ClientType == "")
-            {
+            {//检测到没有设置，于是打开设置界面
                 SetForm sf = new SetForm();
                 if(sf.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
             } else
-            {
+            {//登录输入口令
                 LoginForm lf = new LoginForm();
                 if(lf.ShowDialog() != DialogResult.OK)
                 {

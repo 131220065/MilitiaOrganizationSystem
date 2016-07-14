@@ -17,12 +17,12 @@ namespace MilitiaOrganizationSystem
         public static string Psd { get; set; }//加密后的密码
         public static string ClientType { get; set; }//基层，区县人武部，市军分区，省军分区
 
-        public static string Id { get; set; }//随机生成的id号
+        public static string Id { get; set; }//随机生成的id号,区县可能用到，区分不同的区县
 
-        private static XmlDocument xmlDoc;
+        private static XmlDocument xmlDoc;//xml文件Doc
 
         private static void save()
-        {
+        {//保存文件
             xmlDoc.Save(xmlFile);
         }
 
@@ -65,8 +65,9 @@ namespace MilitiaOrganizationSystem
                 idNode.Attributes.Append(idAttribute);
                 rootNode.AppendChild(idNode);
 
-                save();
+                save();//保存
             }
+            //获取初始化的几个
             Place = rootNode.SelectSingleNode("Place").Attributes["value"].Value;
             Psd = rootNode.SelectSingleNode("Psd").Attributes["value"].Value;
             ClientType = rootNode.SelectSingleNode("ClientType").Attributes["value"].Value;

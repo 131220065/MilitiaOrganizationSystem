@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     public partial class ProgressBarForm : Form
-    {
+    {//进度条界面
         private bool closeForm;//指示窗口是否可以关闭
 
         public ProgressBarForm(int vMax)      //设定进度条的最大值

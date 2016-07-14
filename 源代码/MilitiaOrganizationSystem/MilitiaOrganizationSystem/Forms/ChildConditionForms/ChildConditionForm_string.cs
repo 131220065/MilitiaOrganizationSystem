@@ -18,7 +18,7 @@ namespace MilitiaOrganizationSystem
         
 
         public ChildConditionForm_string(Condition.ChildCondition cc)
-        {
+        {//string类型的子条件编辑界面
             InitializeComponent();
 
             closeForm = true;

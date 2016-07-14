@@ -11,7 +11,7 @@ using System.Windows;
 namespace MilitiaOrganizationSystem
 {
     public class SqlBiz
-    {//业务逻辑层
+    {//数据库业务逻辑层
         public const string DataDir = "DataBases";//数据库文件夹
 
         private SqlDao sqlDao;//数据访问层

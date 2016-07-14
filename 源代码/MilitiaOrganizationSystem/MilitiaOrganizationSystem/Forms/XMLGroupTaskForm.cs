@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     public partial class XMLGroupTaskForm : Form
-    {
+    {//分组界面
         private XMLGroupTreeViewBiz xmlGroupBiz;
         private SqlBiz sqlBiz;
 
@@ -31,16 +31,8 @@ namespace MilitiaOrganizationSystem
         {
             view.Click += View_Click;
             view2.Click += View_Click;
-            add.Click += Add_Click;
-            add2.Click += Add_Click;
-            dele.Click += Dele_Click;
-            dele2.Click += Dele_Click;
-            edit.Click += Edit_Click;
-            edit2.Click += Edit_Click;
-            addRoot.Click += addRoot_Click;
 
             groups_treeView.MouseClick += Groups_treeView_MouseClick;
-            groups_treeView.AfterLabelEdit += Groups_treeView_AfterLabelEdit;
 
             groups_treeView.NodeMouseDoubleClick += Groups_treeView_NodeMouseDoubleClick;
 
@@ -88,11 +80,18 @@ namespace MilitiaOrganizationSystem
                 List<Militia> mList = mt.moveMilitias;
                 foreach(Militia militia in mList)
                 {
-                    if(int.Parse(gt.tagXmlNode.Attributes["count"].Value) <= gt.Count)
-                    {//民兵数量超出了预订数量
-                        MessageBox.Show("此组民兵数量已满！");
-                        return;
+                    try
+                    {
+                        if (int.Parse(gt.tagXmlNode.Attributes["count"].Value) <= gt.Count)
+                        {//民兵数量超出了预订数量
+                            MessageBox.Show("此组民兵数量已满！");
+                            return;
+                        }
+                    } catch
+                    {//如果没有count属性，说明不限制数量
+
                     }
+                    
                     if(militia.Id == null)
                     {//删除后的民兵来分组
                         if (MessageBox.Show("民兵：" + militia.info() + " 已经被删除，是否恢复它并继续操作？", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -161,26 +160,6 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        private void Groups_treeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {//编辑之后，同步修改xml文件和数据
-            if(e.Label == null)
-            {//根本就没有编辑过
-                return;
-            }
-            xmlGroupBiz.modifyName(e.Node, e.Label);
-
-        }
-
-
-        private void Dele_Click(object sender, System.EventArgs e)
-        {//删除选中
-            xmlGroupBiz.deleSelectedNode();
-        }
-
-        private void Add_Click(object sender, System.EventArgs e)
-        {
-            xmlGroupBiz.addUnderSelectedNode();
-        }
 
         private void Edit_Click(object sender, System.EventArgs e)
         {
@@ -203,11 +182,6 @@ namespace MilitiaOrganizationSystem
             GroupMilitiaForm gm = new GroupMilitiaForm(sqlBiz, selectNode.Name);
             gm.Show();
 
-        }
-
-        private void addRoot_Click(object sender, EventArgs e)
-        {
-            xmlGroupBiz.addRoot();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace MilitiaOrganizationSystem
                 rootNode = xmlDoc.DocumentElement;
             }
             else
-            {//如果不存在，则新建
+            {//如果不存在，则新建一个空的xml文件
                 XmlDeclaration dec = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
                 xmlDoc.AppendChild(dec);
                 rootNode = xmlDoc.CreateElement("root");
@@ -79,7 +79,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public static void saveXml()
-        {
+        {//保存文件
             xmlDoc.Save(xmlGroupFile);
         }
 

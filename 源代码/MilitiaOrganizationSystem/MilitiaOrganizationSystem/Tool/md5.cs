@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MilitiaOrganizationSystem
 {
     class md5
-    {
+    {//md5加密算法
         public const string psd = "123456";
         #region "MD5加密"
         /// <summary>

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     public partial class ChildConditionForm_place : ChildConditionForm
-    {
+    {//地区选择子条件界面
         private System.Xml.XmlNodeList provinces = PlaceXmlConfig.provinces();
         private System.Xml.XmlNodeList cities = null;//城市
         private System.Xml.XmlNodeList districts = null;//区县初始化为空
@@ -30,7 +30,7 @@ namespace MilitiaOrganizationSystem
             initialPlaceCombobox();//初始化采集地显示
 
             if(childCondition.Values.Count > 0)
-            {
+            {//根据传入的子条件对象初始化对应的显示
                 string placeName = PlaceXmlConfig.getPlaceName(childCondition.Values[0]);
                 string[] placeNames = placeName.Split(new char[] { '/' });
                 pCombobox.SelectedItem = placeNames[0];
@@ -46,7 +46,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void initialPlaceCombobox()
-        {
+        {//初始化地区选项
             foreach (System.Xml.XmlNode p in provinces)
             {
                 pCombobox.Items.Add(p.Attributes["ProvinceName"].Value);
@@ -101,7 +101,6 @@ namespace MilitiaOrganizationSystem
 
         private void btn_ok_Click(object sender, EventArgs e)
         {//ok，给条件赋值
-            
             PCD_ID = provinces[pCombobox.SelectedIndex].Attributes["ID"].Value;
             if (cCombobox.SelectedIndex > 0)
             {

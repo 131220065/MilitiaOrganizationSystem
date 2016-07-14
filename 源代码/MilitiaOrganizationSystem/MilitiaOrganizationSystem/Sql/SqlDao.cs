@@ -152,7 +152,7 @@ namespace MilitiaOrganizationSystem
             {//数据库已经存在,覆盖此数据库
                 //先从分组中删除此数据库中的数量
                 List<FacetValue> fvList = getAggregateNums(x => x.Id != null, "Group", dirInfo.Name);
-                FormBizs.groupBiz.removeGroupNumsOfDatabase(fvList);
+                FormBizs.groupBiz.removeGroupNums(fvList);
                 //再删除数据库
                 store.DatabaseCommands.GlobalAdmin.DeleteDatabase(dirInfo.Name, true);
             }

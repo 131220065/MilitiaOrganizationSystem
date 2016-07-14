@@ -8,7 +8,7 @@ using System.IO;
 namespace MilitiaOrganizationSystem
 {
     public class CredentialNumberDao
-    {
+    {//身份证号数据文件访问层
         public const string CredinumberFolder = "CredentialNumbers";
         private Dictionary<string, List<string>> crediNumbersDict { get; set; }
         

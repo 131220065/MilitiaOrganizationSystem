@@ -10,15 +10,15 @@ namespace MilitiaOrganizationSystem
 {
     static class MilitiaXmlConfig
     {//配置民兵信息类，从xml民兵信息配置文件中读取并处理
-        private const string xmlMilitiaConfigFile = "Parameters.xml";
+        private const string xmlMilitiaConfigFile = "Parameters.xml";//文件路径
         private static XmlDocument xmlDoc = null;
-        private static XmlNode rootNode;
+        private static XmlNode rootNode;//根节点
 
-        public static XmlNodeList parameters { get; set; }
+        public static XmlNodeList parameters { get; set; }//参数列表
         
 
         public static void initial()
-        {
+        {//初始化
             if(xmlDoc == null)
             {
                 xmlDoc = new XmlDocument();
@@ -46,23 +46,17 @@ namespace MilitiaOrganizationSystem
         }
 
         public static XmlNode getNodeByProperty(string propertyName)
-        {
+        {//根据属性名获取节点
             return rootNode.SelectSingleNode("parameter[@property='" + propertyName + "']");
         }
 
         public static XmlNode getNodeByName(string name)
-        {
+        {//根据名称获取节点
             return rootNode.SelectSingleNode("parameter[@name='" + name + "']");
         }
 
-        public static string getTypeOf(string propertyName)
-        {
-            XmlNode node = rootNode.SelectSingleNode("parameter[@property='" + propertyName + "']");
-            return node.Attributes["type"].Value;
-        }
-
         public static List<Militia> generateMilitias(int n)
-        {
+        {//随机生成n个民兵
             Random rand = new Random();
             XmlNodeList xList = parameters;
             List<Militia> mList = new List<Militia>();
@@ -106,36 +100,6 @@ namespace MilitiaOrganizationSystem
             }
             return mList;
         }
-
-        /*public static List<Militia> generateMilitias(int n)
-        {//生成n个民兵对象为list
-            Random rand = new Random();
-            XmlNodeList xList = parameters();
-            List<Militia> mList = new List<Militia>();
-            for (int i = 0; i < n; i++)
-            {
-                Militia militia = new Militia();
-                foreach (XmlNode node in xList)
-                {       
-                    if (node.Attributes["type"].Value == "string")
-                    {
-                        byte[] buffer = new byte[8];
-                        rand.NextBytes(buffer);
-                        militia.InfoDic[node.Attributes["property"].Value] = System.Text.Encoding.Unicode.GetString(buffer);
-                    }
-                    else if (node.Attributes["type"].Value == "enum")
-                    {
-                        militia.InfoDic[node.Attributes["property"].Value] = node.ChildNodes[rand.Next(node.ChildNodes.Count)].Attributes["value"].Value;
-                    }
-                }
-                
-                militia.Group = "未分组";
-
-                mList.Add(militia);
-            }
-            return mList;
-        }*/
-
         
     }
 }

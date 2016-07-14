@@ -9,7 +9,7 @@ using System.IO;
 namespace MilitiaOrganizationSystem
 {
     public class Zip
-    {
+    {//压缩
         private ZipOutputStream s;//流
         public Zip(string strZip, string psd, int level)
         {//strZip是要压缩的文件名路径,会创建或覆盖; 

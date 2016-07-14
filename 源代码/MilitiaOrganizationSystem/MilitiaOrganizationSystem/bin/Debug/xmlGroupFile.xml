@@ -119,8 +119,8 @@
           </team>
         </team>
       </team>
-      <team name="后勤勤务保障分队" currentCount="0" />
-      <team name="装备勤务保障分队" currentCount="0" />
+      <team name="后勤勤务保障分队" currentCount="11" />
+      <team name="装备勤务保障分队" currentCount="8" />
     </team>
     <team name="应急队伍">
       <team name="应急营">
@@ -130,7 +130,7 @@
             <team name="教导员" count="1" currentCount="1" />
             <team name="副营长" count="1" currentCount="1" />
             <team name="副教导员" count="1" currentCount="1" />
-            <team name="军械员兼文书" count="1" currentCount="0" />
+            <team name="军械员兼文书" count="1" currentCount="1" />
             <team name="通信员" count="1" currentCount="0" />
             <team name="司机" count="5" currentCount="0" />
             <team name="炊事员" count="3" currentCount="0" />

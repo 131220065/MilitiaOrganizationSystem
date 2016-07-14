@@ -9,17 +9,19 @@ namespace MilitiaOrganizationSystem
 {
     static class PlaceXmlConfig
     {//全国省市区信息类，从xml文件中读取
+        //文件路径
         private const string provinceXmlFile = "全国省市区数据库/Provinces.xml";
         private const string cityXmlFile = "全国省市区数据库/Cities.xml";
         private const string districtXmlFile = "全国省市区数据库/Districts.xml";
 
+        //XMlDocument，将一直驻留内存
         private static XmlDocument provinceXmlDoc = null;
         private static XmlDocument cityXmlDoc = null;
         private static XmlDocument districXmlDoc = null;
 
 
         public static void initial()
-        {
+        {//初始化
             if(provinceXmlDoc == null)
             {
                 provinceXmlDoc = new XmlDocument();
@@ -54,6 +56,7 @@ namespace MilitiaOrganizationSystem
 
         public static string getPCD_ID(string placeName)
         {//根据地区名获取PCDID
+            //可以缺省市和区县
             string PCD_ID = "";
             string[] placeNames = placeName.Split(new char[] { '/' });
             XmlNode pNode = provinceXmlDoc.DocumentElement.SelectSingleNode("Province[@ProvinceName='" + placeNames[0] + "']");
@@ -88,6 +91,7 @@ namespace MilitiaOrganizationSystem
 
         public static string getPlaceName(string PCD_ID)
         {//根据联合的PID-CID-DID，返回地点中文名，如北京市/北京市/东城区
+            //可以缺省DID和CID
             string[] IDS = PCD_ID.Split(new char[] { '-' });
             XmlNode provinceNode = provinceXmlDoc.DocumentElement.SelectSingleNode("Province[@ID='" + IDS[0] + "']");
             try

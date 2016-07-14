@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     public partial class ChildConditionForm : Form
-    {
+    {//子条件界面，其他子条件界面继承于它，主要是为了重写关闭的逻辑
         protected bool closeForm;
 
         public ChildConditionForm()
@@ -24,7 +24,7 @@ namespace MilitiaOrganizationSystem
         private void ChildConditionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(!closeForm)
-            {
+            {//closeForm设置为false只起一次作用
                 closeForm = true;
                 e.Cancel = true;
             }

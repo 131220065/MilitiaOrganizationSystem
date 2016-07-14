@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     public partial class GroupMilitiaForm : Form
-    {
+    {//查看分组弹出的界面
         private SqlBiz sqlBiz;
         private Condition condition;//筛选条件
         private MilitiaListViewBiz listViewBiz;//民兵信息列表业务逻辑层
@@ -57,8 +57,19 @@ namespace MilitiaOrganizationSystem
 
         private void updatePageUpDown()
         {
-            //pageUpDown.Maximum = listViewBiz.maxPage;
-            pageUpDown.Value = listViewBiz.page;
+            if(LoginXmlConfig.ClientType == "省军分区")
+            {
+                pageUpDown.Visible = false;//隐藏不见
+                labelDi.Visible = false;
+                labelPage.Visible = false;
+                skipPage.Visible = false;
+                skipPage.Enabled = false;
+            } else
+            {
+                pageUpDown.Maximum = listViewBiz.maxPage;
+                pageUpDown.Value = listViewBiz.page;
+            }
+            
         }
 
         private void skipPage_Click(object sender, EventArgs e)

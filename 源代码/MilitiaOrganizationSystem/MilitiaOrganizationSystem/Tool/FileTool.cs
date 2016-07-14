@@ -9,7 +9,7 @@ using System.Xml;
 namespace MilitiaOrganizationSystem
 {
     public class FileTool
-    {
+    {//文件工具，包括从民兵到xml，xml到民兵
         public static void CopyFolder(string strFromPath, string strToPath)
         {//将一个文件夹及其所有子文件、文件夹复制到另一个文件夹下
             if (!Directory.Exists(strFromPath) || !Directory.Exists(strToPath))

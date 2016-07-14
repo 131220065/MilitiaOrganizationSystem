@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     class XMLGroupTreeViewBiz
-    {//处理treeView上的增删改(与数据相关的部分)
+    {//处理treeView上的增删改等，业务逻辑层
         private XMLGroupDao xmlGroupDao;//xml访问层
         private TreeView groups_treeView;//树视图
 
@@ -27,7 +27,7 @@ namespace MilitiaOrganizationSystem
             groups_treeView.Focus();
         }
 
-        public void addUnderSelectedNode()
+        /*public void addUnderSelectedNode()
         {//在选中节点的下面添加组
             
             TreeNode selectNode = groups_treeView.SelectedNode;
@@ -98,7 +98,7 @@ namespace MilitiaOrganizationSystem
             GroupTag tag = (GroupTag)(selectNode.Tag);
             xmlGroupDao.deleteGroup(tag.tagXmlNode);//删除xml里面
             selectNode.Nodes.Remove(selectNode);//treeview中删除
-        }
+        }*/
 
         public void refresh()
         {//刷新，同步xml文件与treeView
@@ -119,15 +119,6 @@ namespace MilitiaOrganizationSystem
 
         public bool allowDropAt(TreeNode treeNode)
         {//判断是否允许拖放到这个节点
-            /*if(treeNode.Tag == null)
-            {//这是个民兵节点
-                return false;
-            }
-            GroupTag tag = (GroupTag)treeNode.Tag;
-            if(tag.militias != null)
-            {//不为空，说明可以分组
-                return true;
-            }*/
             if(treeNode.Nodes.Count == 0)
             {//是叶节点
                 return true;
@@ -135,32 +126,8 @@ namespace MilitiaOrganizationSystem
             return false;
         }
 
-        /*public TreeNode getTreeNodeByText(TreeNodeCollection Nodes, string text)
-        {
-            foreach(TreeNode treeNode in Nodes)
-            {
-                if(treeNode.Text == text)
-                {
-                    return treeNode;
-                }
-            }
-            return null;
-        }*/
-
         public TreeNode getTreeNodeByText(string text)
-        {
-            /*string[] groups = text.Split(new Char[] { '/' });
-            TreeNodeCollection Nodes = groups_treeView.Nodes;
-            TreeNode treeNode = null;
-            foreach (string groupName in groups)
-            {
-                treeNode = getTreeNodeByText(Nodes, groupName);
-                if(treeNode == null)
-                {
-                    return null;
-                }
-                Nodes = treeNode.Nodes;
-            }*/
+        {//根据路径获取treeNode节点
             TreeNode[] groupNodes = groups_treeView.Nodes.Find(text, true);
             if(groupNodes.Count() == 0)
             {
@@ -174,26 +141,6 @@ namespace MilitiaOrganizationSystem
             return groupNodes[0];
         }
 
-        /*public void removeMilitaNode(Militia militia)
-        {//删除一个民兵的信息（可能在编辑界面删除了某个分了组的民兵）
-            ;//找到他原来的组节点
-            TreeNode groupNode = getTreeNodeByText(militia.Group);
-            reduceCount(groupNode);
-            //改变组节点上显示的民兵数量
-            *int index = groupTag.militias.FindIndex(delegate (Militia m) {//不同session查询出的militia对象不是同一个,故根据Id判断
-                if (m.Id == militia.Id)
-                {
-                    return true;
-                }
-                return false;
-            });
-            if (index >= 0)
-            {
-                groupTag.militias.RemoveAt(index);
-                groupNode.Nodes.RemoveAt(index);
-            }*
-        }*/
-
         public void reduceCount(Militia militia)
         {//减少民兵的分组上面的民兵个数
             TreeNode groupNode = getTreeNodeByText(militia.Group);
@@ -201,7 +148,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void addCount(TreeNode node, int Count)
-        {
+        {//让本结点及所有父节点上数量增加Count
             TreeNode startNode = node;//xml
 
             while(node != null)
@@ -215,7 +162,7 @@ namespace MilitiaOrganizationSystem
 
             //xml
             if (startNode != null)
-            {
+            {//同时改变xml文件的值
                 GroupTag gt = (GroupTag)startNode.Tag;
                 gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
                 xmlGroupDao.saveXml();
@@ -223,7 +170,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void reduceCount(TreeNode node, int Count)
-        {
+        {//让本结点及所有父节点上数量减少Count
             TreeNode startNode = node;//xml
 
             while (node != null)
@@ -237,15 +184,15 @@ namespace MilitiaOrganizationSystem
 
             //xml
             if (startNode != null)
-            {
+            {//同时更新xml文件中的值
                 GroupTag gt = (GroupTag)startNode.Tag;
                 gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
                 xmlGroupDao.saveXml();
             }
         }
 
-        public void removeGroupNumsOfDatabase(List<Raven.Abstractions.Data.FacetValue> fvList)
-        {
+        public void removeGroupNums(List<Raven.Abstractions.Data.FacetValue> fvList)
+        {//删除xml文件中关于fvList的部分,fvList中存在的，减少相应数量
             foreach(Raven.Abstractions.Data.FacetValue fv in fvList)
             {
                 TreeNode treeNode = getTreeNodeByText(fv.Range);
@@ -257,38 +204,7 @@ namespace MilitiaOrganizationSystem
                     gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
                 }
             }
-            xmlGroupDao.saveXml();
+            xmlGroupDao.saveXml();//保存xml文件
         }
-
-        /*public void syncTreeView(Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict, TreeNodeCollection Nodes)
-        {
-            foreach(TreeNode treeNode in Nodes)
-            {
-                if(treeNode.Nodes.Count == 0)
-                {//叶子节点
-                    GroupTag gt = (GroupTag)treeNode.Tag;
-                    Raven.Abstractions.Data.FacetValue fv;
-                    if(fdict.TryGetValue(treeNode.Name, out fv))
-                    {
-                        gt.Count = fv.Hits;
-                        gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
-                    } else
-                    {
-                        gt.Count = 0;
-                        gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
-                    }
-                    treeNode.Text = gt.info();
-                } else
-                {//非叶子结点
-                    syncTreeView(fdict, treeNode.Nodes);
-                }
-            }
-        }
-
-        public void syncTreeView(Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict)
-        {//以防万一，同步一下分组界面,在统计界面调用
-            syncTreeView(fdict, groups_treeView.Nodes);
-            xmlGroupDao.saveXml();
-        }*/
     }
 }

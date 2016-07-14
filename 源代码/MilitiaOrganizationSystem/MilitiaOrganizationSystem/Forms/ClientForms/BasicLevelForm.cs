@@ -31,11 +31,12 @@ namespace MilitiaOrganizationSystem
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();
             listViewBiz = new MilitiaListViewBiz(militia_ListView, sqlBiz, condition);//需指定数据库
-            updatePageUpDown();
-            /*//从数据库中加载未分组民兵信息到显示
-            listViewBiz.loadNotGroupedMilitiasInDb();*/
+            updatePageUpDown();//更新最大页数和本页
 
-            militia_ListView.MouseDoubleClick += listViewBiz.Militia_ListView_MouseDoubleClick;
+            //下面绑定事件
+            militia_ListView.MouseDoubleClick += listViewBiz.Militia_ListView_MouseDoubleClick;//双击编辑
+
+            //下面是移动相关
             militia_ListView.ItemDrag += listViewBiz.Militia_ListView_ItemDrag;
 
             militia_ListView.DragEnter += listViewBiz.Militia_ListView_DragEnter;
@@ -70,7 +71,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void rAdd_Click(object sender, EventArgs e)
-        {
+        {//右键添加
             listViewBiz.addOne();
         }
 
@@ -85,7 +86,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void importFromXml_Click(object sender, EventArgs e)
-        {//测试所用，实际上是加载主数据库所有的民兵
+        {//测试所用
             sqlBiz.addMilitias(MilitiaXmlConfig.generateMilitias(5000));
             MessageBox.Show("生成5000个民兵成功");
         }
@@ -97,7 +98,7 @@ namespace MilitiaOrganizationSystem
 
         private void updatePageUpDown()
         {//更新显示
-            //pageUpDown.Maximum = listViewBiz.maxPage;
+            pageUpDown.Maximum = listViewBiz.maxPage;
             pageUpDown.Value = listViewBiz.page;
         }
 
@@ -154,13 +155,13 @@ namespace MilitiaOrganizationSystem
         }
 
         private void stastistics_Click(object sender, EventArgs e)
-        {
+        {//打开统计界面
             InfoStatisticsForm isf = new InfoStatisticsForm(condition);
             isf.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {//第一页
             listViewBiz.firstPage();
             updatePageUpDown();
         }

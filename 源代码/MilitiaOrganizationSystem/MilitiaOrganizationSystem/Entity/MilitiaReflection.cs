@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MilitiaOrganizationSystem
 {
     class MilitiaReflection
-    {
+    {//民兵对象的反射取/赋值
         private static Type mt = typeof(Militia);
         public static PropertyInfo[] properties = mt.GetProperties();
         private static Dictionary<string, PropertyInfo> piDict = properties.ToDictionary(x => x.Name);//属性控制字典
@@ -17,7 +17,7 @@ namespace MilitiaOrganizationSystem
         private Militia militia;
 
         public static Militia stringToMilitia(string info)
-        {//根据values返回一个民兵对象
+        {//民兵对象反序列化
             string[] values = info.Split(new char[] { ',' });
             Militia m = new Militia();
             int i = 0;
@@ -30,7 +30,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public static string militiaToString(Militia m)
-        {
+        {//民兵对象序列化
             string info = "";
             foreach(PropertyInfo pi in properties)
             {
@@ -47,7 +47,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public MilitiaReflection(Militia m)
-        {
+        {//构造函数
             militia = m;
         }
 

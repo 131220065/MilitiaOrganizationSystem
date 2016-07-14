@@ -20,20 +20,20 @@ namespace MilitiaOrganizationSystem
         {
             InitializeComponent();
 
-            closeForm = true;
+            closeForm = true;//开始是可以关闭的
             childCondtion = cc;
             paraNode = cc.parameterNode;
 
             propertyNameLabel.Text = paraNode.Attributes["name"].Value;
 
             for (int i = 0; i < paraNode.ChildNodes.Count; i++)
-            {
+            {//将选项加载到选项列表中
                 XmlNode selectNode = paraNode.ChildNodes[i];
                 propertyvaluesListbox.Items.Add(selectNode.Attributes["name"].Value);
             }
 
             foreach(string value in cc.Values)
-            {//设置选中
+            {//根据传入的子条件，设置选中
                 XmlNode selectChildNode = paraNode.SelectSingleNode("selection[@value='" + value + "']");
 
                 for (int i = 0; i < paraNode.ChildNodes.Count; i++)
@@ -59,6 +59,7 @@ namespace MilitiaOrganizationSystem
             {
                 closeForm = true;
             }
+            //下面开始赋值
             childCondtion.Values.Clear();
             for(int i = 0; i < propertyvaluesListbox.Items.Count; i++)
             {

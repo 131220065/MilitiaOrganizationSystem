@@ -10,14 +10,12 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    
-
     public partial class ChildConditionForm_group : ChildConditionForm
     {
         private Condition.ChildCondition childCondition;
 
         public ChildConditionForm_group(Condition.ChildCondition cc)
-        {
+        {//分组选择界面
             InitializeComponent();
 
             childCondition = cc;

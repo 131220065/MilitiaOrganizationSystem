@@ -12,7 +12,7 @@ using System.Xml;
 namespace MilitiaOrganizationSystem
 {
     public partial class ConflictMilitiasForm : Form
-    {
+    {//冲突检测界面，是分页的
         private int count;
         private List<KeyValuePair<string, List<string>>> conflictList;//冲突列表
         private List<List<Militia>> currentmlList;//本页显示的冲突民兵

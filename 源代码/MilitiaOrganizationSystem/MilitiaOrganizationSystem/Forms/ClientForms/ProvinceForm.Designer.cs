@@ -43,26 +43,24 @@
             this.dele = new System.Windows.Forms.ToolStripMenuItem();
             this.importFromXml = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_importXMLGroupTask = new System.Windows.Forms.ToolStripMenuItem();
-            this.import = new System.Windows.Forms.ToolStripMenuItem();
             this.options = new System.Windows.Forms.ToolStripMenuItem();
             this.doConflict = new System.Windows.Forms.ToolStripMenuItem();
             this.latestMilitias = new System.Windows.Forms.ToolStripMenuItem();
             this.stastistics = new System.Windows.Forms.ToolStripMenuItem();
+            this.import = new System.Windows.Forms.ToolStripMenuItem();
+            this.importDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCondition = new System.Windows.Forms.Label();
             this.nextPage = new System.Windows.Forms.Button();
             this.currentPage = new System.Windows.Forms.Button();
             this.lastPage = new System.Windows.Forms.Button();
-            this.pageUpDown = new System.Windows.Forms.NumericUpDown();
             this.labelDi = new System.Windows.Forms.Label();
             this.labelPage = new System.Windows.Forms.Label();
-            this.skipPage = new System.Windows.Forms.Button();
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.importDirectory = new System.Windows.Forms.ToolStripMenuItem();
+            this.pageLabel = new System.Windows.Forms.Label();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // militia_ListView
@@ -182,13 +180,6 @@
             this.btn_importXMLGroupTask.Text = "导入xml分组任务";
             this.btn_importXMLGroupTask.Click += new System.EventHandler(this.importXMLGroupTask_Click);
             // 
-            // import
-            // 
-            this.import.Name = "import";
-            this.import.Size = new System.Drawing.Size(68, 21);
-            this.import.Text = "导入文件";
-            this.import.Click += new System.EventHandler(this.import_Click);
-            // 
             // options
             // 
             this.options.Name = "options";
@@ -216,6 +207,20 @@
             this.stastistics.Size = new System.Drawing.Size(44, 21);
             this.stastistics.Text = "统计";
             this.stastistics.Click += new System.EventHandler(this.stastistics_Click);
+            // 
+            // import
+            // 
+            this.import.Name = "import";
+            this.import.Size = new System.Drawing.Size(68, 21);
+            this.import.Text = "导入文件";
+            this.import.Click += new System.EventHandler(this.import_Click);
+            // 
+            // importDirectory
+            // 
+            this.importDirectory.Name = "importDirectory";
+            this.importDirectory.Size = new System.Drawing.Size(80, 21);
+            this.importDirectory.Text = "导入文件夹";
+            this.importDirectory.Click += new System.EventHandler(this.importDirectory_Click);
             // 
             // labelCondition
             // 
@@ -262,29 +267,11 @@
             this.lastPage.UseVisualStyleBackColor = true;
             this.lastPage.Click += new System.EventHandler(this.lastPage_Click);
             // 
-            // pageUpDown
-            // 
-            this.pageUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pageUpDown.Location = new System.Drawing.Point(35, 573);
-            this.pageUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.pageUpDown.Name = "pageUpDown";
-            this.pageUpDown.Size = new System.Drawing.Size(61, 21);
-            this.pageUpDown.TabIndex = 8;
-            this.pageUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // labelDi
             // 
             this.labelDi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelDi.AutoSize = true;
-            this.labelDi.Location = new System.Drawing.Point(12, 578);
+            this.labelDi.Location = new System.Drawing.Point(25, 577);
             this.labelDi.Name = "labelDi";
             this.labelDi.Size = new System.Drawing.Size(17, 12);
             this.labelDi.TabIndex = 9;
@@ -294,22 +281,11 @@
             // 
             this.labelPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelPage.AutoSize = true;
-            this.labelPage.Location = new System.Drawing.Point(102, 578);
+            this.labelPage.Location = new System.Drawing.Point(93, 578);
             this.labelPage.Name = "labelPage";
-            this.labelPage.Size = new System.Drawing.Size(17, 12);
+            this.labelPage.Size = new System.Drawing.Size(107, 12);
             this.labelPage.TabIndex = 10;
-            this.labelPage.Text = "页";
-            // 
-            // skipPage
-            // 
-            this.skipPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.skipPage.Location = new System.Drawing.Point(125, 573);
-            this.skipPage.Name = "skipPage";
-            this.skipPage.Size = new System.Drawing.Size(75, 23);
-            this.skipPage.TabIndex = 11;
-            this.skipPage.Text = "确认跳转";
-            this.skipPage.UseVisualStyleBackColor = true;
-            this.skipPage.Click += new System.EventHandler(this.skipPage_Click);
+            this.labelPage.Text = "页(‘-’表示倒数)";
             // 
             // finalPage
             // 
@@ -335,7 +311,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(442, 572);
+            this.button1.Location = new System.Drawing.Point(442, 574);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 22);
             this.button1.TabIndex = 17;
@@ -343,12 +319,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // importDirectory
+            // pageLabel
             // 
-            this.importDirectory.Name = "importDirectory";
-            this.importDirectory.Size = new System.Drawing.Size(80, 21);
-            this.importDirectory.Text = "导入文件夹";
-            this.importDirectory.Click += new System.EventHandler(this.importDirectory_Click);
+            this.pageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pageLabel.AutoSize = true;
+            this.pageLabel.Location = new System.Drawing.Point(60, 577);
+            this.pageLabel.Name = "pageLabel";
+            this.pageLabel.Size = new System.Drawing.Size(11, 12);
+            this.pageLabel.TabIndex = 18;
+            this.pageLabel.Text = "0";
             // 
             // ProvinceForm
             // 
@@ -356,13 +335,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 596);
+            this.Controls.Add(this.pageLabel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.conditionLabel);
             this.Controls.Add(this.finalPage);
-            this.Controls.Add(this.skipPage);
             this.Controls.Add(this.labelPage);
             this.Controls.Add(this.labelDi);
-            this.Controls.Add(this.pageUpDown);
             this.Controls.Add(this.lastPage);
             this.Controls.Add(this.currentPage);
             this.Controls.Add(this.nextPage);
@@ -375,7 +353,6 @@
             this.rMenuStrip.ResumeLayout(false);
             this.menu_basicLevel.ResumeLayout(false);
             this.menu_basicLevel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -399,10 +376,8 @@
         private System.Windows.Forms.Button nextPage;
         private System.Windows.Forms.Button currentPage;
         private System.Windows.Forms.Button lastPage;
-        private System.Windows.Forms.NumericUpDown pageUpDown;
         private System.Windows.Forms.Label labelDi;
         private System.Windows.Forms.Label labelPage;
-        private System.Windows.Forms.Button skipPage;
         private System.Windows.Forms.Button finalPage;
         private System.Windows.Forms.ToolStripMenuItem import;
         private System.Windows.Forms.ToolStripMenuItem options;
@@ -413,6 +388,7 @@
         private System.Windows.Forms.ToolStripMenuItem stastistics;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem importDirectory;
+        private System.Windows.Forms.Label pageLabel;
     }
 }
 

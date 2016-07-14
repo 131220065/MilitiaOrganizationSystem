@@ -13,16 +13,12 @@ namespace MilitiaOrganizationSystem
         public const string exportGroupFileName = "groupTask.xml";
         public const string exportMilitiaFileName = "militiaList";
 
-        private static TimeSpan importTime = new TimeSpan();
-        private static TimeSpan unzipTime = new TimeSpan();
-        private static TimeSpan detectTime = new TimeSpan();
-
-
         public static SqlBiz sqlBiz = null;//一个程序有且仅有一个sqlBiz
         public static XMLGroupTreeViewBiz groupBiz = null;//有且仅有一个groupBiz
         public static List<MilitiaListViewBiz> mListBizs = new List<MilitiaListViewBiz>();
+        //民兵列表业务逻辑层，有多个，包括主页和点击分组出来的页面
 
-        public static LatestMilitiaForm latestMilitiaForm = new LatestMilitiaForm();
+        public static LatestMilitiaForm latestMilitiaForm = new LatestMilitiaForm();//最新操作的民兵界面
 
         public static void updateMilitiaItem(Militia militia)
         {//更新所有民兵ListView上的Item
@@ -83,7 +79,6 @@ namespace MilitiaOrganizationSystem
                     return;
                 }
             }
-            DateTime startExportTime = DateTime.Now;
 
             Zip zip = new Zip(zipFile, "hello", 1);
 
@@ -102,8 +97,7 @@ namespace MilitiaOrganizationSystem
             zip.close();
 
             pbf.Increase(1, "压缩完毕");
-
-            MessageBox.Show("总时间为: " + (DateTime.Now - startExportTime));
+            
         }
 
         public static void exportToFolder()
@@ -201,9 +195,6 @@ namespace MilitiaOrganizationSystem
                 {
                     string folder = fbd.SelectedPath;
 
-
-                    DateTime startImportTime = DateTime.Now;
-
                     if(!importFormFolder(folder))
                     {
                         MessageBox.Show("导入失败!可能" + folder + "已经存在！");
@@ -217,16 +208,13 @@ namespace MilitiaOrganizationSystem
                     pbf.Increase(1, "正在刷新分组界面...");
                     groupBiz.refresh();//刷新分组显示
                     pbf.Increase(1, "分组界面刷新完毕");
-
-                    MessageBox.Show("totalTime = " + (DateTime.Now - startImportTime));
+                    
                     MessageBox.Show("导入成功");
                 } catch
                 {
                     MessageBox.Show("导入出现异常");
                 }
-                
             }
-            
         }
 
         public static void importFormFiles()
@@ -239,8 +227,6 @@ namespace MilitiaOrganizationSystem
                 string[] files = ofdlg.FileNames;
                 try
                 {
-                    DateTime startImportTime = DateTime.Now;
-
                     ProgressBarForm pbf = new ProgressBarForm(files.Length + 1);
                     pbf.Show();
                     pbf.Increase(1, "正在导入...");
@@ -250,9 +236,7 @@ namespace MilitiaOrganizationSystem
                         importFromFile(file, "hello");
                         pbf.Increase(1, "导入" + Path.GetFileName(file) + "完毕");
                     }
-
-                    importTime = DateTime.Now - startImportTime;
-
+                    
                     detectConflicts();//冲突检测
 
                     pbf = new ProgressBarForm(2);
@@ -260,8 +244,6 @@ namespace MilitiaOrganizationSystem
                     pbf.Increase(1, "正在刷新分组界面...");
                     groupBiz.refresh();//刷新分组界面显示
                     pbf.Increase(1, "刷新分组界面完毕");
-                    MessageBox.Show("importTime = " + importTime + ", totalUnzipTime = " + unzipTime + ", detectTime = " + detectTime
-                        + "\n" + "totalTime = " + (DateTime.Now - startImportTime));
                 } catch
                 {
                     MessageBox.Show("导入出现异常");
@@ -279,7 +261,6 @@ namespace MilitiaOrganizationSystem
                 Directory.Delete("import", true);
             }
             Directory.CreateDirectory("import");
-            DateTime startUnzipTime = DateTime.Now;
             ProgressBarForm pbf = new ProgressBarForm(2);
             pbf.Show();
             pbf.Increase(1, "正在解压...");
@@ -287,7 +268,6 @@ namespace MilitiaOrganizationSystem
             unzip.unzipAll();//解压所有
             unzip.close();
             pbf.Increase(1, "解压完毕");
-            unzipTime += DateTime.Now - startUnzipTime;
 
             //解压完毕后
             if(!importFormFolder("import/export"))
@@ -303,7 +283,6 @@ namespace MilitiaOrganizationSystem
         {//检测冲突
             DateTime startDetectTime = DateTime.Now;
             Dictionary<string, List<string>> conflictDict = sqlBiz.getConflicts();
-            detectTime = DateTime.Now - startDetectTime;
 
             if(conflictDict.Count == 0)
             {

@@ -10,30 +10,30 @@ using System.Xml;
 namespace MilitiaOrganizationSystem
 {
     public class MilitiaListViewBiz
-    {
+    {//listview业务逻辑层
         private static MilitiaEditDialog militiaEditDlg = new MilitiaEditDialog();//编辑民兵对话框,应该只有主界面才会调用
         private static OptionForm ofDlg = new OptionForm();//设置界面，设置页面最大显示数量以及显示的属性
 
         private ListView militia_ListView;
-        private bool sort = false;
+        private bool sort = false;//排序
         private SqlBiz sqlBiz;//数据库业务逻辑层
 
         private Condition condition;
         //此页面的查询条件
 
-        private XmlNodeList parameters = MilitiaXmlConfig.parameters;
+        private XmlNodeList parameters = MilitiaXmlConfig.parameters;//民兵的属性列表
         public List<int> displayedParameterIndexs { get; set; }//需显示的参数下标
 
         public int pageSize { get; set; }//每页显示多少民兵
         public int page { get; set; }//第几页
         public int maxPage { get; set; }//在加载第一页的时候初始化，为最大页数
 
-        private string currentDatabase;
+        private string currentDatabase;//当前的数据库
         private int currentSkip;//当前数据库和所跳过的数量
 
 
         public MilitiaListViewBiz(ListView listView, SqlBiz sBz, Condition condition)
-        {
+        {//构造函数,listView控件, 数据库业务逻辑层, 条件
             militia_ListView = listView;
             displayedParameterIndexs = MilitiaXmlConfig.getAllDisplayedParameterIndexs();
             sqlBiz = sBz;
@@ -44,18 +44,19 @@ namespace MilitiaOrganizationSystem
             pageSize = 20;
 
             bindEvent();
-            firstPage();
+
+            firstPage();//刷新为第一页
             
             FormBizs.mListBizs.Add(this);//添加到biz池中
         }
 
         ~MilitiaListViewBiz()
-        {
+        {//析构
             FormBizs.mListBizs.Remove(this);
         }
 
         private void bindEvent()
-        {
+        {//绑定事件
             militia_ListView.ColumnClick += Militia_ListView_ColumnClick;//点击排序
         }
 
@@ -66,7 +67,7 @@ namespace MilitiaOrganizationSystem
 
 
             if (sort == false)
-            {
+            {//sort是用来翻转的，无论是true还是false，都会排序
                 sort = true;
                 lvwColumnSorter.Order = SortOrder.Descending;
             }
@@ -75,11 +76,8 @@ namespace MilitiaOrganizationSystem
                 sort = false;
                 lvwColumnSorter.Order = SortOrder.Ascending;
             }
-            lvwColumnSorter.SortColumn = e.Column;
-            militia_ListView.ListViewItemSorter = lvwColumnSorter;
-
-            // 用新的排序方法对ListView排序
-            //this.listView1.Sort();
+            lvwColumnSorter.SortColumn = e.Column;//排序的列
+            militia_ListView.ListViewItemSorter = lvwColumnSorter;//赋值之后会自动排序
         }
 
         private void addColumnHeader()
@@ -101,44 +99,18 @@ namespace MilitiaOrganizationSystem
             Militia militia = (Militia)lvi.Tag;
             MilitiaReflection mr = new MilitiaReflection(militia);//反射
             lvi.ImageIndex = 0;//图片
-            /*XmlNode firstNode = displayedParameters[0];//配置文件中第一个属性
-            string value = "";
-            try
-            {
-                value = mr.getProperty(firstNode.Attributes["property"].Value).ToString();
-            } catch(Exception e)
-            {
-                
-            }
-            XmlNode selectNode = null;
-            switch (firstNode.Attributes["type"].Value)
-            {//type为enum的属性,需要将value转为对应的字符串显示
-                case "enum":
-                    selectNode = firstNode.SelectSingleNode("selection[@value='" + value + "']");
-                    if (selectNode != null)
-                    {
-                        value = selectNode.Attributes["name"].Value;
-                    }
-                    break;
-                case "place":
-                    value = PlaceXmlConfig.getPlaceName(value);
-                    break;
-                default:
-                    break;
-            }
-            lvi.Text = value;//显示第一个属性*/
 
-            lvi.SubItems.Clear();//会删除第一个key
+            lvi.SubItems.Clear();//这样clear会删除第一个key,故后面还需要对key赋值
 
             string[] items = new string[displayedParameterIndexs.Count - 1];
             for(int i = 0; i < items.Length; i++)
             {
                items[i] = "";
             }
-            lvi.SubItems.AddRange(items);
+            lvi.SubItems.AddRange(items);//加上子项
 
             for(int i = 0; i < displayedParameterIndexs.Count; i++)
-            {//更新其他属性,第一个属性显示在主属性上了
+            {//更新所有属性
                 int index = displayedParameterIndexs[i];
                 XmlNode node = parameters[index];
                 string value = "";
@@ -160,24 +132,24 @@ namespace MilitiaOrganizationSystem
                             value = selectNode.Attributes["name"].Value;
                         }
                         break;
-                    case "place":
+                    case "place"://place，需要转为中文名
                         value = PlaceXmlConfig.getPlaceName(value);
                         break;
-                    default:
+                    default://其他的不用转化，直接使用
                         break;
                 }
 
-                lvi.SubItems[i].Text = value;
+                lvi.SubItems[i].Text = value;//赋值给显示
             }
 
-            lvi.Name = militia.Id;//设置查询的Key
+            lvi.Name = militia.Id;//对key赋值，设置查询的Key
         }
 
         public void loadMilitiaList(List<Militia> mList)
         {//清空原来的，加载现在的
             militia_ListView.Clear();//先清除所有
 
-            addColumnHeader();
+            addColumnHeader();//添加头
 
             militia_ListView.BeginUpdate();   //数据更新，UI暂时挂起，直到EndUpdate绘制控件，可以有效避免闪烁并大大提高加载速度 
 
@@ -187,7 +159,7 @@ namespace MilitiaOrganizationSystem
 
                 lvi.Tag = militia;//设置Tag
 
-                //lvi.Name = militia.Id;//设置查询的Key, updateItem会设置
+                //lvi.Name = militia.Id;//不用再设置查询的Key, updateItem会设置
 
                 updateItem(lvi);//更新显示
 
@@ -198,14 +170,14 @@ namespace MilitiaOrganizationSystem
 
         }
 
-        public void addOneMilitia(Militia militia)
+        private void addOneMilitia(Militia militia)
         {//添加一个item
             ListViewItem lvi = new ListViewItem();
             lvi.Tag = militia;
             //lvi.Name = militia.Id;//之前一定是存了数据库的, updateItem会设置key
             updateItem(lvi);
             militia_ListView.Items.Add(lvi);
-            militia_ListView.SelectedItems.Clear();
+            militia_ListView.SelectedItems.Clear();//清空是为了单选
             lvi.Selected = true;
         }
 
@@ -222,7 +194,7 @@ namespace MilitiaOrganizationSystem
            
         }
 
-        public void editOne(ListViewItem lvi, int focusIndex = 0)
+        private void editOne(ListViewItem lvi, int focusIndex = 0)
         {//编辑一个民兵,focusIndex是弹出编辑对话框需要focus到哪个编辑框
             Militia militia = (Militia)lvi.Tag;
 
@@ -232,8 +204,7 @@ namespace MilitiaOrganizationSystem
                 sqlBiz.updateMilitia(militia);
             }
 
-            //通知GroupForm刷新民兵
-            //((XMLGroupTaskForm)Program.formDic["GroupForm"]).updateMilitiaNode(militia);
+            //通知其他界面的listview刷新民兵
             FormBizs.updateMilitiaItem(militia);
         }
 
@@ -254,26 +225,8 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        /*public ListViewItem findItemWithMilitia(Militia militia)
-        {//根据身份证号查找民兵
-            if (militia_ListView.Items.Count == 0)
-            {//必须判断，否则ListView为空时会报错
-                return null;
-            }
-            ListViewItem lvi = null;
-            int startIndex = 0;
-            do
-            {
-                lvi = militia_ListView.FindItemWithText(militia.InfoDic["CredentialNumber"], true, startIndex);//根据身份证号寻找
-                startIndex = militia_ListView.Items.IndexOf(lvi) + 1;
-
-            } while (lvi != null && !((Militia)lvi.Tag).isEqual(militia) && startIndex < militia_ListView.Items.Count);
-
-            return lvi;
-        }*/
-
         public ListViewItem findItemWithMilitia(Militia militia)
-        {//根据民兵对象，查找此界面的民兵
+        {//根据民兵对象，查找此界面的民兵(根据key)
             ListViewItem[] lvis = militia_ListView.Items.Find(militia.Id, false);
             foreach(ListViewItem lvi in lvis)
             {
@@ -304,7 +257,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void removeMilitiaItem(Militia militia)
-        {
+        {//通过民兵指定删除界面上对应的item
             ListViewItem lvi = findItemWithMilitia(militia);
 
             if (lvi != null)
@@ -315,7 +268,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void setoption()
-        {
+        {//弹出设置界面
             if(ofDlg.showOptionDialog(this) == DialogResult.OK)
             {//ok后更新显示
                 refreshCurrentPage();
@@ -335,12 +288,12 @@ namespace MilitiaOrganizationSystem
         public void refreshCurrentPage()
         {//刷新本页
             if(LoginXmlConfig.ClientType == "省军分区")
-            {
+            {//省军分区特殊对待，因为省军分区每个数据库查一遍太慢了
                 List<Militia> mList = sqlBiz.currentPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
 
                 loadMilitiaList(mList);
             } else
-            {
+            {//其他的会返回最大页数
                 int sum;
                 List<Militia> mList = sqlBiz.queryByContition(condition.lambdaCondition, (page - 1) * pageSize, pageSize, out sum, condition.place);
                 maxPage = sum / pageSize + (sum % pageSize == 0 ? 0 : 1);//最大页数
@@ -362,6 +315,7 @@ namespace MilitiaOrganizationSystem
         {//第一页
             if (LoginXmlConfig.ClientType == "省军分区")
             {
+                page = 1;
                 List<Militia> mList = sqlBiz.firstPage(condition.lambdaCondition, condition.place, pageSize, out currentDatabase, out currentSkip);
                 loadMilitiaList(mList);
             } else
@@ -377,6 +331,7 @@ namespace MilitiaOrganizationSystem
         {//上一页
             if (LoginXmlConfig.ClientType == "省军分区")
             {
+                page--;
                 List<Militia> mList = sqlBiz.lastPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
                 if (mList.Count == 0)
                 {//说明是第一页
@@ -401,6 +356,7 @@ namespace MilitiaOrganizationSystem
         {//下一页
             if (LoginXmlConfig.ClientType == "省军分区")
             {
+                page++;
                 List<Militia> mList = sqlBiz.nextPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
                 if (mList.Count == 0)
                 {//说明已经到最后一页
@@ -425,6 +381,7 @@ namespace MilitiaOrganizationSystem
         {//最后一页
             if (LoginXmlConfig.ClientType == "省军分区")
             {
+                page = -1;
                 List<Militia> mList = sqlBiz.finalPage(condition.lambdaCondition, condition.place, pageSize, out currentDatabase, out currentSkip);
                 loadMilitiaList(mList);
             }
@@ -555,21 +512,20 @@ namespace MilitiaOrganizationSystem
 
 
         public void Militia_ListView_DragOver(object sender, DragEventArgs e)
-        {
-            //MessageBox.Show((sender == militia_ListView) + "");
+        {//悬于..之上的时候
             MoveTag mt = (MoveTag)e.Data.GetData(typeof(MoveTag));
             if (mt.source == this)
-            {//如果是从自己移过来的
+            {//如果是从自己移过来的，则啥也不做
                 e.Effect = DragDropEffects.None;
             }
             else
-            {
+            {//否则移动
                 e.Effect = DragDropEffects.Move;
             }
         }
 
         public void Militia_ListView_DragDrop(object sender, DragEventArgs e)
-        {//自动的，好像当e.effect==None时不会调用这个函数
+        {//鼠标松开放下时，自动的，好像当e.effect==None时不会调用这个函数
             MoveTag mt = (MoveTag)e.Data.GetData(typeof(MoveTag));
             List<Militia> mList = mt.moveMilitias;
             militia_ListView.BeginUpdate();//开始更新界面
@@ -604,7 +560,7 @@ namespace MilitiaOrganizationSystem
                     }
                 }
                 else if (condition.lambdaCondition.Compile()(militia))
-                {
+                {//满足筛选条件，就添加显示
                     this.addOneMilitia(militia);
                 }
             }
@@ -612,7 +568,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void Militia_ListView_DragEnter(object sender, DragEventArgs e)
-        {
+        {//移动进入界面时
             militia_ListView.Focus();
             e.Effect = DragDropEffects.Move;
         }
@@ -621,7 +577,7 @@ namespace MilitiaOrganizationSystem
         {//移动选中的items
 
             if (e.Button == MouseButtons.Left)
-            {
+            {//左键移动
                 List<Militia> mList = new List<Militia>();
                 foreach (ListViewItem lvi in militia_ListView.SelectedItems)
                 {
@@ -663,7 +619,7 @@ namespace MilitiaOrganizationSystem
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = false;
             fileDialog.Title = "请选择文件";
-            fileDialog.Filter = "所有文件(*.*)|*.*";
+            fileDialog.Filter = "xml文件(*.xml)|*.xml";
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
                 string file = fileDialog.FileName;//已经选择了文件

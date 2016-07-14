@@ -105,14 +105,7 @@ namespace MilitiaOrganizationSystem
 
         private void updatePageUpDown()
         {//更新显示
-            //pageUpDown.Maximum = listViewBiz.maxPage;
-            pageUpDown.Value = listViewBiz.page;
-        }
-
-        private void skipPage_Click(object sender, EventArgs e)
-        {
-            listViewBiz.toPage((int)pageUpDown.Value);
-            updatePageUpDown();
+            pageLabel.Text = listViewBiz.page.ToString();
         }
 
         private void lastPage_Click(object sender, EventArgs e)
@@ -162,7 +155,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void stastistics_Click(object sender, EventArgs e)
-        {
+        {//打开统计界面
             InfoStatisticsForm isf = new InfoStatisticsForm(condition);
             isf.Show();
         }
