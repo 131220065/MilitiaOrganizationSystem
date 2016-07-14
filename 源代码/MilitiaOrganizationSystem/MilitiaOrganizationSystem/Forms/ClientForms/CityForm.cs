@@ -102,6 +102,8 @@ namespace MilitiaOrganizationSystem
         private void import_Click(object sender, EventArgs e)
         {//导入
             FormBizs.importFormFiles();
+            listViewBiz.firstPage();
+            updatePageUpDown();
         }
 
         private void updatePageUpDown()
@@ -159,7 +161,7 @@ namespace MilitiaOrganizationSystem
 
         private void latestMilitias_Click(object sender, EventArgs e)
         {//最近编辑的民兵
-            FormBizs.latestMilitiaForm.Show();
+            FormBizs.showLatestMilitias();
         }
 
         private void stastistics_Click(object sender, EventArgs e)
@@ -177,6 +179,8 @@ namespace MilitiaOrganizationSystem
         private void importDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.importFromFolder();
+            listViewBiz.firstPage();
+            updatePageUpDown();
         }
 
         private void exportDirectory_Click(object sender, EventArgs e)

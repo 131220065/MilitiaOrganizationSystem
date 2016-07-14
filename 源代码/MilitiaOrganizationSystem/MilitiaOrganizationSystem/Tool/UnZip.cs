@@ -20,9 +20,8 @@ namespace MilitiaOrganizationSystem
             s.Password = md5.encrypt(psd);
         }
 
-        public List<string> unzipAll()
-        {//返回成功的一级子文件夹的名称，在这个工程里面，实际上就是databases
-            List<string> databases = new List<string>();
+        public void unzipAll()
+        {//解压全部
             ZipEntry theEntry;
             while ((theEntry = s.GetNextEntry()) != null)
             {
@@ -35,14 +34,6 @@ namespace MilitiaOrganizationSystem
                 }
                 else
                 {//是多级文件
-                    if (!databases.Contains(rootDir))
-                    {//加入databases
-                        if(Directory.Exists(path + "\\" + rootDir))
-                        {//还没有包含在databases中，说明第一次访问这个rootDir，但是如果它已经存在，说明产生了冲突
-                            continue;
-                        }
-                        databases.Add(rootDir);
-                    }
                     string dir = path + "\\" + Path.GetDirectoryName(theEntry.Name);
                     if (!Directory.Exists(dir))
                     {
@@ -68,8 +59,6 @@ namespace MilitiaOrganizationSystem
 
                 streamWriter.Close();
             }
-
-            return databases;
         }
 
         public void close()

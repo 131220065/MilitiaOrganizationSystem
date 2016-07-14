@@ -183,5 +183,12 @@ namespace MilitiaOrganizationSystem
             gm.Show();
 
         }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {//刷新分组界面
+            //先获取统计组的数量
+            Dictionary<string, Raven.Abstractions.Data.FacetValue> fDict = sqlBiz.getEnumStatistics(x => x.Id != null, "Group", LoginXmlConfig.Place);
+            xmlGroupBiz.refreshTreeView(fDict);
+        }
     }
 }

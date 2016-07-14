@@ -40,6 +40,7 @@ namespace MilitiaOrganizationSystem
             this.menu = new System.Windows.Forms.ToolStripMenuItem();
             this.view = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.refresh = new System.Windows.Forms.ToolStripMenuItem();
             this.rMenu.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -78,13 +79,14 @@ namespace MilitiaOrganizationSystem
             // view2
             // 
             this.view2.Name = "view2";
-            this.view2.Size = new System.Drawing.Size(172, 22);
+            this.view2.Size = new System.Drawing.Size(100, 22);
             this.view2.Text = "查看";
             // 
             // menu
             // 
             this.menu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.view});
+            this.view,
+            this.refresh});
             this.menu.Name = "menu";
             this.menu.Size = new System.Drawing.Size(44, 21);
             this.menu.Text = "菜单";
@@ -92,7 +94,7 @@ namespace MilitiaOrganizationSystem
             // view
             // 
             this.view.Name = "view";
-            this.view.Size = new System.Drawing.Size(100, 22);
+            this.view.Size = new System.Drawing.Size(152, 22);
             this.view.Text = "查看";
             // 
             // menuStrip
@@ -104,6 +106,13 @@ namespace MilitiaOrganizationSystem
             this.menuStrip.Size = new System.Drawing.Size(816, 25);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "菜单流";
+            // 
+            // refresh
+            // 
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(152, 22);
+            this.refresh.Text = "刷新";
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
             // 
             // XMLGroupTaskForm
             // 
@@ -134,6 +143,7 @@ namespace MilitiaOrganizationSystem
         private ToolStripMenuItem menu;
         private ToolStripMenuItem view;
         private MenuStrip menuStrip;
+        private ToolStripMenuItem refresh;
     }
 
 

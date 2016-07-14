@@ -295,6 +295,10 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-
+        public static void showLatestMilitias()
+        {
+            latestMilitiaForm.Show();
+            latestMilitiaForm.Focus();
+        }
     }
 }

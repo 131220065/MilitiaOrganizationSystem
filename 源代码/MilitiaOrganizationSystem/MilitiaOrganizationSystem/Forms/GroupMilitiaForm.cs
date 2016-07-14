@@ -59,11 +59,11 @@ namespace MilitiaOrganizationSystem
         {
             if(LoginXmlConfig.ClientType == "省军分区")
             {
-                pageUpDown.Visible = false;//隐藏不见
-                labelDi.Visible = false;
-                labelPage.Visible = false;
-                skipPage.Visible = false;
                 skipPage.Enabled = false;
+                skipPage.Visible = false;//隐藏skipPage
+                pageUpDown.Maximum = listViewBiz.page;
+                pageUpDown.Minimum = listViewBiz.page;
+                pageUpDown.Value = listViewBiz.page;
             } else
             {
                 pageUpDown.Maximum = listViewBiz.maxPage;
@@ -97,6 +97,12 @@ namespace MilitiaOrganizationSystem
             updatePageUpDown();
         }
 
+        private void firstPage_Click(object sender, EventArgs e)
+        {
+            listViewBiz.firstPage();
+            updatePageUpDown();
+        }
+
         private void finalPage_Click(object sender, EventArgs e)
         {
             listViewBiz.finalPage();
@@ -114,9 +120,10 @@ namespace MilitiaOrganizationSystem
         }
 
         private void statistics_Click(object sender, EventArgs e)
-        {
+        {//统计界面
             InfoStatisticsForm isf = new InfoStatisticsForm(condition);
             isf.Show();
         }
+
     }
 }

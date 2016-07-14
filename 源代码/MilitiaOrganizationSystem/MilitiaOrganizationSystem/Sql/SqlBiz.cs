@@ -448,13 +448,8 @@ namespace MilitiaOrganizationSystem
         }
 
         /*public Dictionary<string, FacetValue> getGroupNums()
-        {//获取所有数据库中的所有组中民兵的个数
+        {//获取所有数据库中所有组中民兵的个数
             List<string> databases = getDatabases();
-            return getGroupNums(databases);
-        }*/
-
-        /*public Dictionary<string, FacetValue> getGroupNums(List<string> databases)
-        {//获取某些数据库中的所有组中民兵的个数
             List<FacetValue> fList = new List<FacetValue>();
             foreach (string database in databases)
             {

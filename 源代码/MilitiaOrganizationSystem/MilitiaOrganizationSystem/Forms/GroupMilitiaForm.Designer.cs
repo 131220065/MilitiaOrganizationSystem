@@ -44,6 +44,7 @@
             this.statistics = new System.Windows.Forms.ToolStripMenuItem();
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
+            this.firstPage = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -203,11 +204,23 @@
             this.conditionLabel.Text = "未分组";
             this.conditionLabel.Click += new System.EventHandler(this.conditionLabel_Click);
             // 
+            // firstPage
+            // 
+            this.firstPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.firstPage.Location = new System.Drawing.Point(481, 496);
+            this.firstPage.Name = "firstPage";
+            this.firstPage.Size = new System.Drawing.Size(75, 23);
+            this.firstPage.TabIndex = 16;
+            this.firstPage.Text = "首页";
+            this.firstPage.UseVisualStyleBackColor = true;
+            this.firstPage.Click += new System.EventHandler(this.firstPage_Click);
+            // 
             // GroupMilitiaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(895, 520);
+            this.Controls.Add(this.firstPage);
             this.Controls.Add(this.conditionLabel);
             this.Controls.Add(this.finalPage);
             this.Controls.Add(this.skipPage);
@@ -245,5 +258,6 @@
         private System.Windows.Forms.ToolStripMenuItem statistics;
         private System.Windows.Forms.Button finalPage;
         private System.Windows.Forms.Label conditionLabel;
+        private System.Windows.Forms.Button firstPage;
     }
 }

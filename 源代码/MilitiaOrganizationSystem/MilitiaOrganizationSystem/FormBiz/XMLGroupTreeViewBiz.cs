@@ -206,5 +206,40 @@ namespace MilitiaOrganizationSystem
             }
             xmlGroupDao.saveXml();//保存xml文件
         }
+
+        private void refreshTreeNodes(TreeNodeCollection nodes, Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict)
+        {
+            foreach(TreeNode treeNode in nodes)
+            {
+                if(treeNode.Nodes.Count == 0)
+                {//叶节点
+                    GroupTag gt = (GroupTag)treeNode.Tag;
+                    Raven.Abstractions.Data.FacetValue fv;
+                    if(fdict.TryGetValue(treeNode.Name, out fv))
+                    {//字典里面有这个值
+                        int needAddCount = fv.Hits - gt.Count;
+                        if(needAddCount != 0)
+                        {
+                            addCount(treeNode, needAddCount);//增和减是一个道理
+                        }
+                        //为0则啥也不做
+                    } else
+                    {//没有这个值，则为0
+                        if(gt.Count != 0)
+                        {
+                            reduceCount(treeNode, gt.Count);//减为0
+                        }
+                    }
+                } else
+                {//非叶子节点
+                    refreshTreeNodes(treeNode.Nodes, fdict);
+                }
+            }
+        }
+
+        public void refreshTreeView(Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict)
+        {
+            refreshTreeNodes(groups_treeView.Nodes, fdict);
+        }
     }
 }

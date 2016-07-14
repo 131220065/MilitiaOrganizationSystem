@@ -151,7 +151,7 @@ namespace MilitiaOrganizationSystem
 
         private void latestMilitias_Click(object sender, EventArgs e)
         {//最近编辑的民兵
-            FormBizs.latestMilitiaForm.Show();
+            FormBizs.showLatestMilitias();
         }
 
         private void stastistics_Click(object sender, EventArgs e)

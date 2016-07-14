@@ -283,9 +283,9 @@
             this.labelPage.AutoSize = true;
             this.labelPage.Location = new System.Drawing.Point(93, 578);
             this.labelPage.Name = "labelPage";
-            this.labelPage.Size = new System.Drawing.Size(107, 12);
+            this.labelPage.Size = new System.Drawing.Size(143, 12);
             this.labelPage.TabIndex = 10;
-            this.labelPage.Text = "页(‘-’表示倒数)";
+            this.labelPage.Text = "页(‘-k’表示倒数第k页)";
             // 
             // finalPage
             // 
