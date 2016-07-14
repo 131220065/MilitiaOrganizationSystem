@@ -32,11 +32,11 @@ namespace MilitiaOrganizationSystem
 
         }
 
-        public void restart()
+        /*public void restart()
         {
             store.Dispose();
             newStore();
-        }
+        }*/
 
         ~SqlDao()
         {
@@ -211,7 +211,7 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        public List<FacetValue> getGroupNums(string database = null)
+        /*public List<FacetValue> getGroupNums(string database = null)
         {//通过静态索引查询组内民兵个数
             if (database == null)
             {
@@ -230,7 +230,7 @@ namespace MilitiaOrganizationSystem
                 return fList;
             }
 
-        }
+        }*/
 
         public List<FacetValue> getAggregateNums(Expression<Func<Militia, bool>> lambdaContition, string propertyName, string database = null)
         {//统计,默认类的个数不超过5000

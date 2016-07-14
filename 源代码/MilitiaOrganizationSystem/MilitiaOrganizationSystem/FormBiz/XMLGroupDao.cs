@@ -28,7 +28,7 @@ namespace MilitiaOrganizationSystem
             node.Attributes.SetNamedItem(idAttr);//添加id
         }*/
 
-        private void saveXml()
+        public void saveXml()
         {//保存xml文件
             GroupXmlConfig.saveXml();
         }
@@ -54,8 +54,9 @@ namespace MilitiaOrganizationSystem
 
         public void loadToTreeView()
         {
-            Dictionary<string, FacetValue> fDict = sqlBiz.getGroupNums();
-            addXmlNodeToTreeNode(rootNode, groups_TreeView.Nodes, fDict);
+            /*Dictionary<string, FacetValue> fDict = sqlBiz.getGroupNums();
+            addXmlNodeToTreeNode(rootNode, groups_TreeView.Nodes, fDict);*/
+            addXmlNodeToTreeNode(rootNode, groups_TreeView.Nodes);
         }
 
         public void addCountUpToAllParent(TreeNode tn, int Count)
@@ -71,7 +72,49 @@ namespace MilitiaOrganizationSystem
             
         }
 
-        private void addXmlNodeToTreeNode(XmlNode root, TreeNodeCollection rootNodes, Dictionary<string, FacetValue> fDic)
+        private void addXmlNodeToTreeNode(XmlNode root, TreeNodeCollection rootNodes)
+        {//将root下的所有节点加载到treeView中
+            foreach (XmlNode node in root.ChildNodes)
+            {
+
+                TreeNode treeNode = rootNodes.Add(node.Attributes["name"].Value);
+
+                treeNode.ToolTipText = getToolTipText(node);
+
+                treeNode.Name = GroupXmlConfig.getNodePath(node);//查找TreeNode的Key
+
+                GroupTag tag = new GroupTag(node);
+
+                treeNode.Text = tag.info();
+
+                if (!node.HasChildNodes)
+                {//是叶节点,则获取此组下的民兵，并将民兵添加到treeView中
+                    //应该是获取数量，并显示到节点上
+                    try
+                    {
+                        tag.Count = int.Parse(node.Attributes["currentCount"].Value);
+                    } catch
+                    {//no currentCount, create it
+                        XmlAttribute countAttr = xmlDoc.CreateAttribute("currentCount");
+                        countAttr.Value = "0";
+                        node.Attributes.Append(countAttr);
+                        saveXml();
+                    }
+                    if(tag.Count > 0)
+                    {
+                        addCountUpToAllParent(treeNode, tag.Count);//所有父节点加
+                    }
+
+                    treeNode.Text = tag.info();
+                }
+
+                treeNode.Tag = tag;//记录节点
+
+                addXmlNodeToTreeNode(node, treeNode.Nodes);
+            }
+        }
+
+        /*private void addXmlNodeToTreeNode(XmlNode root, TreeNodeCollection rootNodes, Dictionary<string, FacetValue> fDic)
         {//将root下的所有节点加载到treeView中
             foreach (XmlNode node in root.ChildNodes)
             {
@@ -103,7 +146,7 @@ namespace MilitiaOrganizationSystem
 
                 addXmlNodeToTreeNode(node, treeNode.Nodes, fDic);
             }
-        }
+        }*/
 
         public void modifyGroupName(XmlNode node, string newName)
         {//编辑组名

@@ -433,8 +433,7 @@ namespace MilitiaOrganizationSystem
             ConflictDetector cd = new ConflictDetector();
                 
             List<string> databases = getDatabases();//所有数据库
-
-            int i = 0;
+            
             foreach(string database in databases)
             {
                 List<string> cList = cnDao.getCredinumbersOfDatabase(database);
@@ -448,13 +447,13 @@ namespace MilitiaOrganizationSystem
             return cd.conflictDict;
         }
 
-        public Dictionary<string, FacetValue> getGroupNums()
+        /*public Dictionary<string, FacetValue> getGroupNums()
         {//获取所有数据库中的所有组中民兵的个数
             List<string> databases = getDatabases();
             return getGroupNums(databases);
-        }
+        }*/
 
-        public Dictionary<string, FacetValue> getGroupNums(List<string> databases)
+        /*public Dictionary<string, FacetValue> getGroupNums(List<string> databases)
         {//获取某些数据库中的所有组中民兵的个数
             List<FacetValue> fList = new List<FacetValue>();
             foreach (string database in databases)
@@ -472,12 +471,13 @@ namespace MilitiaOrganizationSystem
                 });
             }
             return fDict;
-        }
+        }*/
 
         public Dictionary<string, FacetValue> getEnumStatistics(System.Linq.Expressions.Expression<Func<Militia, bool>> lambdaContition, string propertyName, string Place = null)
         {//根据某个属性，统计各属性值的民兵个数
             List<FacetValue> fList = new List<FacetValue>();
             List<string> databases = getDatabasesByPlace(Place);
+            
             foreach(string database in databases)
             {
                 fList.AddRange(sqlDao.getAggregateNums(lambdaContition, propertyName, database));

@@ -198,10 +198,17 @@ namespace MilitiaOrganizationSystem
         {//减少民兵的分组上面的民兵个数
             TreeNode groupNode = getTreeNodeByText(militia.Group);
             reduceCount(groupNode, 1);
+
+            //xml
+            GroupTag gt = (GroupTag)groupNode.Tag;
+            gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+            xmlGroupDao.saveXml();
         }
 
         public void addCount(TreeNode node, int Count)
         {
+            TreeNode startNode = node;//xml
+
             while(node != null)
             {
                 GroupTag tag = (GroupTag)node.Tag;
@@ -210,6 +217,11 @@ namespace MilitiaOrganizationSystem
 
                 node = node.Parent;
             }
+
+            //xml
+            GroupTag gt = (GroupTag)startNode.Tag;
+            gt.tagXmlNode.Attributes["currentCount"].Value = gt.Count.ToString();
+            xmlGroupDao.saveXml();
         }
 
         public void reduceCount(TreeNode node, int Count)
