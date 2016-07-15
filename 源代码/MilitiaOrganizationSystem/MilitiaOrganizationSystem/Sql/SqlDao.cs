@@ -29,7 +29,6 @@ namespace MilitiaOrganizationSystem
             this.dbName = db;
 
             newStore();
-
         }
 
         /*public void restart()

@@ -203,7 +203,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(664, 292);
+            this.ClientSize = new System.Drawing.Size(664, 286);
             this.Controls.Add(this.categoryNum);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.sumLabel);

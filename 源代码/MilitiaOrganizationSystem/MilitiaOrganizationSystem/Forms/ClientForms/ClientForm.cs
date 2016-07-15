@@ -7,14 +7,14 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public abstract class ClientForm : BasicForm
+    public class ClientForm : BasicForm
     {
 
         public ClientForm()
         {
             InitializeComponent();
             FormClosing += ClientForm_FormClosing;
-            AnimateWindow(this.Handle, 300, AW_CENTER);
+            //AnimateWindow(this.Handle, 300, AW_CENTER);
         }
 
         private void ClientForm_FormClosing(object sender, FormClosingEventArgs e)

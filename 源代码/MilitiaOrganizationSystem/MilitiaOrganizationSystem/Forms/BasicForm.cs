@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace MilitiaOrganizationSystem
 {
-    public abstract class BasicForm : Office2007Form
+    public class BasicForm : Office2007Form
     {
         [DllImport("user32.dll", EntryPoint = "AnimateWindow")]
         protected static extern bool AnimateWindow(IntPtr handle, int ms, int flags);

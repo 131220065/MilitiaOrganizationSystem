@@ -129,11 +129,20 @@ namespace MilitiaOrganizationSystem
                             "Sex",
                             condition.place);
                     //先统计Sex，因为值比较少
-                    Raven.Abstractions.Data.FacetValue totalFv = fdict.Values.Aggregate(delegate (Raven.Abstractions.Data.FacetValue fv1, Raven.Abstractions.Data.FacetValue fv2)
+                    Raven.Abstractions.Data.FacetValue totalFv;
+                    try
                     {
-                        fv1.Hits += fv2.Hits;
-                        return fv1;
-                    });
+                        totalFv = fdict.Values.Aggregate(delegate (Raven.Abstractions.Data.FacetValue fv1, Raven.Abstractions.Data.FacetValue fv2)
+                        {
+                            fv1.Hits += fv2.Hits;
+                            return fv1;
+                        });
+                    } catch
+                    {
+                        totalFv = new Raven.Abstractions.Data.FacetValue();
+                        totalFv.Hits = 0;
+                    }
+                    
                     sum = totalFv.Hits;
                     sumLabel.Text = sum + "人";
                     statisticsListBox.Items.Add("总数: " + sum + "人");

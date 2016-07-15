@@ -246,7 +246,7 @@ namespace MilitiaOrganizationSystem
             if (lvi != null)
             {
                 lvi.Tag = militia;
-                if(condition.lambdaCondition.Compile()(militia))
+                if(militia.isSatisfy(condition))
                 {//如果满足当前的条件，才更新显示
                     updateItem(lvi);
                 } else
@@ -546,7 +546,7 @@ namespace MilitiaOrganizationSystem
                     {
                         militia.Group = "未分组";
                         sqlBiz.addMilitia(militia);
-                        if (condition.lambdaCondition.Compile()(militia))
+                        if (militia.isSatisfy(condition))
                         {//如果满足条件，就添加到显示
                             this.addOneMilitia(militia);
                         }
@@ -563,12 +563,12 @@ namespace MilitiaOrganizationSystem
                 {
                     lvi.Tag = militia;
                     this.updateItem(lvi);
-                    if (!condition.lambdaCondition.Compile()(militia))
+                    if (!militia.isSatisfy(condition))
                     {//不满足筛选条件，则不能显示在这个界面
                         lvi.Remove();
                     }
                 }
-                else if (condition.lambdaCondition.Compile()(militia))
+                else if (militia.isSatisfy(condition))
                 {//满足筛选条件，就添加显示
                     this.addOneMilitia(militia);
                 }
@@ -600,7 +600,7 @@ namespace MilitiaOrganizationSystem
                     {
                         Militia militia = (Militia)lvi.Tag;
                         //if militia 不符合筛选条件，则删掉这个item
-                        if (!condition.lambdaCondition.Compile()(militia))
+                        if (!militia.isSatisfy(condition))
                         {
                             lvi.Remove();
                         }

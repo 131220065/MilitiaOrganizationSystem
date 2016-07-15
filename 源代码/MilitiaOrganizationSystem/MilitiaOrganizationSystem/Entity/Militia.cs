@@ -66,5 +66,14 @@ namespace MilitiaOrganizationSystem
                 return false;
             }
         }
+
+        public bool isSatisfy(Condition condition)
+        {//判断民兵是否满足condition条件
+            if(!Place.StartsWith(condition.place))
+            {
+                return false;
+            }
+            return condition.lambdaCondition.Compile()(this);
+        }
     }
 }

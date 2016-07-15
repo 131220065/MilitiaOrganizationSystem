@@ -96,7 +96,6 @@
             this.Controls.Add(this.methodLabel);
             this.Controls.Add(this.propertyNameLabel);
             this.Name = "ChildConditionForm_enum";
-            this.Text = "ChildConditionForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 
