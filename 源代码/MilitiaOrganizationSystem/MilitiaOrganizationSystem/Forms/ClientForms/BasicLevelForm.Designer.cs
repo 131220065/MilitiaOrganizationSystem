@@ -48,7 +48,6 @@
             this.stastistics = new System.Windows.Forms.ToolStripMenuItem();
             this.doConflict = new System.Windows.Forms.ToolStripMenuItem();
             this.export = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCondition = new System.Windows.Forms.Label();
             this.nextPage = new System.Windows.Forms.Button();
             this.currentPage = new System.Windows.Forms.Button();
@@ -59,7 +58,7 @@
             this.skipPage = new System.Windows.Forms.Button();
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.firstPage = new System.Windows.Forms.Button();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).BeginInit();
@@ -128,8 +127,7 @@
             this.latestMilitias,
             this.stastistics,
             this.doConflict,
-            this.export,
-            this.exportToDirectory});
+            this.export});
             this.menu_basicLevel.Location = new System.Drawing.Point(0, 0);
             this.menu_basicLevel.Name = "menu_basicLevel";
             this.menu_basicLevel.Size = new System.Drawing.Size(850, 25);
@@ -172,14 +170,14 @@
             // 
             this.importFromXml.Name = "importFromXml";
             this.importFromXml.Size = new System.Drawing.Size(188, 22);
-            this.importFromXml.Text = "随机生成5000个民兵";
+            this.importFromXml.Text = "随机生成1000个民兵";
             this.importFromXml.Click += new System.EventHandler(this.importFromXml_Click);
             // 
             // btn_importXMLGroupTask
             // 
             this.btn_importXMLGroupTask.Name = "btn_importXMLGroupTask";
-            this.btn_importXMLGroupTask.Size = new System.Drawing.Size(112, 21);
-            this.btn_importXMLGroupTask.Text = "导入xml分组任务";
+            this.btn_importXMLGroupTask.Size = new System.Drawing.Size(92, 21);
+            this.btn_importXMLGroupTask.Text = "导入分组任务";
             this.btn_importXMLGroupTask.Click += new System.EventHandler(this.importXMLGroupTask_Click);
             // 
             // options
@@ -213,16 +211,9 @@
             // export
             // 
             this.export.Name = "export";
-            this.export.Size = new System.Drawing.Size(80, 21);
-            this.export.Text = "导出为文件";
+            this.export.Size = new System.Drawing.Size(68, 21);
+            this.export.Text = "导出数据";
             this.export.Click += new System.EventHandler(this.export_Click);
-            // 
-            // exportToDirectory
-            // 
-            this.exportToDirectory.Name = "exportToDirectory";
-            this.exportToDirectory.Size = new System.Drawing.Size(92, 21);
-            this.exportToDirectory.Text = "导出为文件夹";
-            this.exportToDirectory.Click += new System.EventHandler(this.exportToDirectory_Click);
             // 
             // labelCondition
             // 
@@ -339,16 +330,16 @@
             this.conditionLabel.Text = "未分组";
             this.conditionLabel.Click += new System.EventHandler(this.conditionLabel_Click);
             // 
-            // button1
+            // firstPage
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(442, 573);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "首页";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.firstPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.firstPage.Location = new System.Drawing.Point(442, 573);
+            this.firstPage.Name = "firstPage";
+            this.firstPage.Size = new System.Drawing.Size(75, 23);
+            this.firstPage.TabIndex = 14;
+            this.firstPage.Text = "首页";
+            this.firstPage.UseVisualStyleBackColor = true;
+            this.firstPage.Click += new System.EventHandler(this.firstPage_Click);
             // 
             // BasicLevelForm
             // 
@@ -356,7 +347,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 596);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.firstPage);
             this.Controls.Add(this.conditionLabel);
             this.Controls.Add(this.finalPage);
             this.Controls.Add(this.skipPage);
@@ -411,8 +402,7 @@
         private System.Windows.Forms.ToolStripMenuItem doConflict;
         private System.Windows.Forms.ToolStripMenuItem latestMilitias;
         private System.Windows.Forms.ToolStripMenuItem stastistics;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripMenuItem exportToDirectory;
+        private System.Windows.Forms.Button firstPage;
     }
 }
 

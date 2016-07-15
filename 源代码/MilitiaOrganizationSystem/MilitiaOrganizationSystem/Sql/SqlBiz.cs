@@ -188,7 +188,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public List<Militia> firstPage(Expression<Func<Militia, bool>> lambdaContition, string Place, int pageSize, out string firstDatabase, out int skip)
-        {
+        {//第一页
             List<string> databases = getDatabasesByPlace(Place);
 
             return currentPage(lambdaContition, Place, databases[0], 0, pageSize, out firstDatabase, out skip);
@@ -491,8 +491,8 @@ namespace MilitiaOrganizationSystem
         }
 
         public void gennerateAllJiangsuDatabasesAndinsert5000each()
-        {//生成所有江苏省的区县数据库，并每个插入5000个民兵
-            List<string> databases = PlaceXmlConfig.getJiangsuPCDID();
+        {//生成本市的区县数据库，并每个插入5000个民兵
+            List<string> databases = PlaceXmlConfig.getPCDIDOfCity(LoginXmlConfig.Place);
             foreach (string database in databases)
             {
                 if(Directory.Exists(DataDir + "\\" + database))

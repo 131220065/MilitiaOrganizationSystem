@@ -137,7 +137,21 @@ namespace MilitiaOrganizationSystem
                 {
                     zipFile += LoginXmlConfig.Id;
                 }
-                zipFile += "）.zip";
+                switch(LoginXmlConfig.ClientType)
+                {
+                    case "基层":
+                        zipFile += "）.basicdump";
+                        break;
+                    case "区县人武部":
+                        zipFile += ").districtdump";
+                        break;
+                    case "市军分区":
+                        zipFile += ").citydump";
+                        break;
+                    default:
+                        MessageBox.Show("ClientType error");
+                        break;
+                }
 
                 exportAsZipFile(zipFile);
 
@@ -159,6 +173,14 @@ namespace MilitiaOrganizationSystem
             {//其他导入数据库
                 List<string> currentDatabases = sqlBiz.getDatabases();
                 string[] databaseFolders = Directory.GetDirectories(folder);
+                foreach(string databaseFolder in databaseFolders)
+                {
+                    if (!Path.GetFileName(databaseFolder).StartsWith(LoginXmlConfig.Place))
+                    {//说明导入的数据库不属于本客户端管理
+                        MessageBox.Show("本客户端无权导入此数据库！");
+                        return false;
+                    }
+                }
                 foreach (string databaseFolder in databaseFolders)
                 {
                     if (currentDatabases.Contains(Path.GetFileName(databaseFolder)))
@@ -221,7 +243,22 @@ namespace MilitiaOrganizationSystem
         {//选择多个文件并导入
             OpenFileDialog ofdlg = new OpenFileDialog();
             ofdlg.Multiselect = true;//支持多选
-            ofdlg.Filter = "民兵编组系统导出文件(*.dump)|*.*";
+            switch(LoginXmlConfig.ClientType)
+            {
+                case "区县人武部":
+                    ofdlg.Filter = "民兵编组系统导出文件(*.basicdump)|*.basicdump";//导入基层
+                    break;
+                case "市军分区":
+                    ofdlg.Filter = "民兵编组系统导出文件(*.districtdump)|*.districtdump";//导入区县
+                    break;
+                case "省军分区":
+                    ofdlg.Filter = "民兵编组系统导出文件(*.citydump)|*.citydump";
+                    break;
+                default:
+                    MessageBox.Show("ClientType error");
+                    break;
+            }
+            
             if (ofdlg.ShowDialog() == DialogResult.OK)
             {
                 string[] files = ofdlg.FileNames;

@@ -30,6 +30,7 @@ namespace MilitiaOrganizationSystem
         public ProvinceForm()
         {//构造函数
             InitializeComponent();
+            this.Text += "-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place);//设置显示的名称
             xmlGroupTaskForm = null;
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();
@@ -85,12 +86,6 @@ namespace MilitiaOrganizationSystem
         private void rDele_Click(object sender, EventArgs e)
         {
             listViewBiz.deleSelectedItems();
-        }
-
-        private void importFromXml_Click(object sender, EventArgs e)
-        {//测试所用，实际上是加载主数据库所有的民兵
-            sqlBiz.addMilitias(MilitiaXmlConfig.generateMilitias(5000));
-            MessageBox.Show("生成5000个民兵成功");
         }
 
         private void export_Click(object sender, EventArgs e)
@@ -162,7 +157,7 @@ namespace MilitiaOrganizationSystem
             isf.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void firstPage_Click(object sender, EventArgs e)
         {
             listViewBiz.firstPage();
             updatePageUpDown();

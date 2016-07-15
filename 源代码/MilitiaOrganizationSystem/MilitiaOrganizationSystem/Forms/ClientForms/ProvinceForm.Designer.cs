@@ -41,14 +41,12 @@
             this.add = new System.Windows.Forms.ToolStripMenuItem();
             this.modify = new System.Windows.Forms.ToolStripMenuItem();
             this.dele = new System.Windows.Forms.ToolStripMenuItem();
-            this.importFromXml = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_importXMLGroupTask = new System.Windows.Forms.ToolStripMenuItem();
             this.options = new System.Windows.Forms.ToolStripMenuItem();
             this.doConflict = new System.Windows.Forms.ToolStripMenuItem();
             this.latestMilitias = new System.Windows.Forms.ToolStripMenuItem();
             this.stastistics = new System.Windows.Forms.ToolStripMenuItem();
             this.import = new System.Windows.Forms.ToolStripMenuItem();
-            this.importDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCondition = new System.Windows.Forms.Label();
             this.nextPage = new System.Windows.Forms.Button();
             this.currentPage = new System.Windows.Forms.Button();
@@ -57,7 +55,7 @@
             this.labelPage = new System.Windows.Forms.Label();
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.firstPage = new System.Windows.Forms.Button();
             this.pageLabel = new System.Windows.Forms.Label();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
@@ -126,8 +124,7 @@
             this.doConflict,
             this.latestMilitias,
             this.stastistics,
-            this.import,
-            this.importDirectory});
+            this.import});
             this.menu_basicLevel.Location = new System.Drawing.Point(0, 0);
             this.menu_basicLevel.Name = "menu_basicLevel";
             this.menu_basicLevel.Size = new System.Drawing.Size(850, 25);
@@ -139,8 +136,7 @@
             this.btn_militaInfomation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.add,
             this.modify,
-            this.dele,
-            this.importFromXml});
+            this.dele});
             this.btn_militaInfomation.Name = "btn_militaInfomation";
             this.btn_militaInfomation.Size = new System.Drawing.Size(68, 21);
             this.btn_militaInfomation.Text = "民兵信息";
@@ -148,36 +144,29 @@
             // add
             // 
             this.add.Name = "add";
-            this.add.Size = new System.Drawing.Size(168, 22);
+            this.add.Size = new System.Drawing.Size(152, 22);
             this.add.Text = "添加";
             this.add.Click += new System.EventHandler(this.add_Click);
             // 
             // modify
             // 
             this.modify.Name = "modify";
-            this.modify.Size = new System.Drawing.Size(168, 22);
+            this.modify.Size = new System.Drawing.Size(152, 22);
             this.modify.Text = "编辑";
             this.modify.Click += new System.EventHandler(this.modify_Click);
             // 
             // dele
             // 
             this.dele.Name = "dele";
-            this.dele.Size = new System.Drawing.Size(168, 22);
+            this.dele.Size = new System.Drawing.Size(152, 22);
             this.dele.Text = "删除";
             this.dele.Click += new System.EventHandler(this.dele_Click);
-            // 
-            // importFromXml
-            // 
-            this.importFromXml.Name = "importFromXml";
-            this.importFromXml.Size = new System.Drawing.Size(168, 22);
-            this.importFromXml.Text = "从xml文件中导入";
-            this.importFromXml.Click += new System.EventHandler(this.importFromXml_Click);
             // 
             // btn_importXMLGroupTask
             // 
             this.btn_importXMLGroupTask.Name = "btn_importXMLGroupTask";
-            this.btn_importXMLGroupTask.Size = new System.Drawing.Size(112, 21);
-            this.btn_importXMLGroupTask.Text = "导入xml分组任务";
+            this.btn_importXMLGroupTask.Size = new System.Drawing.Size(92, 21);
+            this.btn_importXMLGroupTask.Text = "导入分组任务";
             this.btn_importXMLGroupTask.Click += new System.EventHandler(this.importXMLGroupTask_Click);
             // 
             // options
@@ -212,15 +201,8 @@
             // 
             this.import.Name = "import";
             this.import.Size = new System.Drawing.Size(68, 21);
-            this.import.Text = "导入文件";
+            this.import.Text = "导入数据";
             this.import.Click += new System.EventHandler(this.import_Click);
-            // 
-            // importDirectory
-            // 
-            this.importDirectory.Name = "importDirectory";
-            this.importDirectory.Size = new System.Drawing.Size(80, 21);
-            this.importDirectory.Text = "导入文件夹";
-            this.importDirectory.Click += new System.EventHandler(this.importDirectory_Click);
             // 
             // labelCondition
             // 
@@ -308,16 +290,16 @@
             this.conditionLabel.Text = "未分组";
             this.conditionLabel.Click += new System.EventHandler(this.conditionLabel_Click);
             // 
-            // button1
+            // firstPage
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(442, 574);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 22);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "首页";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.firstPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.firstPage.Location = new System.Drawing.Point(442, 574);
+            this.firstPage.Name = "firstPage";
+            this.firstPage.Size = new System.Drawing.Size(75, 22);
+            this.firstPage.TabIndex = 17;
+            this.firstPage.Text = "首页";
+            this.firstPage.UseVisualStyleBackColor = true;
+            this.firstPage.Click += new System.EventHandler(this.firstPage_Click);
             // 
             // pageLabel
             // 
@@ -336,7 +318,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(850, 596);
             this.Controls.Add(this.pageLabel);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.firstPage);
             this.Controls.Add(this.conditionLabel);
             this.Controls.Add(this.finalPage);
             this.Controls.Add(this.labelPage);
@@ -367,7 +349,6 @@
         private System.Windows.Forms.ToolStripMenuItem add;
         private System.Windows.Forms.ToolStripMenuItem modify;
         private System.Windows.Forms.ToolStripMenuItem dele;
-        private System.Windows.Forms.ToolStripMenuItem importFromXml;
         private System.Windows.Forms.Label labelCondition;
         private System.Windows.Forms.ContextMenuStrip rMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem rAdd;
@@ -386,8 +367,7 @@
         private System.Windows.Forms.ToolStripMenuItem doConflict;
         private System.Windows.Forms.ToolStripMenuItem latestMilitias;
         private System.Windows.Forms.ToolStripMenuItem stastistics;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripMenuItem importDirectory;
+        private System.Windows.Forms.Button firstPage;
         private System.Windows.Forms.Label pageLabel;
     }
 }

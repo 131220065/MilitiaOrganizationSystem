@@ -44,7 +44,7 @@ namespace MilitiaOrganizationSystem
                 if (progressBar1.Value + nValue < progressBar1.Maximum)
                 {
                     progressBar1.Value += nValue;
-                    this.textBox1.AppendText(nInfo);
+                    this.textBox1.AppendText(nInfo + "\n");
                     this.label1.Text = "已完成 " + progressBar1.Value + " / " + progressBar1.Maximum;
                     Application.DoEvents();
                     progressBar1.Update();

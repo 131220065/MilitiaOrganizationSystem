@@ -37,7 +37,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private List<List<Militia>> getConflictMilitias(int skip, int take)
-        {
+        {//分页获取冲突民兵
             List<List<Militia>> mlList = new List<List<Militia>>();
             if(skip >= conflictList.Count)
             {
@@ -59,13 +59,13 @@ namespace MilitiaOrganizationSystem
         private void loadMilitiaList(List<List<Militia>> mlList)
         {//加载冲突民兵组
 
-            count += mlList.Count;//count记录总数
+            count += mlList.Count;//count记录处理过的民兵组总数
 
             conflictGroup_ListView.Items.Clear();
 
             foreach (List<Militia> mList in mlList)
             {
-                ListViewGroup lvg = conflictGroup_ListView.Groups.Add(mList[0].CredentialNumber, mList[0].CredentialNumber);
+                ListViewGroup lvg = conflictGroup_ListView.Groups.Add(mList[0].CredentialNumber, "身份证号：" + mList[0].CredentialNumber);
                 foreach (Militia m in mList)
                 {
                     ListViewItem lvi = new ListViewItem(lvg);

@@ -27,6 +27,7 @@ namespace MilitiaOrganizationSystem
         public BasicLevelForm()
         {//构造函数
             InitializeComponent();
+            this.Text += "-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place);//设置显示的名称
             xmlGroupTaskForm = null;
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();
@@ -87,8 +88,8 @@ namespace MilitiaOrganizationSystem
 
         private void importFromXml_Click(object sender, EventArgs e)
         {//测试所用
-            sqlBiz.addMilitias(MilitiaXmlConfig.generateMilitias(5000));
-            MessageBox.Show("生成5000个民兵成功");
+            sqlBiz.addMilitias(MilitiaXmlConfig.generateMilitias(1000));
+            MessageBox.Show("生成1000个民兵成功");
         }
 
         private void export_Click(object sender, EventArgs e)
@@ -160,7 +161,7 @@ namespace MilitiaOrganizationSystem
             isf.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void firstPage_Click(object sender, EventArgs e)
         {//第一页
             listViewBiz.firstPage();
             updatePageUpDown();

@@ -30,6 +30,7 @@ namespace MilitiaOrganizationSystem
         public CityForm()
         {//构造函数
             InitializeComponent();
+            this.Text += "-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place);//设置显示的名称
             xmlGroupTaskForm = null;
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();
@@ -170,7 +171,7 @@ namespace MilitiaOrganizationSystem
             isf.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void firstPage_Click(object sender, EventArgs e)
         {
             listViewBiz.firstPage();
             updatePageUpDown();

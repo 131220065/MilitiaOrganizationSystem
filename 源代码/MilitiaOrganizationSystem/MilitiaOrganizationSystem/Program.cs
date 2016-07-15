@@ -27,6 +27,7 @@ namespace MilitiaOrganizationSystem
                 {
                     return;
                 }
+                MessageBox.Show("设置成功");
             } else
             {//登录输入口令
                 LoginForm lf = new LoginForm();
