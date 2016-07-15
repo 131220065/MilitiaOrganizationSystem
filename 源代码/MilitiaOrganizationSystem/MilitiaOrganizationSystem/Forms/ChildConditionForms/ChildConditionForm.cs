@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class ChildConditionForm : Form
+    public partial class ChildConditionForm : BasicForm
     {//子条件界面，其他子条件界面继承于它，主要是为了重写关闭的逻辑
         protected bool closeForm;
 

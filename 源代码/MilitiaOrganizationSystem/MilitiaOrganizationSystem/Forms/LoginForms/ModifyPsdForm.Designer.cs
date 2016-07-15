@@ -127,7 +127,9 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btn_ok);
+            this.DoubleBuffered = true;
             this.Name = "ModifyPsdForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "欢迎使用民兵编组系统";
             this.ResumeLayout(false);
             this.PerformLayout();

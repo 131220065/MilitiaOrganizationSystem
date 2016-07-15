@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class LatestMilitiaForm : Form
+    public partial class LatestMilitiaForm : BasicForm
     {//最新操作的民兵界面
         private XmlNodeList parameters = MilitiaXmlConfig.parameters;
         private List<int> displayedParameterIndexs = MilitiaXmlConfig.getAllDisplayedParameterIndexs();

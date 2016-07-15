@@ -15,7 +15,7 @@ using System.Net;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class ModifyPsdForm : Form
+    public partial class ModifyPsdForm : BasicForm
     {
         private bool closeForm;
         

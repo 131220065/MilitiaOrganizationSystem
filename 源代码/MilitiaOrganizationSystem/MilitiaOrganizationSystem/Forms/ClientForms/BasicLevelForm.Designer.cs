@@ -361,7 +361,7 @@
             this.Controls.Add(this.militia_ListView);
             this.Controls.Add(this.menu_basicLevel);
             this.Name = "BasicLevelForm";
-            this.Text = "基层主页";
+            //this.Text = "基层主页";
             this.Load += new System.EventHandler(this.BasicLevelForm_Load);
             this.rMenuStrip.ResumeLayout(false);
             this.menu_basicLevel.ResumeLayout(false);

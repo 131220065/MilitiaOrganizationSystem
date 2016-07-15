@@ -171,8 +171,10 @@
             this.Controls.Add(this.pageSize);
             this.Controls.Add(this.parasCheckBox);
             this.Controls.Add(this.pagesizeLabel);
+            this.DoubleBuffered = true;
             this.KeyPreview = true;
             this.Name = "OptionForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "设置";
             ((System.ComponentModel.ISupportInitialize)(this.pageSize)).EndInit();
             this.ResumeLayout(false);

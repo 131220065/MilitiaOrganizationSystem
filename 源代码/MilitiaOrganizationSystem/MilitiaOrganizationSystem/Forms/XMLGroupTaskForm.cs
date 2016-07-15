@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class XMLGroupTaskForm : Form
+    public partial class XMLGroupTaskForm : BasicForm
     {//分组界面
         private XMLGroupTreeViewBiz xmlGroupBiz;
         private SqlBiz sqlBiz;

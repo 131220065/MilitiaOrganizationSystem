@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class GroupMilitiaForm : Form
+    public partial class GroupMilitiaForm : BasicForm
     {//查看分组弹出的界面
         private SqlBiz sqlBiz;
         private Condition condition;//筛选条件

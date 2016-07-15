@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class ConditionForm : Form
+    public partial class ConditionForm : BasicForm
     {
         private System.Xml.XmlNodeList parameters = MilitiaXmlConfig.parameters;
 

@@ -221,7 +221,9 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
+            this.DoubleBuffered = true;
             this.Name = "InfoStatisticsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "统计";
             this.ResumeLayout(false);
             this.PerformLayout();

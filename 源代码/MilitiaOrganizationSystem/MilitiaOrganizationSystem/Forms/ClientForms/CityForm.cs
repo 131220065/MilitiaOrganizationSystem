@@ -30,6 +30,7 @@ namespace MilitiaOrganizationSystem
         public CityForm()
         {//构造函数
             InitializeComponent();
+            this.Text = LoginXmlConfig.ClientType + "主页-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place);
             xmlGroupTaskForm = null;
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();

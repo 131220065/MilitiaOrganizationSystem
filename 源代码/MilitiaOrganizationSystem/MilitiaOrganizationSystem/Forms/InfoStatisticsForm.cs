@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class InfoStatisticsForm : Form
+    public partial class InfoStatisticsForm : BasicForm
     {//统计界面
         private System.Xml.XmlNodeList parameters = MilitiaXmlConfig.parameters;
         private XmlNode statisticsParameter = null;

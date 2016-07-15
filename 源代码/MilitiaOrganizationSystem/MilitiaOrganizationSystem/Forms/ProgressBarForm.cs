@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class ProgressBarForm : Form
+    public partial class ProgressBarForm : BasicForm
     {//进度条界面
         private bool closeForm;//指示窗口是否可以关闭
 

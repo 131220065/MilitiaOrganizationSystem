@@ -140,7 +140,9 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.labelPropertyName);
             this.Controls.Add(this.pCombobox);
+            this.DoubleBuffered = true;
             this.Name = "PlaceChooseForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "选择地区";
             this.ResumeLayout(false);
             this.PerformLayout();

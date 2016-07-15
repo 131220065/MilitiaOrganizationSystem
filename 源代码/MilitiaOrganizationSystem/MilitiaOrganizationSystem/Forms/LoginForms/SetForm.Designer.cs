@@ -252,7 +252,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
             this.Name = "SetForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "欢迎使用民兵编组系统";
             this.ResumeLayout(false);
             this.PerformLayout();

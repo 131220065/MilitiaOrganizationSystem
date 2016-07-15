@@ -68,7 +68,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.progressBar1);
+            this.DoubleBuffered = true;
             this.Name = "ProgressBarForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "当前执行进度";
             this.ResumeLayout(false);
             this.PerformLayout();

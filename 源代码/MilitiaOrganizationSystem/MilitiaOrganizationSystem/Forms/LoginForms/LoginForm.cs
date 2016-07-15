@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : BasicForm
     {
         private bool closeForm;
         public LoginForm()

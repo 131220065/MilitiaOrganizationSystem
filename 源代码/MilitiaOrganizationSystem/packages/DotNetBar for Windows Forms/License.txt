@@ -1,0 +1,42 @@
+This license agreement covers all existing versions of DotNetBar Component.
+
+DevComponents.com reserves all rights not expressly granted here.
+
+IF YOU PURCHASE THE SOURCE CODE THE SALE IS FINAL. A SOURCE CODE LICENSE INCLUDES 1 (ONE) DOTNETBAR DESIGN-TIME LICENSE.
+
+You will need one license of DotNetBar for each developer on your project. DotNetBar is run-time royalty free. Site license provides design-time license for all developers employed by the company within 5 miles radius of one department/address within company or for up to 20 developers employed by the company at separate geographic locations. Enterprise world-wide license provides design-time license for all developers employed by the company world-wide.
+
+Microsoft Office 2007 adds new User Interface capabilities for organizing and navigating applications. DotNetBar installs these UI capabilities as part of its component suite. The Office 2007 User Interface capabilities include:
+
+- The Ribbon 
+- Application Menu 
+- Contextual Tabs 
+- Keytips 
+- Galleries
+
+When using the Microsoft Office 2007 UI capabilities provided as part of DotNetBar Suite for Windows Forms, be aware that the DotNetBar Suite license grants you no rights to the Microsoft office 2007 UI. For more information and to obtain such license visit http://msdn.microsoft.com/officeui
+
+The product in this package (libraries and object code) is proprietary to DevComponents.com and is protected by Federal Copyright Law. DevComponents.com retains the title to and ownership of the Product. You are licensed to use this Product on the following terms and conditions:
+LICENSE - The licensee is defined as a single company site/office utilizing the Product. This license is not for an entire company but for a single physical site/office within the company. DevComponents.com hereby grants the licensee a nonexclusive license authorizing the licensee to use the enclosed Product on any computer at single company site for development purposes. Please contact DevComponents.com if you require additional licenses. You may incorporate the sample code into your applications. Use of this product by anyone other than the licensee terminates, without notification, this license and the right to use this product.
+
+If source code is purchased YOU MAY NOT distribute or sell the source code, repacked, recompiled, renamed or compiled except as expressly permitted in this License, see Restrictions. You also agree that you will not compete against DevComponents.com by repackaging, recompiling, compiling or renaming the product you purchased source code for. If you purchased the source code and you make your own builds you must change the assembly file name. All other restrictions still apply.
+
+YOU MAY NOT: Distribute, rent, sub-license or otherwise make available to others the software or documentation or copies thereof, except as expressly permitted in this License without prior written consent from DevComponents.com.  In the case of an authorized transfer, the transferee must agree to be bound by the terms and conditions of this License Agreement.
+
+RESTRICTIONS: - You may use this Product in your business application for sale or distribution as long as: 
+The product that you produce and/or distribute is NOT a product that is similar or only extends DotNetBar Component functionality in any way. Please contact DevComponents.com for special commercial licensing provisions in these circumstances. The software serial number and user must be registered with DevComponents.com in order to receive support or distribution rights. You may not remove any proprietary notices, labels, and trademarks on the software or documentation. DotNetBar may not be distributed for any other purpose than to accompany software that you have developed using DotNetBar.
+
+You may not modify, decompile, disassemble, reverse engineer or translate the software.
+
+FILES THAT MAY BE DISTRIBUTED WITH YOUR APPLICATION: DEVCOMPONENTS.DOTNETBAR.DLL, DEVCOMPONENTS.DOTNETBAR2.DLL, DEVCOMPONENTS.INSTRUMENTATION.DLL, DEVCOMPONENTS.DOTNETBAR.SCHEDULE.DLL, DEVCOMPONENTS.DOTNETBAR.KEYBOARD.DLL, DevComponents.TreeGX.dll, DevComponents.DotNetBar.SuperGrid.dll
+
+US GOVERNMENT RESTRICTED RIGHTS - Use, duplication or disclosure by the United States Government is subject to restrictions as set forth under DFARS 252.227-7013 or in FARS 52.227-19 Commercial Computer Software - Restricted Rights.
+TERM - You may terminate your License and this Agreement at anytime by destroying all copies of the Product and Product Documentation.  They will also terminate automatically if you fail to comply with any term or condition in this Agreement.
+
+LIMITED WARRANTY - THIS SOFTWARE AND DOCUMENTATION ARE SOLD "AS IS" WITHOUT ANY WARRANTY AS TO THEIR PERFORMANCE, MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE.  THE LICENSEE ASSUMES THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE. YOU USE "DOTNETBAR" AT YOUR OWN RISK. THE AUTHOR WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR MISUSING THIS SOFTWARE. DEVCOMPONENTS.COM WARRANTS THAT THE DISKETTES ON WHICH THE PROGRAM IS FURNISHED WILL BE FREE FROM ANY DEFECTS IN MATERIALS.  EXCLUSIVE REMEDY IN THE EVENT OF A DEFECT IS EXPRESSLY LIMITED TO THE REPLACEMENTS OF DISKETTES.  IN NO EVENT SHALL DEVCOMPONENTS.COM OR ANYONE ELSE WHO HAS BEEN INVOLVED IN THE CREATION, DEVELOPMENT, PRODUCTION, OR DELIVERY OF THIS SOFTWARE BE LIABLE FOR ANY DIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES, SUCH AS, BUT NOT LIMITED TO, LOSS OF ANTICIPATED PROFITS, BENEFITS, USE, OR DATA RESULTING FROM THE USE OF THIS SOFTWARE, OR ARISING OUT OF ANY BREACH OF WARRANTY.
+
+INSTALLING AND USING DOTNETBAR SIGNIFIES ACCEPTANCE OF THESE TERMS AND CONDITIONS OF THE LICENSE.
+
+THE TERMS OF THIS LICENSE, AS WELL AS THE DOTNETBAR INTERFACE DESIGN AND FILE FORMATS ARE SUBJECTS OF CHANGES IN FUTURE VERSIONS OF DOTNETBAR.
+
+If you do not agree with the terms of this license you must remove DotNetBar files from your storage devices and cease to use the product.

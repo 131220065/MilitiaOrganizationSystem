@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class PlaceChooseForm : Form
+    public partial class PlaceChooseForm : BasicForm
     {//选择地区界面,编辑民兵时应该可以使用
         private System.Xml.XmlNodeList provinces = PlaceXmlConfig.provinces();
         private System.Xml.XmlNodeList cities = null;//城市

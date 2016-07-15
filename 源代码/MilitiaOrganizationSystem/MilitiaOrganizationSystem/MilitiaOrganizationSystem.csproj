@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevComponents.DotNetBar2">
+      <HintPath>..\packages\DotNetBar for Windows Forms\DevComponents.DotNetBar2.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -79,6 +82,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\BasicForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ClientForms\ClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,6 +243,12 @@
     <Compile Include="Tool\md5.cs" />
     <Compile Include="Tool\UnZip.cs" />
     <Compile Include="Tool\Zip.cs" />
+    <EmbeddedResource Include="Forms\ChildConditionForms\ChildConditionForm.resx">
+      <DependentUpon>ChildConditionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ClientForms\ClientForm.resx">
+      <DependentUpon>ClientForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ClientForms\ProvinceForm.resx">
       <DependentUpon>ProvinceForm.cs</DependentUpon>
     </EmbeddedResource>

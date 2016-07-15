@@ -12,7 +12,7 @@ using System.Xml;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class MilitiaEditDialog : Form
+    public partial class MilitiaEditDialog : BasicForm
     {//编辑民兵界面
         private List<ComboBox> cList;//comboBox的list
         private List<int> parameterIndexs;//需编辑的参数下标
