@@ -118,6 +118,8 @@ namespace MilitiaOrganizationSystem
                 militias = sqlDao.queryByContition(lambdaContition, skip, pageSize - mList.Count, out sum, databases[databaseIndex]);
                 mList.InsertRange(0, militias);
 
+                newCurrentDatabase = databases[databaseIndex];
+                newCurrentSkip = skip;
                 databaseIndex--;//往上一个数据库
             }
             //最终，newCurrentDatabase和newSkip肯定都赋值了
@@ -472,11 +474,15 @@ namespace MilitiaOrganizationSystem
         {//根据某个属性，统计各属性值的民兵个数
             List<FacetValue> fList = new List<FacetValue>();
             List<string> databases = getDatabasesByPlace(Place);
-            
+            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
+            pbf.Show();
+            pbf.Increase(1, "开始统计...");
             foreach(string database in databases)
             {
+                pbf.Increase(1, "正在统计...");
                 fList.AddRange(sqlDao.getAggregateNums(lambdaContition, propertyName, database));
             }
+            pbf.Increase(1, "统计完毕");
             Dictionary<string, FacetValue> fDict = new Dictionary<string, FacetValue>();
             IEnumerable<IGrouping<string, FacetValue>> iigf = fList.GroupBy(x => x.Range);//分组
             foreach (IGrouping<string, FacetValue> igf in iigf)

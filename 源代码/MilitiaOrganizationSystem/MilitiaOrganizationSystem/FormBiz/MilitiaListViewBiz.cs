@@ -281,7 +281,14 @@ namespace MilitiaOrganizationSystem
             if (cf.ShowDialog() == DialogResult.OK)
             {
                 conditionLabel.Text = condition.ToString();
+                ProgressBarForm pbf = new ProgressBarForm(2);
+                pbf.Increase(1, "正在查询,请稍候...");
+                pbf.Show();
+                
+
                 firstPage();
+
+                pbf.Increase(1, "查询完毕");
             }
         }
 
@@ -313,6 +320,7 @@ namespace MilitiaOrganizationSystem
 
         public void firstPage()
         {//第一页
+            
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page = 1;
@@ -324,7 +332,6 @@ namespace MilitiaOrganizationSystem
                 refreshCurrentPage();
             }
 
-
         }
 
         public void lastPage()
@@ -333,8 +340,10 @@ namespace MilitiaOrganizationSystem
             {
                 page--;
                 List<Militia> mList = sqlBiz.lastPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
+
                 if (mList.Count == 0)
                 {//说明是第一页
+                    MessageBox.Show("已到第一页");
                     firstPage();
                 }
                 else
@@ -349,7 +358,6 @@ namespace MilitiaOrganizationSystem
                 }
                 refreshCurrentPage();
             }
-            
         }
 
         public void nextPage()
@@ -360,6 +368,7 @@ namespace MilitiaOrganizationSystem
                 List<Militia> mList = sqlBiz.nextPage(condition.lambdaCondition, condition.place, currentDatabase, currentSkip, pageSize, out currentDatabase, out currentSkip);
                 if (mList.Count == 0)
                 {//说明已经到最后一页
+                    MessageBox.Show("已到最后一页");
                     finalPage();
                 }
                 else

@@ -35,10 +35,10 @@
             this.btn_modify = new System.Windows.Forms.Button();
             this.btn_login = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.placeLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.clientTypeLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.placeLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -117,6 +117,24 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "客户端信息";
             // 
+            // placeLabel
+            // 
+            this.placeLabel.AutoSize = true;
+            this.placeLabel.Location = new System.Drawing.Point(77, 59);
+            this.placeLabel.Name = "placeLabel";
+            this.placeLabel.Size = new System.Drawing.Size(41, 12);
+            this.placeLabel.TabIndex = 6;
+            this.placeLabel.Text = "江苏省";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(30, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "地区：";
+            // 
             // clientTypeLabel
             // 
             this.clientTypeLabel.AutoSize = true;
@@ -134,24 +152,6 @@
             this.label1.Size = new System.Drawing.Size(77, 12);
             this.label1.TabIndex = 3;
             this.label1.Text = "客户端类型：";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 59);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "地区：";
-            // 
-            // placeLabel
-            // 
-            this.placeLabel.AutoSize = true;
-            this.placeLabel.Location = new System.Drawing.Point(77, 59);
-            this.placeLabel.Name = "placeLabel";
-            this.placeLabel.Size = new System.Drawing.Size(41, 12);
-            this.placeLabel.TabIndex = 6;
-            this.placeLabel.Text = "江苏省";
             // 
             // LoginForm
             // 
