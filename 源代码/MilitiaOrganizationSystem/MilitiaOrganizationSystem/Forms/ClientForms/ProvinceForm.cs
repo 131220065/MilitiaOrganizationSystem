@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
-    public partial class ProvinceForm : Form
+    public partial class ProvinceForm : ClientForm
     {//省军分区主界面
         public static string dbName = LoginXmlConfig.Place;//数据库名
 
@@ -30,7 +30,6 @@ namespace MilitiaOrganizationSystem
         public ProvinceForm()
         {//构造函数
             InitializeComponent();
-            this.Text += "-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place);//设置显示的名称
             xmlGroupTaskForm = null;
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();

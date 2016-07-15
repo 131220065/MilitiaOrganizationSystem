@@ -79,6 +79,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\ClientForms\ClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ClientForms\ProvinceForm.cs">
       <SubType>Form</SubType>
     </Compile>
