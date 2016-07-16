@@ -19,7 +19,6 @@ namespace MilitiaOrganizationSystem
             InitializeComponent();
             closeForm = false;
             this.progressBar1.Maximum = vMax;
-            this.label1.Text = "已完成 0 / " + vMax;
 
             FormClosing += ProgressBarForm_FormClosing;
         }
@@ -30,7 +29,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void ProgressBarForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        {//禁止关闭
             if(!closeForm)
             {
                 e.Cancel = true;
@@ -45,20 +44,15 @@ namespace MilitiaOrganizationSystem
                 {
                     progressBar1.Value += nValue;
                     this.textBox1.AppendText(nInfo + "\n");
-                    this.label1.Text = "已完成 " + progressBar1.Value + " / " + progressBar1.Maximum;
-                    Application.DoEvents();
                     progressBar1.Update();
                     progressBar1.Refresh();
                     this.textBox1.Update();
                     this.textBox1.Refresh();
-                    this.label1.Update();
-                    this.label1.Refresh();
                     return true;
                 }
                 else
                 {
                     progressBar1.Value = progressBar1.Maximum;
-                    //this.textBox1.AppendText(nInfo);
                     closeForm = true;//可以关闭
                     this.Close();                           //执行完之后，自动关闭子窗体
                     return false;

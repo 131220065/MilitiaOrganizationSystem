@@ -107,27 +107,39 @@ namespace MilitiaOrganizationSystem
 
         private void lastPage_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            btn.Enabled = false;
             listViewBiz.lastPage();
             updatePageUpDown();
+            btn.Enabled = true;
             
         }
 
         private void currentPage_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            btn.Enabled = false;
             listViewBiz.refreshCurrentPage();
             updatePageUpDown();
+            btn.Enabled = true;
         }
 
         private void nextPage_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            btn.Enabled = false;
             listViewBiz.nextPage();
             updatePageUpDown();
+            btn.Enabled = true;
         }
 
         private void finalPage_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            btn.Enabled = false;
             listViewBiz.finalPage();
             updatePageUpDown();
+            btn.Enabled = true;
         }
 
         private void options_Click(object sender, EventArgs e)
@@ -143,7 +155,9 @@ namespace MilitiaOrganizationSystem
 
         private void doConflict_Click(object sender, EventArgs e)
         {//检测冲突，在数据库之间
+            doConflict.Enabled = false;
             FormBizs.detectConflicts();
+            doConflict.Enabled = true;
         }
 
         private void latestMilitias_Click(object sender, EventArgs e)
@@ -159,15 +173,20 @@ namespace MilitiaOrganizationSystem
 
         private void firstPage_Click(object sender, EventArgs e)
         {
+            Button btn = (Button)sender;
+            btn.Enabled = false;
             listViewBiz.firstPage();
             updatePageUpDown();
+            btn.Enabled = true;
         }
 
         private void importDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.importFromFolder();
+            this.Enabled = false;
             listViewBiz.firstPage();
             updatePageUpDown();
+            this.Enabled = true;
         }
 
         private void exportDirectory_Click(object sender, EventArgs e)

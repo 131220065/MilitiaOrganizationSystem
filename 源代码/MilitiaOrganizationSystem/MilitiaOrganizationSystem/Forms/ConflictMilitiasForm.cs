@@ -38,9 +38,13 @@ namespace MilitiaOrganizationSystem
 
         private List<List<Militia>> getConflictMilitias(int skip, int take)
         {//分页获取冲突民兵
+            ProgressBarForm pbf = new ProgressBarForm(2);
+            pbf.Show();
+            pbf.Increase(1, "正在获取冲突民兵...");
             List<List<Militia>> mlList = new List<List<Militia>>();
             if(skip >= conflictList.Count)
             {
+                pbf.Increase(1, "获取完毕");
                 return mlList;
             }
             for(int i = skip; i < skip + take && i < conflictList.Count; i++)
@@ -53,6 +57,7 @@ namespace MilitiaOrganizationSystem
                 }
                 mlList.Add(mList);
             }
+            pbf.Increase(1, "获取完毕");
             return mlList;
         }
 

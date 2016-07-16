@@ -36,7 +36,10 @@ namespace MilitiaOrganizationSystem
                     return;
                 }
             }
-
+            ProgressBarForm pbf = new ProgressBarForm(3);
+            pbf.Show();
+            pbf.Increase(1, "正在启动中，请稍候...");
+            
             Form mainForm = null;
             switch(LoginXmlConfig.ClientType)
             {
@@ -53,7 +56,8 @@ namespace MilitiaOrganizationSystem
                     mainForm = new BasicLevelForm();
                     break;
             }
-
+            pbf.Increase(1, "启动完毕");
+            pbf.Increase(1, "关闭进度条...");
             Application.Run(mainForm);
         }
 

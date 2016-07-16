@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace MilitiaOrganizationSystem
 {
     static class GroupXmlConfig
-    {
+    {//分组对应的文件
         public const string xmlGroupFile = "xmlGroupFile.xml";//分组的配置文件
         public static XmlDocument xmlDoc { get; set; }//加载groupxml文件的
         public static XmlNode rootNode { get; set; }//根节点

@@ -25,12 +25,6 @@ namespace MilitiaOrganizationSystem
         public BasicForm()
         {
             EnableGlass = false;
-            FormClosed += BasicForm_FormClosed;
-        }
-
-        private void BasicForm_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
-        {
-            AnimateWindow(this.Handle, 300, AW_CENTER + AW_HIDE);
         }
     }
 }

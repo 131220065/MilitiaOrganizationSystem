@@ -238,9 +238,12 @@ namespace MilitiaOrganizationSystem
         public List<Militia> queryByContition(Expression<Func<Militia, bool>> lambdaContition, int skip, int take, out int sum, string Place = null)
         {//根据条件分页查询
             List<string> databases = getDatabasesByPlace(Place);//根据Place指定数据库组
+            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
+            pbf.Show();
             int[] sums = new int[databases.Count];//每个数据库下民兵的总数
             for (int i = 0; i < databases.Count; i++)
             {//获取每个数据库的总数
+                pbf.Increase(1, "正在查询数据库...");
                 sqlDao.queryByContition(lambdaContition, 0, 1, out sums[i], databases[i]);
             }
 
@@ -249,6 +252,7 @@ namespace MilitiaOrganizationSystem
             int databaseIndex = getIndexOfDatabase(sums, skip, out skipNum);
             if (databaseIndex >= sums.Length)
             {
+                pbf.Increase(1, "查询数据库完毕");
                 return new List<Militia>();
             }
             List<Militia> mList = sqlDao.queryByContition(lambdaContition, skipNum, take, out sums[databaseIndex], databases[databaseIndex]);
@@ -258,6 +262,7 @@ namespace MilitiaOrganizationSystem
                 mList.AddRange(sqlDao.queryByContition(lambdaContition, 0, take - mList.Count, out sums[databaseIndex], databases[databaseIndex]));
                 databaseIndex++;
             }
+            pbf.Increase(1, "查询数据库完毕");
             return mList;
         }
 
@@ -337,7 +342,7 @@ namespace MilitiaOrganizationSystem
             {
                 //等会在这里写个trycatch
                 sqlDao.restoreOneDB(database);
-                pbf.Increase(1, "导入" + database + "数据库成功");
+                pbf.Increase(1, "导入" + PlaceXmlConfig.getPlaceName(Path.GetFileName(database)) + "数据库成功");
             }
         }
 
@@ -435,7 +440,9 @@ namespace MilitiaOrganizationSystem
             ConflictDetector cd = new ConflictDetector();
                 
             List<string> databases = getDatabases();//所有数据库
-            
+
+            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
+            pbf.Show();
             foreach(string database in databases)
             {
                 List<string> cList = cnDao.getCredinumbersOfDatabase(database);
@@ -443,9 +450,10 @@ namespace MilitiaOrganizationSystem
                 {
                     cd.insertAndDetectConflicts(credit, database);
                 }
+                pbf.Increase(1, "正在获取冲突...");
             }
             //冲突检测完毕
-
+            pbf.Increase(1, "冲突检测完毕");
             return cd.conflictDict;
         }
 

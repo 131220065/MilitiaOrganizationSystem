@@ -318,7 +318,6 @@ namespace MilitiaOrganizationSystem
 
         public static void detectConflicts()
         {//检测冲突
-            DateTime startDetectTime = DateTime.Now;
             Dictionary<string, List<string>> conflictDict = sqlBiz.getConflicts();
 
             if(conflictDict.Count == 0)
