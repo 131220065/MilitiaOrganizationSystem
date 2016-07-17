@@ -77,6 +77,7 @@ namespace MilitiaOrganizationSystem
                 lvi.Tag = militia;
             }
             lvi.ToolTipText = operation;
+            lvi.Tag = militia;//必须赋值,因为实例是不同的session查出来，是不同的
             updateItem(lvi);
             latestMilitias_listview.Items.Insert(0, lvi);//在最前面插入
 
