@@ -109,7 +109,11 @@ namespace MilitiaOrganizationSystem
 
         public void addXmlGroupTask(string xmlFile)
         {//添加分组任务
+            FormBizs.pbf.Increase("正在导入分组任务...");
             xmlGroupDao.addXml(xmlFile);
+            FormBizs.pbf.Increase("正在刷新分组界面...");
+            refresh();
+            FormBizs.pbf.Completed();//完成
         }
 
         public void exportXmlGroupTask(string fileName)

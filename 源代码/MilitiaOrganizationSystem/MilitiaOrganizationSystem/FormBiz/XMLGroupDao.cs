@@ -196,7 +196,7 @@ namespace MilitiaOrganizationSystem
                 if(!isFinded)
                 {//如果没有找到与xdChildNode相同的子节点，则将xdChildNode添加到xdNode的子节点中
                     XmlNode newNode = xmlNode.AppendChild(xmlDoc.ImportNode(xdChildNode, true));
-                    
+
                 }
             }
 
