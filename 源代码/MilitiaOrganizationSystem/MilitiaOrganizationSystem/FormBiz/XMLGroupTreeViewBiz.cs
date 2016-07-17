@@ -208,7 +208,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void refreshTreeNodes(TreeNodeCollection nodes, Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict)
-        {
+        {//递归刷新nodes及其所有子节点
             foreach(TreeNode treeNode in nodes)
             {
                 if(treeNode.Nodes.Count == 0)
@@ -238,7 +238,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void refreshTreeView(Dictionary<string, Raven.Abstractions.Data.FacetValue> fdict)
-        {
+        {//通过统计得到的分组及组下民兵数量刷新TreeView
             refreshTreeNodes(groups_treeView.Nodes, fdict);
         }
     }

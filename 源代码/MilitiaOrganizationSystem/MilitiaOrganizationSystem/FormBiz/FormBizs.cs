@@ -13,19 +13,19 @@ namespace MilitiaOrganizationSystem
         public const string exportGroupFileName = "groupTask.xml";
         public const string exportMilitiaFileName = "militiaList";
 
-        public static SqlBiz sqlBiz;// = null;//一个程序有且仅有一个sqlBiz
-        public static XMLGroupTreeViewBiz groupBiz;// = null;//有且仅有一个groupBiz
-        public static List<MilitiaListViewBiz> mListBizs;// = new List<MilitiaListViewBiz>();
+        public static SqlBiz sqlBiz;//一个程序有且仅有一个sqlBiz
+        public static XMLGroupTreeViewBiz groupBiz;//有且仅有一个groupBiz
+        public static List<MilitiaListViewBiz> mListBizs;
         //民兵列表业务逻辑层，有多个，包括主页和点击分组出来的页面
 
-        public static LatestMilitiaForm latestMilitiaForm;// = new LatestMilitiaForm();//最新操作的民兵界面
+        public static LatestMilitiaForm latestMilitiaForm;//最新操作的民兵界面
 
-        public static ProgressBarForm pbf;// = new ProgressBarForm(10);//全局的进度条界面
+        public static ProgressBarForm pbf;//全局的进度条界面
 
         public static ClientForm mainForm { get; set; }//主界面
 
         public static void initial()
-        {
+        {//初始化
             sqlBiz = null;
             groupBiz = null;
             mListBizs = new List<MilitiaListViewBiz>();
@@ -34,7 +34,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public static void updateMilitiaItem(Militia militia)
-        {//更新所有民兵ListView上的Item
+        {//更新所有民兵列表界面上的Item显示
             foreach(MilitiaListViewBiz mlvb in mListBizs)
             {
                 mlvb.updateMilitiaItem(militia);
@@ -42,7 +42,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public static void removeMilitiaItem(Militia militia)
-        {//通知所有民兵列表删除
+        {//通知所有民兵列表界面删除某个民兵
             foreach (MilitiaListViewBiz mlvb in mListBizs)
             {
                 mlvb.removeMilitiaItem(militia);
@@ -110,7 +110,7 @@ namespace MilitiaOrganizationSystem
             
         }
 
-        public static void exportToFolder()
+        /*public static void exportToFolder()
         {//导出到文件夹
             FolderBrowserDialog fbdlg = new FolderBrowserDialog();
             fbdlg.Description = "请选择要导出的文件路径";
@@ -130,10 +130,10 @@ namespace MilitiaOrganizationSystem
 
                 MessageBox.Show("导出完成");
             }
-        }
+        }*/
 
         public static void exportToFile()
-        {
+        {//导出到文件中(对外)
 
             FolderBrowserDialog fbdlg = new FolderBrowserDialog();
             fbdlg.Description = "请选择要导出的文件路径";
@@ -166,7 +166,7 @@ namespace MilitiaOrganizationSystem
                 exportAsZipFile(zipFile);
 
                 MessageBox.Show("导出完成");
-                pbf.Completed();
+                pbf.Completed();//进度条完成
             }
             
         }
@@ -198,7 +198,7 @@ namespace MilitiaOrganizationSystem
                     {
                         DialogResult re = MessageBox.Show("检测到有数据库冲突，将覆盖所有冲突的数据库，确认？\n覆盖意味着将删除原来相应数据库中的民兵及分组", "警告", MessageBoxButtons.OKCancel);
                         if(re != DialogResult.OK)
-                        {
+                        {//选否则导入失败
                             return false;
                         } else
                         {
@@ -207,7 +207,7 @@ namespace MilitiaOrganizationSystem
                         
                     }
                 }
-                sqlBiz.restoreDbs(folder);
+                sqlBiz.restoreDbs(folder);//恢复数据库
                 sqlBiz.importCredentialNumbersFromFolder(folder);//导入身份证号
             }
             
@@ -217,7 +217,7 @@ namespace MilitiaOrganizationSystem
             return true;
         }
 
-        public static void importFromFolder()
+        /*public static void importFromFolder()
         {//从文件夹导入(对外)
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             if(fbd.ShowDialog() == DialogResult.OK)
@@ -245,7 +245,7 @@ namespace MilitiaOrganizationSystem
                     MessageBox.Show("导入出现异常");
                 }
             }
-        }
+        }*/
 
         public static void importFormFiles()
         {//选择多个文件并导入
@@ -286,7 +286,8 @@ namespace MilitiaOrganizationSystem
                         
                 }
                     
-                detectConflicts();//冲突检测
+                //detectConflicts();//冲突检测
+                //导入时先不进行冲突检测，让用户点击按钮，再进行冲突检测吧
                     
                 pbf.Increase( "正在刷新分组界面...");
                 groupBiz.refresh();//刷新分组界面显示
@@ -324,7 +325,7 @@ namespace MilitiaOrganizationSystem
         public static void detectConflicts()
         {//检测冲突
             Dictionary<string, List<string>> conflictDict = sqlBiz.getConflicts();
-            pbf.Completed();//完成检测冲突
+            pbf.Completed();//进度条完成检测冲突
             if (conflictDict.Count == 0)
             {
                 MessageBox.Show("没有检测到冲突");
@@ -337,7 +338,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public static void showLatestMilitias()
-        {
+        {//显示最近操作的民兵列表界面
             latestMilitiaForm.Show();
             latestMilitiaForm.Focus();
         }

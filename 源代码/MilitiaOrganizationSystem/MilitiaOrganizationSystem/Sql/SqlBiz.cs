@@ -64,7 +64,6 @@ namespace MilitiaOrganizationSystem
 
         public List<string> getDatabasesByPlace(string Place)
         {//根据Militia.Place指定要查找的数据库集合, 调用此函数时， Place应不为空
-            //return getDatabases();//单数据库
             if(Place == null || Place == "")
             {//如果为空，则未指定数据库，所以返回所有数据库集合
                 return getDatabases();
@@ -211,11 +210,6 @@ namespace MilitiaOrganizationSystem
                 
                 return mList;
             }
-            /*string finalDatabase = databases[databaseIndex];
-            int sum;
-            sqlDao.queryByContition(lambdaContition, 0, 1, out sum, finalDatabase);
-            return lastPage(lambdaContition, Place, finalDatabase, sum, pageSize, out newCurrentDatabase, out newCurrentSkip);
-            */
             
             int sum = 1;
             while(databaseIndex >= 0 && mList.Count < pageSize)
@@ -354,21 +348,6 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        /*public void exportAsFile(string file)
-        {//导出为文件，仅基层调用这个
-            int sum;
-            List<Militia> mList = sqlDao.getMilitias(0, 10000, out sum);
-            FileTool.MilitiaListToXml(mList, file);//xml文件
-        }
-        public void importFormFile(string file)
-        {//从文件中导入，仅区县人武部调用
-            List<Militia> mList = FileTool.XmlToMilitiaList(file);
-            foreach (Militia m in mList)
-            {
-                sqlDao.saveMilitia(m);
-            }
-        }*/
-
         public void exportAsFile(string file)
         {//导出为文件，仅基层调用这个
             StreamWriter sw = new StreamWriter(file);
@@ -397,7 +376,7 @@ namespace MilitiaOrganizationSystem
                 Militia m = MilitiaReflection.stringToMilitia(line);
                 m.Id = null;//赋值为null，然后让数据库重新分配id
 
-                //还要要同时添加身份证号
+                //保存民兵的同时，还要添加身份证号到文件
                 sqlDao.saveMilitia(m);
                 cnDao.addAndSaveCrediNumber(m.CredentialNumber, m.Place);
                 
@@ -454,27 +433,6 @@ namespace MilitiaOrganizationSystem
             FormBizs.pbf.Increase("冲突检测完毕");
             return cd.conflictDict;
         }
-
-        /*public Dictionary<string, FacetValue> getGroupNums()
-        {//获取所有数据库中所有组中民兵的个数
-            List<string> databases = getDatabases();
-            List<FacetValue> fList = new List<FacetValue>();
-            foreach (string database in databases)
-            {
-                fList.AddRange(sqlDao.getGroupNums(database));
-            }
-            Dictionary<string, FacetValue> fDict = new Dictionary<string, FacetValue>();
-            IEnumerable<IGrouping<string, FacetValue>> iigf = fList.GroupBy(x => x.Range);//分组
-            foreach (IGrouping<string, FacetValue> igf in iigf)
-            {
-                fDict[igf.Key] = igf.Aggregate(delegate (FacetValue fv1, FacetValue fv2)
-                {
-                    fv1.Hits += fv2.Hits;
-                    return fv1;
-                });
-            }
-            return fDict;
-        }*/
 
         public Dictionary<string, FacetValue> getEnumStatistics(System.Linq.Expressions.Expression<Func<Militia, bool>> lambdaContition, string propertyName, string Place = null)
         {//根据某个属性，统计各属性值的民兵个数

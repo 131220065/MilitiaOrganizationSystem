@@ -68,8 +68,6 @@ namespace MilitiaOrganizationSystem
             store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
             if(!isExist)
             {//不存在的话，还得建立索引
-                //new Militias_CredentialNumbers().Execute(store.DatabaseCommands.ForDatabase(datebase), store.Conventions);
-                //new Militias_Groups().Execute(store.DatabaseCommands.ForDatabase(datebase), store.Conventions);
                 new Militias_All().Execute(store.DatabaseCommands.ForDatabase(database), store.Conventions);
             }
             saveMilitia(militia);
@@ -122,21 +120,13 @@ namespace MilitiaOrganizationSystem
             DatabaseDocument dd = new DatabaseDocument
             {
                 Id = null,//数据库名
-                            // Other configuration options omitted for simplicity
                 Settings =
                         {
-						    // ...
 						    { "Raven/ActiveBundles", "Encryption" }
                         },
                 SecuredSettings =
                     {
-						/*{
-                            "Raven/Encryption/Algorithm",
-                            "System.Security.Cryptography.AesManaged, System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-                        },*/
-                        { "Raven/Encryption/Key", "d2VsY29tZXRvdGhpc3N5c3RlbQ==" }//,
-                        /*{ "Raven/Encryption/EncryptIndexes", "True"},
-                        { "Raven/Encryption/FIPS", "False"}*/
+                        { "Raven/Encryption/Key", "d2VsY29tZXRvdGhpc3N5c3RlbQ==" }
                     }
             };
             store.DatabaseCommands.GlobalAdmin.StartBackup(dbFolder, dd, false, dbName);
@@ -204,27 +194,6 @@ namespace MilitiaOrganizationSystem
             }
         }
 
-        /*public List<FacetValue> getGroupNums(string database = null)
-        {//通过静态索引查询组内民兵个数
-            if (database == null)
-            {
-                database = dbName;
-            }
-            store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
-            using (var session = store.OpenSession(database))
-            {
-                List<FacetValue> fList;
-                var gfacetResults = session.Query<Militia, Militias_All>()
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
-                    .AggregateBy(x => x.Group).CountOn(x => x.Group).ToList();
-                
-                fList = gfacetResults.Results["Group"].Values;
-
-                return fList;
-            }
-
-        }*/
-
         public List<FacetValue> getAggregateNums(Expression<Func<Militia, bool>> lambdaContition, string propertyName, string database = null)
         {//统计,默认类的个数不超过5000
             if (database == null)
@@ -245,49 +214,6 @@ namespace MilitiaOrganizationSystem
                 return gfacetResults.Results[propertyName].Values;
             }
         }
-
-        /*public List<Militias_CredentialNumbers.Result> getCredentialNumbers(string database = null)
-        {
-            if (database == null)
-            {
-                database = dbName;
-            }
-            store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
-            new Militias_CredentialNumbers().Execute(store.DatabaseCommands.ForDatabase(database), store.Conventions);//执行测试
-            using (var session = store.OpenSession(database))
-            {
-                //RavenQueryStatistics stats;
-                var credentialNumbers = session.Query<Militias_CredentialNumbers.Result, Militias_CredentialNumbers>()
-                    //.Statistics(out stats)
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
-                    .Skip(0).Take(100000)
-                    .ToList();
-
-                return credentialNumbers;
-            }
-        }*/
-
-        /*public List<string> getCredentialNumbers(string database = null)
-        {//获取所有身份证号，一个数据库(区县人武部)的民兵数据应不超过10万
-            if (database == null)
-            {
-                database = dbName;
-            }
-            store.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(database);
-            using (var session = store.OpenSession(database))
-            {
-                //RavenQueryStatistics stats;
-                var credentialNumbers = session.Query<Militia, Militias_All>()
-                    //.Statistics(out stats)
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
-                    .AggregateBy(x => x.CredentialNumber).CountOn(x => x.CredentialNumber)
-                    .ToList()
-                    .Results["CredentialNumber"].Values
-                    .ToDictionary(x => x.Range).Keys.ToList();
-
-                return credentialNumbers;
-            }
-        }*/
 
         public List<Militia> getMilitiasByCredentialNumber(string CredentialNumber, string database = null)
         {//根据身份证号获取民兵
@@ -312,67 +238,8 @@ namespace MilitiaOrganizationSystem
 
     }
 
-    /*public class Militias_CredentialNumbers : AbstractIndexCreationTask<Militia>
-    {//身份证号索引
-        public class Result
-        {
-            public string CredentialNumber { get; set; } //身份证号
-        }
-
-        public Militias_CredentialNumbers()
-        {
-            Map = militias => from militia in militias
-                              select new
-                              {
-                                  CredentialNumber = militia.CredentialNumber
-                              };
-        }
-    }*/
-
-    /*public class Militias_Groups : AbstractIndexCreationTask<Militia>
-    {//分组所用的索引
-        public class Result
-        {
-            public string Group { get; set; } //组名
-        }
-
-        public Militias_Groups()
-        {
-            Map = militias => from militia in militias
-                              select new
-                              {
-                                  Group = militia.Group
-                              };
-
-            
-        }
-    }*/
-
-    /*public class Militias_CredentialNumbers : AbstractIndexCreationTask<Militia, Militias_CredentialNumbers.Result>
-    {
-        public class Result
-        {
-            public string CredentialNumber { get; set; }
-        }
-
-        public Militias_CredentialNumbers()
-        {
-            Map = militias => from militia in militias
-                              select new
-                              {
-                                  CredentialNumber = militia.CredentialNumber
-                              };
-            Reduce = results => from r in results
-                                group r by r.CredentialNumber into g
-                                select new
-                                {
-                                    CredentialNumber = g.Key
-                                };
-        }
-    }*/
-
     public class Militias_All : AbstractIndexCreationTask<Militia>
-    {//统计所用的索引
+    {//统计所用的索引，除了Id，全都弄进来了，可以根据每一个属性查询
         public Militias_All()
         {
             Map = militias => from militia in militias

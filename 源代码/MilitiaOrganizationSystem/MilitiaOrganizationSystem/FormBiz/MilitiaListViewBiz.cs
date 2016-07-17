@@ -40,8 +40,8 @@ namespace MilitiaOrganizationSystem
 
             this.condition = condition;//查询条件
 
-            page = 1;
-            pageSize = 20;
+            page = 1;//页
+            pageSize = 20;//每页显示最大数量
 
             bindEvent();
 
@@ -51,7 +51,7 @@ namespace MilitiaOrganizationSystem
         }
 
         ~MilitiaListViewBiz()
-        {//析构
+        {//析构,从biz池中移除
             FormBizs.mListBizs.Remove(this);
         }
 
@@ -171,10 +171,10 @@ namespace MilitiaOrganizationSystem
         }
 
         private void addOneMilitia(Militia militia)
-        {//添加一个item
+        {//为民兵对象添加一个item显示
             ListViewItem lvi = new ListViewItem();
             lvi.Tag = militia;
-            //lvi.Name = militia.Id;//之前一定是存了数据库的, updateItem会设置key
+            //lvi.Name = militia.Id;//之前一定是存了数据库的, updateItem会设置key,不用在这里设置
             updateItem(lvi);
             militia_ListView.Items.Add(lvi);
             militia_ListView.SelectedItems.Clear();//清空是为了单选
@@ -320,7 +320,7 @@ namespace MilitiaOrganizationSystem
 
         public void firstPage()
         {//第一页
-            FormBizs.pbf.Increase("开始刷新");
+            FormBizs.pbf.Increase("开始刷新列表...");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page = 1;
@@ -337,7 +337,7 @@ namespace MilitiaOrganizationSystem
 
         public void lastPage()
         {//上一页
-            FormBizs.pbf.Increase("开始刷新");
+            FormBizs.pbf.Increase("开始刷新列表...");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page--;
@@ -366,7 +366,7 @@ namespace MilitiaOrganizationSystem
 
         public void nextPage()
         {//下一页
-            FormBizs.pbf.Increase("开始刷新");
+            FormBizs.pbf.Increase("开始刷新列表...");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page++;
@@ -395,7 +395,7 @@ namespace MilitiaOrganizationSystem
 
         public void finalPage()
         {//最后一页
-            FormBizs.pbf.Increase("开始刷新");
+            FormBizs.pbf.Increase("开始刷新列表...");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page = -1;

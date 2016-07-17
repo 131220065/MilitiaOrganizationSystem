@@ -12,7 +12,7 @@ namespace MilitiaOrganizationSystem
 {
     public partial class ConditionForm : BasicForm
     {
-        private System.Xml.XmlNodeList parameters = MilitiaXmlConfig.parameters;
+        private System.Xml.XmlNodeList parameters = MilitiaXmlConfig.parameters;//民兵的属性列表
 
         private System.Xml.XmlNodeList provinces = PlaceXmlConfig.provinces();
         private System.Xml.XmlNodeList cities = null;//城市
@@ -68,7 +68,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void initialPlaceCombobox()
-        {
+        {//初始化地区的combobox下拉显示
             foreach (System.Xml.XmlNode p in provinces)
             {
                 pCombobox.Items.Add(p.Attributes["ProvinceName"].Value);
@@ -122,7 +122,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private DialogResult showChildConditionDialog(Condition.ChildCondition cc)
-        {
+        {//根据不同的属性类型，打开不同的子条件界面
             System.Xml.XmlNode paraNode = cc.parameterNode;
             Form ccForm = null;
             switch(paraNode.Attributes["type"].Value)

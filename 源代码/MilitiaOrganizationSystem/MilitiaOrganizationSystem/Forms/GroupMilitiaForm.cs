@@ -56,7 +56,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void updatePageUpDown()
-        {
+        {//更新数量显示
             if(LoginXmlConfig.ClientType == "省军分区")
             {
                 skipPage.Enabled = false;

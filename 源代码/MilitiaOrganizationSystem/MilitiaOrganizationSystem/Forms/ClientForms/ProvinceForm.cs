@@ -178,7 +178,7 @@ namespace MilitiaOrganizationSystem
             btn.Enabled = true;
         }
 
-        private void importDirectory_Click(object sender, EventArgs e)
+        /*private void importDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.importFromFolder();
             this.Enabled = false;
@@ -190,6 +190,6 @@ namespace MilitiaOrganizationSystem
         private void exportDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.exportToFolder();
-        }
+        }*/
     }
 }

@@ -102,7 +102,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void ConflictGroup_ListView_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
+        {//将多选变为单选
             ListViewItem thisLvi = conflictGroup_ListView.Items[e.Index];
             if (!thisLvi.Checked)
             {
@@ -117,7 +117,7 @@ namespace MilitiaOrganizationSystem
         }
 
         private void ConflictMilitiasForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        {//满足条件才关闭
             if(!closeForm)
             {
                 e.Cancel = true;

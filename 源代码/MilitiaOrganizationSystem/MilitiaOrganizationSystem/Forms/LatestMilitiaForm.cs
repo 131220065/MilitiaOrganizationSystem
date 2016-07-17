@@ -16,6 +16,8 @@ namespace MilitiaOrganizationSystem
         private XmlNodeList parameters = MilitiaXmlConfig.parameters;
         private List<int> displayedParameterIndexs = MilitiaXmlConfig.getAllDisplayedParameterIndexs();
 
+        private int maxNum = 100;//显示的民兵个数限制
+
         public LatestMilitiaForm()
         {
             InitializeComponent();
@@ -76,7 +78,12 @@ namespace MilitiaOrganizationSystem
             }
             lvi.ToolTipText = operation;
             updateItem(lvi);
-            latestMilitias_listview.Items.Insert(0, lvi);
+            latestMilitias_listview.Items.Insert(0, lvi);//在最前面插入
+
+            if(latestMilitias_listview.Items.Count > maxNum)
+            {//保持这个界面的最大民兵数量不超过maxNum
+                latestMilitias_listview.Items.RemoveAt(latestMilitias_listview.Items.Count - 1);
+            }
         }
 
         private void addColumnHeader()

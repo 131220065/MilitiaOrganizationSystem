@@ -122,7 +122,6 @@ namespace MilitiaOrganizationSystem
                     sumLabel.Text = sum + "人";
                     break;
                 default:
-                    //FormBizs.sqlBiz.queryByContition(condition.lambdaCondition, 0, 1, out sum);
                     fdict
                         = FormBizs.sqlBiz.getEnumStatistics(
                             condition.lambdaCondition,

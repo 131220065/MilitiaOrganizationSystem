@@ -34,33 +34,8 @@ namespace MilitiaOrganizationSystem
             e.Cancel = true;
         }
 
-        /*public bool Increase(int nValue, string nInfo)      //进度条变化函数，外部接口
-        {
-            if (nValue > 0)
-            {
-                if (progressBar.Value + nValue < progressBar.Maximum)
-                {
-                    progressBar.Value += nValue;
-                    this.textBox.AppendText(nInfo + "\n");
-                    progressBar.Update();
-                    progressBar.Refresh();
-                    this.textBox.Update();
-                    this.textBox.Refresh();
-                    return true;
-                }
-                else
-                {
-                    progressBar.Value = progressBar.Maximum;
-                    closeForm = true;//可以关闭
-                    this.Close();                           //执行完之后，自动关闭子窗体
-                    return false;
-                }
-            }
-            return false;
-        }*/
-
         public void Increase(string info)
-        {
+        {//显示一条进度信息
             if(FormBizs.mainForm != null)
                 FormBizs.mainForm.Enabled = false;
 
@@ -85,7 +60,7 @@ namespace MilitiaOrganizationSystem
         }
 
         public void Completed()
-        {
+        {//完成，隐藏进度条，恢复原来的样子
             progressBar.Value = progressBar.Maximum;
             progressBar.Update();
             progressBar.Refresh();

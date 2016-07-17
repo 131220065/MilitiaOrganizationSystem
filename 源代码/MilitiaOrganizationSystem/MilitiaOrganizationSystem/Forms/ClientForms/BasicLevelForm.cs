@@ -167,9 +167,9 @@ namespace MilitiaOrganizationSystem
             updatePageUpDown();
         }
 
-        private void exportToDirectory_Click(object sender, EventArgs e)
+        /*private void exportToDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.exportToFolder();
-        }
+        }*/
     }
 }

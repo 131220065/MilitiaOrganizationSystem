@@ -176,7 +176,7 @@ namespace MilitiaOrganizationSystem
             updatePageUpDown();
         }
 
-        private void importDirectory_Click(object sender, EventArgs e)
+        /*private void importDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.importFromFolder();
             listViewBiz.firstPage();
@@ -186,6 +186,6 @@ namespace MilitiaOrganizationSystem
         private void exportDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.exportToFolder();
-        }
+        }*/
     }
 }

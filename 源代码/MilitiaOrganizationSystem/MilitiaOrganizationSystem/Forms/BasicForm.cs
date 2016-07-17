@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace MilitiaOrganizationSystem
 {
     public class BasicForm : Office2007Form
-    {
+    {//为了改变显示样式，所有界面继承于此BasicForm
         [DllImport("user32.dll", EntryPoint = "AnimateWindow")]
         protected static extern bool AnimateWindow(IntPtr handle, int ms, int flags);
         public const Int32 AW_HOR_POSITIVE = 0x00000001;
