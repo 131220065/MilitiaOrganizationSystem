@@ -238,12 +238,11 @@ namespace MilitiaOrganizationSystem
         public List<Militia> queryByContition(Expression<Func<Militia, bool>> lambdaContition, int skip, int take, out int sum, string Place = null)
         {//根据条件分页查询
             List<string> databases = getDatabasesByPlace(Place);//根据Place指定数据库组
-            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
-            pbf.Show();
+
             int[] sums = new int[databases.Count];//每个数据库下民兵的总数
             for (int i = 0; i < databases.Count; i++)
             {//获取每个数据库的总数
-                pbf.Increase(1, "正在查询数据库...");
+                FormBizs.pbf.Increase("正在查询数据库...");
                 sqlDao.queryByContition(lambdaContition, 0, 1, out sums[i], databases[i]);
             }
 
@@ -252,7 +251,7 @@ namespace MilitiaOrganizationSystem
             int databaseIndex = getIndexOfDatabase(sums, skip, out skipNum);
             if (databaseIndex >= sums.Length)
             {
-                pbf.Increase(1, "查询数据库完毕");
+                FormBizs.pbf.Increase("查询数据库完毕");
                 return new List<Militia>();
             }
             List<Militia> mList = sqlDao.queryByContition(lambdaContition, skipNum, take, out sums[databaseIndex], databases[databaseIndex]);
@@ -262,7 +261,7 @@ namespace MilitiaOrganizationSystem
                 mList.AddRange(sqlDao.queryByContition(lambdaContition, 0, take - mList.Count, out sums[databaseIndex], databases[databaseIndex]));
                 databaseIndex++;
             }
-            pbf.Increase(1, "查询数据库完毕");
+            FormBizs.pbf.Increase("查询数据库完毕");
             return mList;
         }
 
@@ -309,16 +308,15 @@ namespace MilitiaOrganizationSystem
                 Directory.CreateDirectory(folder);
             }
             List<string> databases = getDatabases();
-            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
-            pbf.Show();//显示进度条
+
             for(int i = 0; i < databases.Count; i++)
             {
-                pbf.Increase(1, "开始导出第" + (i + 1) + "个数据库");
+                FormBizs.pbf.Increase("开始导出第" + (i + 1) + "个数据库");
                 string database = databases[i];
                 sqlDao.backupOneDB(database, folder);
             }
             while (!isAllDbBackupCompleted()) ;//等待全部完成
-            pbf.Increase(1, "导出完毕");
+            FormBizs.pbf.Increase("导出完毕");
         }
 
         public bool isAllDbBackupCompleted()
@@ -336,13 +334,12 @@ namespace MilitiaOrganizationSystem
         public void restoreDbs(string folder)
         {//恢复folder下的所有数据库
             string[] databaseFolders = Directory.GetDirectories(folder);
-            ProgressBarForm pbf = new ProgressBarForm(databaseFolders.Length);
-            pbf.Show();
+
             foreach (string database in databaseFolders)
             {
                 //等会在这里写个trycatch
                 sqlDao.restoreOneDB(database);
-                pbf.Increase(1, "导入" + PlaceXmlConfig.getPlaceName(Path.GetFileName(database)) + "数据库成功");
+                FormBizs.pbf.Increase("导入" + PlaceXmlConfig.getPlaceName(Path.GetFileName(database)) + "数据库成功");
             }
         }
 
@@ -377,15 +374,14 @@ namespace MilitiaOrganizationSystem
             StreamWriter sw = new StreamWriter(file);
             int sum;
             List<Militia> mList = sqlDao.getMilitias(0, 10000, out sum);
-            ProgressBarForm pbf = new ProgressBarForm(mList.Count / 100);
-            pbf.Show();
+
             for (int i = 0; i < mList.Count; i++)
             {
                 Militia m = mList[i];
                 sw.WriteLine(MilitiaReflection.militiaToString(m));
                 if((i + 1) % 100 == 0)
                 {
-                    pbf.Increase(1, "已导出100个民兵");
+                    FormBizs.pbf.Increase("已导出100个民兵");
                 }
             }
             sw.Close();
@@ -394,23 +390,26 @@ namespace MilitiaOrganizationSystem
         {//从文件中导入，仅区县人武部调用
             StreamReader sr = new StreamReader(file);
             string line;
-            ProgressBarForm pbf = new ProgressBarForm(1);
-            pbf.Show();//进度条
+
             int i = 0;
             while ((line = sr.ReadLine()) != null)
             {
                 Militia m = MilitiaReflection.stringToMilitia(line);
                 m.Id = null;//赋值为null，然后让数据库重新分配id
+
+                //还要要同时添加身份证号
                 sqlDao.saveMilitia(m);
+                cnDao.addAndSaveCrediNumber(m.CredentialNumber, m.Place);
+                
 
                 i++;
                 if(i % 100 == 0)
                 {
-                    pbf.setMaxValue(i / 100 + 1);
-                    pbf.Increase(1, "导入了100个民兵");
+                    FormBizs.pbf.setMaxValue(i / 100 + 1);
+                    FormBizs.pbf.Increase("导入了100个民兵");
                 }
             }
-            pbf.Increase(1, "导入完毕");
+            FormBizs.pbf.Increase("导入完毕");
             sr.Close();
         }
 
@@ -441,8 +440,7 @@ namespace MilitiaOrganizationSystem
                 
             List<string> databases = getDatabases();//所有数据库
 
-            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
-            pbf.Show();
+
             foreach(string database in databases)
             {
                 List<string> cList = cnDao.getCredinumbersOfDatabase(database);
@@ -450,10 +448,10 @@ namespace MilitiaOrganizationSystem
                 {
                     cd.insertAndDetectConflicts(credit, database);
                 }
-                pbf.Increase(1, "正在获取冲突...");
+                FormBizs.pbf.Increase("正在获取冲突...");
             }
             //冲突检测完毕
-            pbf.Increase(1, "冲突检测完毕");
+            FormBizs.pbf.Increase("冲突检测完毕");
             return cd.conflictDict;
         }
 
@@ -482,15 +480,14 @@ namespace MilitiaOrganizationSystem
         {//根据某个属性，统计各属性值的民兵个数
             List<FacetValue> fList = new List<FacetValue>();
             List<string> databases = getDatabasesByPlace(Place);
-            ProgressBarForm pbf = new ProgressBarForm(databases.Count + 1);
-            pbf.Show();
-            pbf.Increase(1, "开始统计...");
+
+            FormBizs.pbf.Increase( "开始统计...");
             foreach(string database in databases)
             {
-                pbf.Increase(1, "正在统计...");
+                FormBizs.pbf.Increase( "正在统计...");
                 fList.AddRange(sqlDao.getAggregateNums(lambdaContition, propertyName, database));
             }
-            pbf.Increase(1, "统计完毕");
+            FormBizs.pbf.Increase( "统计完毕");
             Dictionary<string, FacetValue> fDict = new Dictionary<string, FacetValue>();
             IEnumerable<IGrouping<string, FacetValue>> iigf = fList.GroupBy(x => x.Range);//分组
             foreach (IGrouping<string, FacetValue> igf in iigf)

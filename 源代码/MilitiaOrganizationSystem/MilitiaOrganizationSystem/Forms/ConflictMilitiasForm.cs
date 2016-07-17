@@ -38,13 +38,11 @@ namespace MilitiaOrganizationSystem
 
         private List<List<Militia>> getConflictMilitias(int skip, int take)
         {//分页获取冲突民兵
-            ProgressBarForm pbf = new ProgressBarForm(2);
-            pbf.Show();
-            pbf.Increase(1, "正在获取冲突民兵...");
+            FormBizs.pbf.Increase("正在获取冲突民兵...");
             List<List<Militia>> mlList = new List<List<Militia>>();
             if(skip >= conflictList.Count)
             {
-                pbf.Increase(1, "获取完毕");
+                FormBizs.pbf.Increase("获取完毕");
                 return mlList;
             }
             for(int i = skip; i < skip + take && i < conflictList.Count; i++)
@@ -57,7 +55,8 @@ namespace MilitiaOrganizationSystem
                 }
                 mlList.Add(mList);
             }
-            pbf.Increase(1, "获取完毕");
+            FormBizs.pbf.Increase("获取完毕");
+            FormBizs.pbf.Completed();
             return mlList;
         }
 
@@ -70,7 +69,7 @@ namespace MilitiaOrganizationSystem
 
             foreach (List<Militia> mList in mlList)
             {
-                ListViewGroup lvg = conflictGroup_ListView.Groups.Add(mList[0].CredentialNumber, "身份证号：" + mList[0].CredentialNumber);
+                ListViewGroup lvg = conflictGroup_ListView.Groups.Add(mList.First().CredentialNumber, "身份证号：" + mList.First().CredentialNumber);
                 foreach (Militia m in mList)
                 {
                     ListViewItem lvi = new ListViewItem(lvg);
@@ -179,16 +178,19 @@ namespace MilitiaOrganizationSystem
         private void btn_ok_Click(object sender, EventArgs e)
         {
             if(MessageBox.Show("共有" + currentmlList.Count + "个冲突, 您处理了" + conflictGroup_ListView.CheckedIndices.Count + "项.\n"
-                + "将删除未选中的民兵，确认？", "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                + "将删除" + 
+                (conflictGroup_ListView.Items.Count - conflictGroup_ListView.CheckedIndices.Count) +  
+                "个未选中的民兵，确认？", "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 foreach (ListViewItem lvi in conflictGroup_ListView.Items)
                 {
                     if (!lvi.Checked)
                     {
                         FormBizs.sqlBiz.deleteMilitia((Militia)lvi.Tag);
+                        FormBizs.pbf.Increase("正在删除...");
                     }
                 }
-
+                FormBizs.pbf.Completed();
                 MessageBox.Show("执行成功");
 
                 if(count < conflictList.Count)

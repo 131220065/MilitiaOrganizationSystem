@@ -188,7 +188,10 @@ namespace MilitiaOrganizationSystem
         {//刷新分组界面
             //先获取统计组的数量
             Dictionary<string, Raven.Abstractions.Data.FacetValue> fDict = sqlBiz.getEnumStatistics(x => x.Id != null, "Group", LoginXmlConfig.Place);
+            FormBizs.pbf.Increase("正在刷新分组界面...");
             xmlGroupBiz.refreshTreeView(fDict);
+            FormBizs.pbf.Increase("刷新完毕");
+            FormBizs.pbf.Completed();
         }
     }
 }

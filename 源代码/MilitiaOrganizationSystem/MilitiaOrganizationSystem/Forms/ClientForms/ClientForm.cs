@@ -14,6 +14,8 @@ namespace MilitiaOrganizationSystem
         {
             InitializeComponent();
             FormClosing += ClientForm_FormClosing;
+
+            FormBizs.mainForm = this;
             //AnimateWindow(this.Handle, 300, AW_CENTER);
         }
 

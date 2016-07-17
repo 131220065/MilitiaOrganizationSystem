@@ -148,6 +148,8 @@ namespace MilitiaOrganizationSystem
                     statisticsListBox.Items.Add("总数: " + sum + "人");
                     break;
             }
+
+            FormBizs.pbf.Completed();
         }
 
         private void conditionLabel_Click(object sender, EventArgs e)

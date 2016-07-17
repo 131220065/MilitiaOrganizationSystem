@@ -27,11 +27,12 @@ namespace MilitiaOrganizationSystem
         public SqlDao(string db)
         {
             this.dbName = db;
-            ProgressBarForm pbf = new ProgressBarForm(2);
-            pbf.Show();
-            pbf.Increase(1, "正在启动数据库");
+
+            FormBizs.pbf.Increase("正在启动数据库");
+
             newStore();
-            pbf.Increase(1, "启动数据库完毕");
+
+            FormBizs.pbf.Increase("启动数据库完毕");
         }
 
         /*public void restart()
@@ -40,11 +41,6 @@ namespace MilitiaOrganizationSystem
             newStore();
         }*/
 
-        ~SqlDao()
-        {
-            store.Dispose();
-        }
-
         private void newStore()
         {//新建store并初始化
 
@@ -52,10 +48,9 @@ namespace MilitiaOrganizationSystem
             {
                 DefaultDatabase = dbName
             };
-            //store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
+
             store.Initialize();
-            //new Militias_CredentialNumbers().Execute(store);
-            //new Militias_Groups().Execute(store);
+            
             new Militias_All().Execute(store);
         }
 
@@ -304,7 +299,7 @@ namespace MilitiaOrganizationSystem
             using (var session = store.OpenSession(database))
             {
                 var mList = session.Query<Militia, Militias_All>()
-                    //.Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(timeoutseconds)))
                     .Where(x => x.CredentialNumber == CredentialNumber)
                     .Skip(0).Take(1000)
                     .OfType<Militia>()

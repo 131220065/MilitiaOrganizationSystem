@@ -7,15 +7,15 @@
           <team name="连部">
             <team name="连长" count="1" currentCount="0" />
             <team name="政治指导员" count="1" currentCount="0" />
-            <team name="副连长" count="1" currentCount="2" />
-            <team name="文书兼军械员" count="1" currentCount="2" />
-            <team name="信号员" count="1" currentCount="2" />
+            <team name="副连长" count="1" currentCount="0" />
+            <team name="文书兼军械员" count="1" currentCount="0" />
+            <team name="信号员" count="1" currentCount="0" />
           </team>
           <team name="侦察排">
             <team name="排长" count="1" currentCount="0" />
             <team name="一班">
               <team name="班长" count="1" currentCount="0" />
-              <team name="对空侦察员" count="4" currentCount="2" />
+              <team name="对空侦察员" count="4" currentCount="0" />
               <team name="对海侦查员" count="3" currentCount="0" />
             </team>
             <team name="二班">
@@ -25,7 +25,7 @@
             </team>
             <team name="三班">
               <team name="班长" count="1" currentCount="0" />
-              <team name="对空侦察员" count="4" currentCount="2" />
+              <team name="对空侦察员" count="4" currentCount="0" />
               <team name="对海侦查员" count="3" currentCount="0" />
             </team>
           </team>

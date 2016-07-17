@@ -36,8 +36,6 @@ namespace MilitiaOrganizationSystem
             conditionLabel.Text = condition.ToString();
             listViewBiz = new MilitiaListViewBiz(militia_ListView, sqlBiz, condition);//需指定数据库
             updatePageUpDown();
-            /*//从数据库中加载未分组民兵信息到显示
-            listViewBiz.loadNotGroupedMilitiasInDb();*/
 
             militia_ListView.MouseDoubleClick += listViewBiz.Militia_ListView_MouseDoubleClick;
             militia_ListView.ItemDrag += listViewBiz.Militia_ListView_ItemDrag;

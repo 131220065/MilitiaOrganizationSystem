@@ -108,7 +108,7 @@ namespace MilitiaOrganizationSystem
 
         private void updatePageUpDown()
         {//更新显示
-            //pageUpDown.Maximum = listViewBiz.maxPage;
+            pageUpDown.Maximum = listViewBiz.maxPage;
             pageUpDown.Value = listViewBiz.page;
         }
 

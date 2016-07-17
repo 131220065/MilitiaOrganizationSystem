@@ -281,14 +281,14 @@ namespace MilitiaOrganizationSystem
             if (cf.ShowDialog() == DialogResult.OK)
             {
                 conditionLabel.Text = condition.ToString();
-                ProgressBarForm pbf = new ProgressBarForm(2);
-                pbf.Increase(1, "正在查询,请稍候...");
-                pbf.Show();
+
+                FormBizs.pbf.Increase("正在查询,请稍候...");
                 
 
                 firstPage();
 
-                pbf.Increase(1, "查询完毕");
+                FormBizs.pbf.Increase("查询完毕");
+                FormBizs.pbf.Completed();
             }
         }
 
@@ -315,12 +315,12 @@ namespace MilitiaOrganizationSystem
                 loadMilitiaList(mList);
             }
 
-
+            FormBizs.pbf.Completed();
         }
 
         public void firstPage()
         {//第一页
-            
+            FormBizs.pbf.Increase("开始刷新");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page = 1;
@@ -332,10 +332,12 @@ namespace MilitiaOrganizationSystem
                 refreshCurrentPage();
             }
 
+            FormBizs.pbf.Completed();
         }
 
         public void lastPage()
         {//上一页
+            FormBizs.pbf.Increase("开始刷新");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page--;
@@ -358,10 +360,13 @@ namespace MilitiaOrganizationSystem
                 }
                 refreshCurrentPage();
             }
+
+            FormBizs.pbf.Completed();
         }
 
         public void nextPage()
         {//下一页
+            FormBizs.pbf.Increase("开始刷新");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page++;
@@ -384,10 +389,13 @@ namespace MilitiaOrganizationSystem
                 refreshCurrentPage();
             }
 
+            FormBizs.pbf.Completed();
+
         }
 
         public void finalPage()
         {//最后一页
+            FormBizs.pbf.Increase("开始刷新");
             if (LoginXmlConfig.ClientType == "省军分区")
             {
                 page = -1;
@@ -399,11 +407,13 @@ namespace MilitiaOrganizationSystem
                 page = maxPage;
                 refreshCurrentPage();
             }
+
+            FormBizs.pbf.Completed();
         }
 
         public void toPage(int p)
         {//跳页
-            if(p >= 1 && p <= maxPage)
+            if (p >= 1 && p <= maxPage)
             {
                 page = p;
             }

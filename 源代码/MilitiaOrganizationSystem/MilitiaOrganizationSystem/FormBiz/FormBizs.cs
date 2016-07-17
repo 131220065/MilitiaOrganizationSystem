@@ -13,12 +13,25 @@ namespace MilitiaOrganizationSystem
         public const string exportGroupFileName = "groupTask.xml";
         public const string exportMilitiaFileName = "militiaList";
 
-        public static SqlBiz sqlBiz = null;//一个程序有且仅有一个sqlBiz
-        public static XMLGroupTreeViewBiz groupBiz = null;//有且仅有一个groupBiz
-        public static List<MilitiaListViewBiz> mListBizs = new List<MilitiaListViewBiz>();
+        public static SqlBiz sqlBiz;// = null;//一个程序有且仅有一个sqlBiz
+        public static XMLGroupTreeViewBiz groupBiz;// = null;//有且仅有一个groupBiz
+        public static List<MilitiaListViewBiz> mListBizs;// = new List<MilitiaListViewBiz>();
         //民兵列表业务逻辑层，有多个，包括主页和点击分组出来的页面
 
-        public static LatestMilitiaForm latestMilitiaForm = new LatestMilitiaForm();//最新操作的民兵界面
+        public static LatestMilitiaForm latestMilitiaForm;// = new LatestMilitiaForm();//最新操作的民兵界面
+
+        public static ProgressBarForm pbf;// = new ProgressBarForm(10);//全局的进度条界面
+
+        public static ClientForm mainForm { get; set; }//主界面
+
+        public static void initial()
+        {
+            sqlBiz = null;
+            groupBiz = null;
+            mListBizs = new List<MilitiaListViewBiz>();
+            latestMilitiaForm = new LatestMilitiaForm();
+            pbf = new ProgressBarForm(1);
+        }
 
         public static void updateMilitiaItem(Militia militia)
         {//更新所有民兵ListView上的Item
@@ -62,11 +75,10 @@ namespace MilitiaOrganizationSystem
                 sqlBiz.backupAllDb(exportFolder);
                 sqlBiz.exportCredentialNumbersToFolder(exportFolder);//导出身份证号
             }
-            ProgressBarForm pbf = new ProgressBarForm(2);
-            pbf.Show();
-            pbf.Increase(1, "正在导出分组任务...");
+
+            pbf.Increase( "正在导出分组任务...");
             groupBiz.exportXmlGroupTask(exportFolder + "\\" + exportGroupFileName);
-            pbf.Increase(1, "导出分组任务完毕");
+            pbf.Increase( "导出分组任务完毕");
         }
 
         private static void exportAsZipFile(string zipFile)
@@ -88,15 +100,13 @@ namespace MilitiaOrganizationSystem
             }
 
             exportAsFolder("export");
-
-            ProgressBarForm pbf = new ProgressBarForm(2);
-            pbf.Show();
-            pbf.Increase(1, "正在压缩...");
+            
+            pbf.Increase( "正在压缩...");
 
             zip.addFileOrFolder("export");
             zip.close();
 
-            pbf.Increase(1, "压缩完毕");
+            pbf.Increase( "压缩完毕");
             
         }
 
@@ -156,6 +166,7 @@ namespace MilitiaOrganizationSystem
                 exportAsZipFile(zipFile);
 
                 MessageBox.Show("导出完成");
+                pbf.Completed();
             }
             
         }
@@ -199,12 +210,10 @@ namespace MilitiaOrganizationSystem
                 sqlBiz.restoreDbs(folder);
                 sqlBiz.importCredentialNumbersFromFolder(folder);//导入身份证号
             }
-
-            ProgressBarForm pbf = new ProgressBarForm(2);
-            pbf.Show();
-            pbf.Increase(1, "正在导入分组任务...");
+            
+            pbf.Increase( "正在导入分组任务...");
             groupBiz.addXmlGroupTask(folder + "\\" + exportGroupFileName);//导入分组任务
-            pbf.Increase(1, "导入分组任务完毕");
+            pbf.Increase( "导入分组任务完毕");
             return true;
         }
 
@@ -225,11 +234,10 @@ namespace MilitiaOrganizationSystem
 
                     //detectConflicts();//检测冲突
                     //从文件夹导入还是不自动检查冲突了吧
-                    ProgressBarForm pbf = new ProgressBarForm(2);
-                    pbf.Show();
-                    pbf.Increase(1, "正在刷新分组界面...");
+
+                    pbf.Increase( "正在刷新分组界面...");
                     groupBiz.refresh();//刷新分组显示
-                    pbf.Increase(1, "分组界面刷新完毕");
+                    pbf.Increase( "分组界面刷新完毕");
                     
                     MessageBox.Show("导入成功");
                 } catch
@@ -262,29 +270,27 @@ namespace MilitiaOrganizationSystem
             if (ofdlg.ShowDialog() == DialogResult.OK)
             {
                 string[] files = ofdlg.FileNames;
-                try
-                {
-                    ProgressBarForm pbf = new ProgressBarForm(files.Length + 1);
-                    pbf.Show();
-                    pbf.Increase(1, "正在导入...");
 
-                    foreach (string file in files)
+                pbf.Increase( "正在导入...");
+
+                foreach (string file in files)
+                {
+                    try
                     {
                         importFromFile(file, "hello");
-                        pbf.Increase(1, "导入" + Path.GetFileName(file) + "完毕");
+                        pbf.Increase("导入" + Path.GetFileName(file) + "完毕");
+                    } catch
+                    {
+                        MessageBox.Show("导入出现异常，可能本客户端没有权限导入" + file + "!");
                     }
-                    
-                    detectConflicts();//冲突检测
-
-                    pbf = new ProgressBarForm(2);
-                    pbf.Show();
-                    pbf.Increase(1, "正在刷新分组界面...");
-                    groupBiz.refresh();//刷新分组界面显示
-                    pbf.Increase(1, "刷新分组界面完毕");
-                } catch
-                {
-                    MessageBox.Show("导入出现异常");
+                        
                 }
+                    
+                detectConflicts();//冲突检测
+                    
+                pbf.Increase( "正在刷新分组界面...");
+                groupBiz.refresh();//刷新分组界面显示
+                pbf.Increase( "刷新分组界面完毕");
                 
             }
 
@@ -298,13 +304,12 @@ namespace MilitiaOrganizationSystem
                 Directory.Delete("import", true);
             }
             Directory.CreateDirectory("import");
-            ProgressBarForm pbf = new ProgressBarForm(2);
-            pbf.Show();
-            pbf.Increase(1, "正在解压...");
+
+            pbf.Increase( "正在解压...");
             UnZip unzip = new UnZip(importFile, "import", psd);//解压到数据库中
             unzip.unzipAll();//解压所有
             unzip.close();
-            pbf.Increase(1, "解压完毕");
+            pbf.Increase( "解压完毕");
 
             //解压完毕后
             if(!importFormFolder("import/export"))
@@ -319,8 +324,8 @@ namespace MilitiaOrganizationSystem
         public static void detectConflicts()
         {//检测冲突
             Dictionary<string, List<string>> conflictDict = sqlBiz.getConflicts();
-
-            if(conflictDict.Count == 0)
+            pbf.Completed();//完成检测冲突
+            if (conflictDict.Count == 0)
             {
                 MessageBox.Show("没有检测到冲突");
             } else
