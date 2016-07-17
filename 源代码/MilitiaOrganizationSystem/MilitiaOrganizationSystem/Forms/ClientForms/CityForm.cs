@@ -193,5 +193,10 @@ namespace MilitiaOrganizationSystem
         {
             sqlBiz.gennerateAllJiangsuDatabasesAndinsert5000each();
         }
+
+        private void about_Click(object sender, EventArgs e)
+        {
+            FormBizs.showAboutDlg();
+        }
     }
 }

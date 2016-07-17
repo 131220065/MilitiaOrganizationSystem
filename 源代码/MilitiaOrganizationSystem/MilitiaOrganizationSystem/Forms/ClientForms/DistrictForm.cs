@@ -176,6 +176,11 @@ namespace MilitiaOrganizationSystem
             updatePageUpDown();
         }
 
+        private void about_Click(object sender, EventArgs e)
+        {
+            FormBizs.showAboutDlg();
+        }
+
         /*private void importDirectory_Click(object sender, EventArgs e)
         {
             FormBizs.importFromFolder();

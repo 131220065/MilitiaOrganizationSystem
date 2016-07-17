@@ -342,5 +342,11 @@ namespace MilitiaOrganizationSystem
             latestMilitiaForm.Show();
             latestMilitiaForm.Focus();
         }
+
+        public static void showAboutDlg()
+        {
+            AboutBox1 Aboutbox = new AboutBox1();
+            Aboutbox.ShowDialog();
+        }
     }
 }

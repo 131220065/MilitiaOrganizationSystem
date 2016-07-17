@@ -59,6 +59,7 @@
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
             this.firstPage = new System.Windows.Forms.Button();
+            this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).BeginInit();
@@ -127,7 +128,8 @@
             this.latestMilitias,
             this.stastistics,
             this.doConflict,
-            this.export});
+            this.export,
+            this.about});
             this.menu_basicLevel.Location = new System.Drawing.Point(0, 0);
             this.menu_basicLevel.Name = "menu_basicLevel";
             this.menu_basicLevel.Size = new System.Drawing.Size(850, 25);
@@ -341,6 +343,13 @@
             this.firstPage.UseVisualStyleBackColor = true;
             this.firstPage.Click += new System.EventHandler(this.firstPage_Click);
             // 
+            // about
+            // 
+            this.about.Name = "about";
+            this.about.Size = new System.Drawing.Size(44, 21);
+            this.about.Text = "关于";
+            this.about.Click += new System.EventHandler(this.about_Click);
+            // 
             // BasicLevelForm
             // 
             this.AllowDrop = true;
@@ -361,7 +370,6 @@
             this.Controls.Add(this.militia_ListView);
             this.Controls.Add(this.menu_basicLevel);
             this.Name = "BasicLevelForm";
-            //this.Text = "基层主页";
             this.Load += new System.EventHandler(this.BasicLevelForm_Load);
             this.rMenuStrip.ResumeLayout(false);
             this.menu_basicLevel.ResumeLayout(false);
@@ -403,6 +411,7 @@
         private System.Windows.Forms.ToolStripMenuItem latestMilitias;
         private System.Windows.Forms.ToolStripMenuItem stastistics;
         private System.Windows.Forms.Button firstPage;
+        private System.Windows.Forms.ToolStripMenuItem about;
     }
 }
 

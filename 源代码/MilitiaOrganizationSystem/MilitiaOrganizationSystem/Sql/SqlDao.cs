@@ -142,6 +142,7 @@ namespace MilitiaOrganizationSystem
                 FormBizs.groupBiz.removeGroupNums(fvList);
                 //再删除数据库
                 store.DatabaseCommands.GlobalAdmin.DeleteDatabase(dirInfo.Name, true);
+                FormBizs.sqlBiz.cnDao.removeDatabase(dirInfo.Name);
             }
             Operation operation = store.DatabaseCommands.GlobalAdmin.StartRestore(
                 new Raven.Abstractions.Data.DatabaseRestoreRequest

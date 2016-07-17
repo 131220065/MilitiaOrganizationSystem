@@ -331,7 +331,6 @@ namespace MilitiaOrganizationSystem
 
             foreach (string database in databaseFolders)
             {
-                //等会在这里写个trycatch
                 sqlDao.restoreOneDB(database);
                 FormBizs.pbf.Increase("导入" + PlaceXmlConfig.getPlaceName(Path.GetFileName(database)) + "数据库成功");
             }

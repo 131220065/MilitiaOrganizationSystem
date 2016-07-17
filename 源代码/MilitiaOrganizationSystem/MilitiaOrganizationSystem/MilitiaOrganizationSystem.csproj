@@ -82,6 +82,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\AboutBox1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox1.Designer.cs">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\BasicForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,10 +245,12 @@
     </Compile>
     <Compile Include="FormBiz\XMLGroupTreeViewBiz.cs" />
     <Compile Include="Tool\ConflictDetector.cs" />
-    <Compile Include="Tool\FileTool.cs" />
     <Compile Include="Tool\md5.cs" />
     <Compile Include="Tool\UnZip.cs" />
     <Compile Include="Tool\Zip.cs" />
+    <EmbeddedResource Include="Forms\AboutBox1.resx">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChildConditionForms\ChildConditionForm.resx">
       <DependentUpon>ChildConditionForm.cs</DependentUpon>
     </EmbeddedResource>

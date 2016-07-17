@@ -57,6 +57,7 @@
             this.conditionLabel = new System.Windows.Forms.Label();
             this.firstPage = new System.Windows.Forms.Button();
             this.pageLabel = new System.Windows.Forms.Label();
+            this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
             this.SuspendLayout();
@@ -124,7 +125,8 @@
             this.doConflict,
             this.latestMilitias,
             this.stastistics,
-            this.import});
+            this.import,
+            this.about});
             this.menu_basicLevel.Location = new System.Drawing.Point(0, 0);
             this.menu_basicLevel.Name = "menu_basicLevel";
             this.menu_basicLevel.Size = new System.Drawing.Size(850, 25);
@@ -144,21 +146,21 @@
             // add
             // 
             this.add.Name = "add";
-            this.add.Size = new System.Drawing.Size(152, 22);
+            this.add.Size = new System.Drawing.Size(100, 22);
             this.add.Text = "添加";
             this.add.Click += new System.EventHandler(this.add_Click);
             // 
             // modify
             // 
             this.modify.Name = "modify";
-            this.modify.Size = new System.Drawing.Size(152, 22);
+            this.modify.Size = new System.Drawing.Size(100, 22);
             this.modify.Text = "编辑";
             this.modify.Click += new System.EventHandler(this.modify_Click);
             // 
             // dele
             // 
             this.dele.Name = "dele";
-            this.dele.Size = new System.Drawing.Size(152, 22);
+            this.dele.Size = new System.Drawing.Size(100, 22);
             this.dele.Text = "删除";
             this.dele.Click += new System.EventHandler(this.dele_Click);
             // 
@@ -311,6 +313,13 @@
             this.pageLabel.TabIndex = 18;
             this.pageLabel.Text = "0";
             // 
+            // about
+            // 
+            this.about.Name = "about";
+            this.about.Size = new System.Drawing.Size(44, 21);
+            this.about.Text = "关于";
+            this.about.Click += new System.EventHandler(this.about_Click);
+            // 
             // ProvinceForm
             // 
             this.AllowDrop = true;
@@ -369,6 +378,7 @@
         private System.Windows.Forms.ToolStripMenuItem stastistics;
         private System.Windows.Forms.Button firstPage;
         private System.Windows.Forms.Label pageLabel;
+        private System.Windows.Forms.ToolStripMenuItem about;
     }
 }
 

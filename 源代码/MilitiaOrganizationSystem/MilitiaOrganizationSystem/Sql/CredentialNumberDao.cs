@@ -115,5 +115,12 @@ namespace MilitiaOrganizationSystem
             }
             saveChanges(database);
         }
+
+        public void removeDatabase(string database)
+        {//删除数据库对应的身份证号文件，以及字典中的
+            crediNumbersDict.Remove(database);
+            string databaseFile = getDatabaseFile(database);
+            File.Delete(databaseFile);
+        }
     }
 }
