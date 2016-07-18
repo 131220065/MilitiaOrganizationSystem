@@ -329,10 +329,20 @@ namespace MilitiaOrganizationSystem
         {//恢复folder下的所有数据库
             string[] databaseFolders = Directory.GetDirectories(folder);
 
-            foreach (string database in databaseFolders)
+            foreach (string databaseFolder in databaseFolders)
             {
-                sqlDao.restoreOneDB(database);
-                FormBizs.pbf.Increase("导入" + PlaceXmlConfig.getPlaceName(Path.GetFileName(database)) + "数据库成功");
+                string databaseName = Path.GetFileName(databaseFolder);//数据库名
+                if (Directory.Exists(DataDir + "\\" + databaseName))
+                {//数据库已经存在,覆盖此数据库
+                 //先从分组中删除此数据库中的数量
+                    List<FacetValue> fvList = sqlDao.getAggregateNums(x => x.Id != null, "Group", databaseName);
+                    FormBizs.groupBiz.removeGroupNums(fvList);
+                    //再删除数据库
+                    sqlDao.removeOneDB(databaseName);//删除数据库
+                    cnDao.removeDatabase(databaseName);//同时删除身份证号
+                }
+                sqlDao.restoreOneDB(databaseFolder);
+                FormBizs.pbf.Increase("导入" + PlaceXmlConfig.getPlaceName(databaseName) + "数据库成功");
             }
         }
 

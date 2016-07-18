@@ -132,18 +132,15 @@ namespace MilitiaOrganizationSystem
             store.DatabaseCommands.GlobalAdmin.StartBackup(dbFolder, dd, false, dbName);
         }
 
+        public void removeOneDB(string database)
+        {//删除一个数据库
+            store.DatabaseCommands.GlobalAdmin.DeleteDatabase(database, true);
+        }
+
         public void restoreOneDB(string importFolder)
         {//importFolder是备份数据库的文件夹路径,文件夹名即为数据库名
             DirectoryInfo dirInfo = new DirectoryInfo(importFolder);
-            if(Directory.Exists(SqlBiz.DataDir + "\\" + dirInfo.Name))
-            {//数据库已经存在,覆盖此数据库
-                //先从分组中删除此数据库中的数量
-                List<FacetValue> fvList = getAggregateNums(x => x.Id != null, "Group", dirInfo.Name);
-                FormBizs.groupBiz.removeGroupNums(fvList);
-                //再删除数据库
-                store.DatabaseCommands.GlobalAdmin.DeleteDatabase(dirInfo.Name, true);
-                FormBizs.sqlBiz.cnDao.removeDatabase(dirInfo.Name);
-            }
+  
             Operation operation = store.DatabaseCommands.GlobalAdmin.StartRestore(
                 new Raven.Abstractions.Data.DatabaseRestoreRequest
                 {
@@ -231,8 +228,6 @@ namespace MilitiaOrganizationSystem
                     .Skip(0).Take(1000)
                     .OfType<Militia>()
                     .ToList();
-                
-
                 return mList;
             }
         }
