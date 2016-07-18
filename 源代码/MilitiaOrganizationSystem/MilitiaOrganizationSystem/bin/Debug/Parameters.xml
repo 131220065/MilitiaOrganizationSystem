@@ -243,32 +243,6 @@
     <selection value="16" name="战役战术导弹专业"/>
     <selection value="17" name="战略导弹专业"/>
   </parameter>
-  <parameter name="服役专业" property="RetirementProfessionType" type="enum" search="false">
-    <selection value="00" name="未指定"/>
-    <selection value="01" name="通用专业"/>
-    <selection value="02" name="气象专业"/>
-    <selection value="03" name="测绘专业"/>
-    <selection value="04" name="侦察情报专业"/>
-    <selection value="05" name="通信专业"/>
-    <selection value="06" name="炮兵专业"/>
-    <selection value="07" name="防空兵专业"/>
-    <selection value="08" name="导弹专业"/>
-    <selection value="09" name="装甲兵专业"/>
-    <selection value="10" name="工程兵专业"/>
-    <selection value="11" name="防化兵专业"/>
-    <selection value="12" name="雷达专业"/>
-    <selection value="13" name="电子对抗专业"/>
-    <selection value="14" name="导弹卫星实验专业"/>
-    <selection value="15" name="灭火专业"/>
-    <selection value="16" name="潜艇专业"/>
-    <selection value="17" name="水面舰艇"/>
-    <selection value="18" name="岸舰导弹专业"/>
-    <selection value="19" name="陆战队专业"/>
-    <selection value="20" name="航空兵专业"/>
-    <selection value="21" name="地空导弹专业"/>
-    <selection value="22" name="空降兵专业"/>
-    <selection value="23" name="战略导弹"/>
-  </parameter>
   <parameter name="对口专业名称" property="MilitaryProfessionName" type="enum" search="false">
     <selection value="0101" name="维修电工"/>
     <selection value="0102" name="发电机设备安装工"/>
@@ -423,6 +397,32 @@
     <selection value="1701" name="导弹弹头维修技师"/>
     <selection value="1702" name="导弹弹体维修技师"/>
     <selection value="1703" name="导弹地面设备维修技师"/>
+  </parameter>
+  <parameter name="服役专业" property="RetirementProfessionType" type="enum" search="false">
+    <selection value="00" name="未指定"/>
+    <selection value="01" name="通用专业"/>
+    <selection value="02" name="气象专业"/>
+    <selection value="03" name="测绘专业"/>
+    <selection value="04" name="侦察情报专业"/>
+    <selection value="05" name="通信专业"/>
+    <selection value="06" name="炮兵专业"/>
+    <selection value="07" name="防空兵专业"/>
+    <selection value="08" name="导弹专业"/>
+    <selection value="09" name="装甲兵专业"/>
+    <selection value="10" name="工程兵专业"/>
+    <selection value="11" name="防化兵专业"/>
+    <selection value="12" name="雷达专业"/>
+    <selection value="13" name="电子对抗专业"/>
+    <selection value="14" name="导弹卫星实验专业"/>
+    <selection value="15" name="灭火专业"/>
+    <selection value="16" name="潜艇专业"/>
+    <selection value="17" name="水面舰艇"/>
+    <selection value="18" name="岸舰导弹专业"/>
+    <selection value="19" name="陆战队专业"/>
+    <selection value="20" name="航空兵专业"/>
+    <selection value="21" name="地空导弹专业"/>
+    <selection value="22" name="空降兵专业"/>
+    <selection value="23" name="战略导弹"/>
   </parameter>
   <parameter name="服役专业小类" property="RetirementProfessionSmallType" type="enum" search="false">
     <selection value="0101" name="机关勤务人员" />

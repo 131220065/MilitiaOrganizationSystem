@@ -142,6 +142,7 @@
             this.Controls.Add(this.startwithCombobox);
             this.Controls.Add(this.radio_StartsWith);
             this.Controls.Add(this.propertyName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_string";
             this.Text = "ChildConditionForm_string";
             this.ResumeLayout(false);

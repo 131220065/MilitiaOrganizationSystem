@@ -5,7 +5,7 @@
       <team name="作战勤务保障分队">
         <team name="船运团侦察连">
           <team name="连部">
-            <team name="连长" count="1" currentCount="0" />
+            <team name="连长" count="1" currentCount="1" />
             <team name="政治指导员" count="1" currentCount="0" />
             <team name="副连长" count="1" currentCount="1" />
             <team name="文书兼军械员" count="1" currentCount="0" />
@@ -14,26 +14,26 @@
           <team name="侦察排">
             <team name="排长" count="1" currentCount="0" />
             <team name="一班">
-              <team name="班长" count="1" currentCount="1" />
+              <team name="班长" count="1" currentCount="0" />
               <team name="对空侦察员" count="4" currentCount="0" />
-              <team name="对海侦查员" count="3" currentCount="1" />
+              <team name="对海侦查员" count="3" currentCount="0" />
             </team>
             <team name="二班">
               <team name="班长" count="1" currentCount="0" />
-              <team name="对空侦察员" count="4" currentCount="1" />
-              <team name="对海侦查员" count="3" currentCount="2" />
+              <team name="对空侦察员" count="4" currentCount="4" />
+              <team name="对海侦查员" count="3" currentCount="0" />
             </team>
             <team name="三班">
               <team name="班长" count="1" currentCount="0" />
-              <team name="对空侦察员" count="4" currentCount="0" />
+              <team name="对空侦察员" count="4" currentCount="4" />
               <team name="对海侦查员" count="3" currentCount="0" />
             </team>
           </team>
           <team name="警卫排">
             <team name="排长" count="1" currentCount="0" />
             <team name="四班">
-              <team name="班长" count="1" currentCount="0" />
-              <team name="冲锋枪手" count="4" currentCount="0" />
+              <team name="班长" count="1" currentCount="1" />
+              <team name="冲锋枪手" count="4" currentCount="4" />
               <team name="轻机枪手" count="2" currentCount="0" />
             </team>
             <team name="五班">

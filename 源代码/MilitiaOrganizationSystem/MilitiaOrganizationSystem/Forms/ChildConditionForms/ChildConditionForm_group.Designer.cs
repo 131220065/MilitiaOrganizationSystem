@@ -93,6 +93,7 @@
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.groupTreeView);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_group";
             this.Text = "ChildConditionForm_group";
             this.ResumeLayout(false);

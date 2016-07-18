@@ -141,6 +141,7 @@
             this.Controls.Add(this.labelPropertyName);
             this.Controls.Add(this.pCombobox);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "PlaceChooseForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "选择地区";

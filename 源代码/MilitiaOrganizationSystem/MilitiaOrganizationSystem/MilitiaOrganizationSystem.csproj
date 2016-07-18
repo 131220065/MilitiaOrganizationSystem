@@ -82,6 +82,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\GroupTag.cs" />
     <Compile Include="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,7 +177,6 @@
     <Compile Include="Forms\GroupMilitiaForm.Designer.cs">
       <DependentUpon>GroupMilitiaForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Entity\GroupTag.cs" />
     <Compile Include="FormBiz\MilitiaListViewBiz.cs" />
     <Compile Include="Entity\Militia.cs" />
     <Compile Include="Forms\MilitiaEditDialog.cs">

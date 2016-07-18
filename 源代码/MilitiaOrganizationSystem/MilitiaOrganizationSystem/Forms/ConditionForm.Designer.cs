@@ -204,6 +204,7 @@
             this.Controls.Add(this.conditionListBox);
             this.Controls.Add(this.parasCheckBox);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ConditionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "筛选条件";

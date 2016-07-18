@@ -222,6 +222,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "InfoStatisticsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "统计";

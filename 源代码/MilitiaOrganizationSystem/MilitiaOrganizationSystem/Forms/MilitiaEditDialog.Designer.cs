@@ -96,6 +96,8 @@
             this.Controls.Add(this.tlp);
             this.Controls.Add(this.btn_OK);
             this.Controls.Add(this.btn_Cancel);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.Name = "MilitiaEditDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

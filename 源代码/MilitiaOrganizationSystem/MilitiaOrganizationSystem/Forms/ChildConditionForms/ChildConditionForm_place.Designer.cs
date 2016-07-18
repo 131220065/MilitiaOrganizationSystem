@@ -139,6 +139,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.labelPropertyName);
             this.Controls.Add(this.pCombobox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_place";
             this.Text = "筛选条件";
             this.ResumeLayout(false);

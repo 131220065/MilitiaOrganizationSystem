@@ -95,6 +95,7 @@
             this.Controls.Add(this.propertyvaluesListbox);
             this.Controls.Add(this.methodLabel);
             this.Controls.Add(this.propertyNameLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_enum";
             this.ResumeLayout(false);
             this.PerformLayout();

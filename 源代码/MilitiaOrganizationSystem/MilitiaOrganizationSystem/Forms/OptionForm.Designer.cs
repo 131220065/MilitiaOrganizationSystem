@@ -172,6 +172,7 @@
             this.Controls.Add(this.parasCheckBox);
             this.Controls.Add(this.pagesizeLabel);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.Name = "OptionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

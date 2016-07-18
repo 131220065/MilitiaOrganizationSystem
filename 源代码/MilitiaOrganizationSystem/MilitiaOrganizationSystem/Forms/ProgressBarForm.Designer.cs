@@ -67,6 +67,7 @@
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.progressBar);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ProgressBarForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "当前执行进度";

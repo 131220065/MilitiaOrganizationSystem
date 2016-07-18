@@ -118,7 +118,7 @@
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 326);
+            this.ClientSize = new System.Drawing.Size(493, 326);
             this.Controls.Add(this.psd2Combobox);
             this.Controls.Add(this.psdCombobox);
             this.Controls.Add(this.initialPsdBox);
@@ -128,6 +128,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btn_ok);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ModifyPsdForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "欢迎使用民兵编组系统";
