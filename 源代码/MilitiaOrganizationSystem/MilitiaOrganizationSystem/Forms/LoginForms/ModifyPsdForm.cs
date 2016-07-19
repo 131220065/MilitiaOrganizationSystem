@@ -51,7 +51,7 @@ namespace MilitiaOrganizationSystem
                 {//成功
                     closeForm = true;
                     psd = psdCombobox.Text;
-                    LoginXmlConfig.setPsd(LoginXmlConfig.ClientType, LoginXmlConfig.Place, psd);
+                    LoginXmlConfig.set(LoginXmlConfig.ClientType, LoginXmlConfig.Place, psd);
                 } else
                 {
                     MessageBox.Show("两次输入的密码不一致！请重新确认！");

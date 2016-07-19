@@ -77,8 +77,12 @@ namespace MilitiaOrganizationSystem
         public void saveMilitia(Militia militia)
         {//保存一个民兵，若Id相同，会覆盖数据库里的(省市须指定数据库)
             if(militia.Place == null)
-            {
-                militia.Place = dbName;
+            {//说明是新添加的
+                militia.Place = LoginXmlConfig.Place;//赋值Place(数据库名)
+                if(LoginXmlConfig.ClientType == "基层")
+                {//赋值基层名,没有基层的话，militia.BasicLevelName为null
+                    militia.BasicLevelName = LoginXmlConfig.BasicLevelName;
+                }
             }
 
             string database = militia.Place;//指定数据库
@@ -271,7 +275,9 @@ namespace MilitiaOrganizationSystem
                                   RetirementProfessionType = militia.RetirementProfessionType,
                                   MilitaryProfessionName = militia.MilitaryProfessionName,
                                   RetirementProfessionSmallType = militia.RetirementProfessionSmallType,
-                                  RetirementProfessionName = militia.RetirementProfessionName
+                                  RetirementProfessionName = militia.RetirementProfessionName,
+
+                                  BasicLevelName = militia.BasicLevelName
 
                               };
         }

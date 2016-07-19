@@ -17,7 +17,7 @@ namespace MilitiaOrganizationSystem
         public static string Psd { get; set; }//加密后的密码
         public static string ClientType { get; set; }//基层，区县人武部，市军分区，省军分区
 
-        public static string Id { get; set; }//随机生成的id号,区县可能用到，区分不同的区县
+        public static string BasicLevelName { get; set; }//基层名，如果不是基层，则为""
 
         private static XmlDocument xmlDoc;//xml文件Doc
 
@@ -59,11 +59,11 @@ namespace MilitiaOrganizationSystem
                 psdNode.Attributes.Append(psdAttribute);
                 rootNode.AppendChild(psdNode);
 
-                XmlElement idNode = xmlDoc.CreateElement("Id");
-                XmlAttribute idAttribute = xmlDoc.CreateAttribute("value");
-                idAttribute.Value = new Random().Next().ToString();
-                idNode.Attributes.Append(idAttribute);
-                rootNode.AppendChild(idNode);
+                XmlElement bNode = xmlDoc.CreateElement("BasicLevelName");
+                XmlAttribute bAttribute = xmlDoc.CreateAttribute("value");
+                bAttribute.Value = "";
+                bNode.Attributes.Append(bAttribute);
+                rootNode.AppendChild(bNode);
 
                 save();//保存
             }
@@ -71,21 +71,23 @@ namespace MilitiaOrganizationSystem
             Place = rootNode.SelectSingleNode("Place").Attributes["value"].Value;
             Psd = rootNode.SelectSingleNode("Psd").Attributes["value"].Value;
             ClientType = rootNode.SelectSingleNode("ClientType").Attributes["value"].Value;
-            Id = rootNode.SelectSingleNode("Id").Attributes["value"].Value;
+            BasicLevelName = rootNode.SelectSingleNode("BasicLevelName").Attributes["value"].Value;
         }
 
-        public static void setPsd(string clientType, string place, string psd)
+        public static void set(string clientType, string place, string psd, string basicLevelName = "")
         {//保存设置
             ClientType = clientType;
             Place = place;
-            Psd = md5.encrypt(psd);
+            Psd = md5.encrypt(psd);//加密存储
+            BasicLevelName = basicLevelName;//基层名称
 
             XmlNode rootNode = xmlDoc.DocumentElement;
             rootNode.SelectSingleNode("Place").Attributes["value"].Value = Place;
             rootNode.SelectSingleNode("Psd").Attributes["value"].Value = Psd;
             rootNode.SelectSingleNode("ClientType").Attributes["value"].Value = ClientType;
+            rootNode.SelectSingleNode("BasicLevelName").Attributes["value"].Value = BasicLevelName;
 
-            save();
+            save();//保存
         }
 
         public static bool loginSuccess(string psd)

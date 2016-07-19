@@ -164,6 +164,14 @@ namespace MilitiaOrganizationSystem
                         break;
                     case "place":
                         value = PlaceXmlConfig.getPlaceName(value);
+
+                        //修改采集地的显示
+                        if (node.Attributes["property"].Value == "Place"//是采集地
+                            && militia.BasicLevelName != null
+                            && militia.BasicLevelName != "")
+                        {//不为空，说明要显示基层名
+                            value += "/" + militia.BasicLevelName;
+                        }
                         break;
                     default:
                         break;

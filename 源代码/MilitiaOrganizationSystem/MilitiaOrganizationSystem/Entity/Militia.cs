@@ -42,6 +42,7 @@ namespace MilitiaOrganizationSystem
         public string RetirementProfessionSmallType { get; set; } //服役专业小类, type=enum
         public string RetirementProfessionName { get; set; } //服役专业名称, type=enum
 
+        public string BasicLevelName { get; set; } //基层名，Place的附属属性，丰富Place的显示的，配置文件里面没有
 
         public Militia()
         {

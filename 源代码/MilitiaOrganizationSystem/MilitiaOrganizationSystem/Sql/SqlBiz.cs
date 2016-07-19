@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Forms;
 
 namespace MilitiaOrganizationSystem
 {
@@ -374,15 +374,55 @@ namespace MilitiaOrganizationSystem
             }
             sw.Close();
         }
-        public void importFormFile(string file)
+        public bool importFormFile(string file)
         {//从文件中导入，仅区县人武部调用
             StreamReader sr = new StreamReader(file);
-            string line;
+            string line = sr.ReadLine();
+            Militia m;
+            if(line == null)
+            {
+                return false;
+            }
+
+            m = MilitiaReflection.stringToMilitia(line);
+            m.Id = null;
+
+            Expression<Func<Militia, bool>> lambdaCondition = x => x.BasicLevelName == m.BasicLevelName;
+
+            int sum;
+            List<Militia> mList = sqlDao.queryByContition(lambdaCondition, 0, 100000, out sum, m.Place);
+            if(mList.Count > 0)
+            {
+                DialogResult re = MessageBox.Show("检测到" + PlaceXmlConfig.getPlaceName(m.Place) + "/" + m.BasicLevelName + "已导入，是否覆盖？", "警告", MessageBoxButtons.OKCancel);
+                if(re == DialogResult.OK)
+                {//删掉原来的，并保存第一个从文件中读取的民兵
+
+                    //减少组内数量
+                    List<FacetValue> fList = sqlDao.getAggregateNums(lambdaCondition, "Group", m.Place);
+                    FormBizs.groupBiz.removeGroupNums(fList);
+                    //删除身份证号及数据库：
+                    List<string> credentialNumbers = cnDao.getCredinumbersOfDatabase(m.Place);
+                    foreach (Militia militia in mList)
+                    {//删除数据库中原有的基层为m.BasicLevelName的数据
+                        sqlDao.deleteOneMilitia(militia);//删除民兵数据
+                        credentialNumbers.Remove(militia.CredentialNumber);//删除身份证号
+                    }
+                    cnDao.saveChanges(m.Place);//保存身份证号的改变
+
+                    //保存民兵的同时，还要添加身份证号到文件
+                    sqlDao.saveMilitia(m);
+                    cnDao.addAndSaveCrediNumber(m.CredentialNumber, m.Place);
+                } else
+                {
+                    return false;
+                }
+            }
+
 
             int i = 0;
             while ((line = sr.ReadLine()) != null)
             {
-                Militia m = MilitiaReflection.stringToMilitia(line);
+                m = MilitiaReflection.stringToMilitia(line);
                 m.Id = null;//赋值为null，然后让数据库重新分配id
 
                 //保存民兵的同时，还要添加身份证号到文件
@@ -399,6 +439,8 @@ namespace MilitiaOrganizationSystem
             }
             FormBizs.pbf.Increase("导入完毕");
             sr.Close();
+
+            return true;
         }
 
         public List<string> getDatabases()

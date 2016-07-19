@@ -90,6 +90,7 @@ namespace MilitiaOrganizationSystem
             string clientType = "";
             string place = "";
             string psd = "";
+            string basiclevel = "";
             if(clientTypeCombobox.SelectedIndex < 0)
             {
                 MessageBox.Show("请选择客户端身份！");
@@ -114,8 +115,6 @@ namespace MilitiaOrganizationSystem
                     place += "-" + cities[comboBox_shi.SelectedIndex].Attributes["ID"].Value;
                     break;
                 case "区县人武部":
-
-                case "基层":
                     if (comboBox_shi.SelectedIndex < 0)
                     {
                         MessageBox.Show("请选择市");
@@ -134,6 +133,33 @@ namespace MilitiaOrganizationSystem
                     place += "-" + cities[comboBox_shi.SelectedIndex].Attributes["ID"].Value;
                     place += "-" + districts[comboBox_xian.SelectedIndex].Attributes["ID"].Value;
                     break;
+                case "基层":
+                    if (comboBox_shi.SelectedIndex < 0)
+                    {
+                        MessageBox.Show("请选择市");
+                        comboBox_shi.Focus();
+                        closeForm = false;
+                        return;
+                    }
+                    if (comboBox_xian.SelectedIndex < 0)
+                    {
+                        MessageBox.Show("请选择区县");
+                        comboBox_xian.Focus();
+                        closeForm = false;
+                        return;
+                    }
+                    if (textBox_BasicLevel.Text.Trim() == ""|| textBox_BasicLevel.Text.Trim() == null)
+                    {
+                        MessageBox.Show("请填写基层");
+                        comboBox_xian.Focus();
+                        closeForm = false;
+                        return;
+                    }
+                    place = provinces[comboBox_sheng.SelectedIndex].Attributes["ID"].Value;
+                    place += "-" + cities[comboBox_shi.SelectedIndex].Attributes["ID"].Value;
+                    place += "-" + districts[comboBox_xian.SelectedIndex].Attributes["ID"].Value;
+                    basiclevel = textBox_BasicLevel.Text;
+                    break;
             }
             if(LoginXmlConfig.loginSuccess(initialPsdBox.Text))
             {
@@ -146,7 +172,7 @@ namespace MilitiaOrganizationSystem
                 {//成功
                     closeForm = true;
                     psd = psdCombobox.Text;
-                    LoginXmlConfig.setPsd(clientType, place, psd);
+                    LoginXmlConfig.set(clientType, place, psd, basiclevel);//设置
                 } else
                 {
                     MessageBox.Show("两次输入的密码不一致！请重新确认！");
@@ -157,6 +183,44 @@ namespace MilitiaOrganizationSystem
                 MessageBox.Show("初始密码不正确！");
                 closeForm = false;
             }
+        }
+
+        private void clientTypeCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBox_shi.Enabled = false;
+            comboBox_shi.Visible = false;
+            comboBox_shi.Text = "";
+            label_shi.Visible = false;
+
+            comboBox_xian.Enabled = false;
+            comboBox_xian.Visible = false;
+            comboBox_xian.Text = "";
+            label_xian.Visible = false;
+
+            textBox_BasicLevel.Enabled = false;
+            textBox_BasicLevel.Visible = false;
+            textBox_BasicLevel.Text = "";
+            label_BasicLevel.Visible = false;
+
+            if (clientTypeCombobox.SelectedIndex > 0)
+            {
+                comboBox_shi.Enabled = true;
+                comboBox_shi.Visible = true;
+                label_shi.Visible = true;
+            }
+            if (clientTypeCombobox.SelectedIndex > 1)
+            {
+                comboBox_xian.Enabled = true;
+                comboBox_xian.Visible = true;
+                label_xian.Visible = true;
+            }
+            if (clientTypeCombobox.SelectedIndex > 2)
+            {
+                textBox_BasicLevel.Enabled = true;
+                textBox_BasicLevel.Visible = true;
+                label_BasicLevel.Visible = true;
+            }
+
         }
     }
 }

@@ -119,6 +119,12 @@
     <Compile Include="Forms\ChildConditionForms\ChildConditionForm_place.Designer.cs">
       <DependentUpon>ChildConditionForm_place.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoginForms\SetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForms\SetForm.Designer.cs">
+      <DependentUpon>SetForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PlaceChooseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,12 +233,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config\LoginXmlConfig.cs" />
-    <Compile Include="Forms\LoginForms\SetForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\LoginForms\SetForm.Designer.cs">
-      <DependentUpon>SetForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sql\CredentialNumberDao.cs" />
     <Compile Include="Sql\SqlBiz.cs" />
     <Compile Include="Sql\SqlDao.cs" />
@@ -268,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChildConditionForms\ChildConditionForm_place.resx">
       <DependentUpon>ChildConditionForm_place.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForms\SetForm.resx">
+      <DependentUpon>SetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PlaceChooseForm.resx">
       <DependentUpon>PlaceChooseForm.cs</DependentUpon>
@@ -325,9 +328,6 @@
     </Compile>
     <EmbeddedResource Include="Forms\XMLGroupTaskForm.resx">
       <DependentUpon>XMLGroupTaskForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\LoginForms\SetForm.resx">
-      <DependentUpon>SetForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

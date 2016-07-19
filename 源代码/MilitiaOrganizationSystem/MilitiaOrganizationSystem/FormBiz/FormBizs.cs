@@ -145,7 +145,7 @@ namespace MilitiaOrganizationSystem
                 string zipFile = folder + "\\" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place).Replace('/', '-') + "（" + LoginXmlConfig.ClientType;
                 if(LoginXmlConfig.ClientType == "基层")
                 {
-                    zipFile += LoginXmlConfig.Id;
+                    zipFile += LoginXmlConfig.BasicLevelName;
                 }
                 switch(LoginXmlConfig.ClientType)
                 {
@@ -179,7 +179,10 @@ namespace MilitiaOrganizationSystem
             }
             if (LoginXmlConfig.ClientType == "区县人武部")
             {//区县人武部导入文件
-                sqlBiz.importFormFile(folder + "\\" + exportMilitiaFileName);
+                if(!sqlBiz.importFormFile(folder + "\\" + exportMilitiaFileName))
+                {//没有导入成功
+                    return false;
+                }
             } else
             {//其他导入数据库
                 List<string> currentDatabases = sqlBiz.getDatabases();
