@@ -21,6 +21,11 @@ namespace MilitiaOrganizationSystem
 
         private bool closeForm = true;//是否关闭，在将要关闭时会起作用
 
+        private ComboBox MilitaryProfessionNameCombobox = null;//地方专业的下一级：对口专业名称combobox
+
+        private ComboBox RetirementProfessionSmallTypeCombobox = null;//服役专业小类，服役专业的下一级
+        private ComboBox RetirementProfessionNameCombobox = null;//服役专业名称，服役专业小类的下一级
+
         public MilitiaEditDialog()
         {
             militia = null;
@@ -50,7 +55,38 @@ namespace MilitiaOrganizationSystem
                 switch(type)
                 {
                     case "enum":
-                        comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
+                        comboBox.DropDownStyle = ComboBoxStyle.DropDownList;//一定先设为下拉形式
+
+                        string propertyName = xmlNode.Attributes["property"].Value;
+                        //处理层级关系
+                        if (propertyName == "MilitaryProfessionTypeName")
+                        {//地方专业
+                            comboBox.SelectedIndexChanged += MilitaryProfessionTypeNameComboBox_SelectedIndexChanged;
+                        } else if(propertyName == "MilitaryProfessionName")
+                        {//地方专业的下一级：对口专业名称
+                            MilitaryProfessionNameCombobox = comboBox;//赋值
+                            comboBox.Items.Add(xmlNode.ChildNodes[0].Attributes["name"].Value);
+                            comboBox.SelectedIndex = 0;
+                            break;
+                        } else if(propertyName == "RetirementProfessionType")
+                        {//服役专业
+                            comboBox.SelectedIndexChanged += RetirementProfessionTypeComboBox_SelectedIndexChanged;
+                        } else if(propertyName == "RetirementProfessionSmallType")
+                        {//服役专业小类,服役专业的下一级
+                            RetirementProfessionSmallTypeCombobox = comboBox;//赋值
+                            comboBox.Items.Add(xmlNode.ChildNodes[0].Attributes["name"].Value);
+                            comboBox.SelectedIndex = 0;
+                            RetirementProfessionSmallTypeCombobox.SelectedIndexChanged += RetirementProfessionSmallTypeCombobox_SelectedIndexChanged;
+                            break;
+                        } else if(propertyName == "RetirementProfessionName")
+                        {//服役专业名称，服役专业小类的下一级
+                            RetirementProfessionNameCombobox = comboBox;
+                            comboBox.Items.Add(xmlNode.ChildNodes[0].Attributes["name"].Value);
+                            comboBox.SelectedIndex = 0;
+                            break;
+                        }
+
 
                         for (int i = 0; i < xmlNode.ChildNodes.Count; i++)
                         {
@@ -86,6 +122,59 @@ namespace MilitiaOrganizationSystem
             }
 
             FormClosing += MilitiaEditDialog_FormClosing;
+        }
+
+        private void changeDropDownList(ComboBox parentCombobox, ComboBox currentCombobox)
+        {//通过上一级的combobox选值，改变这一级的combobox的下拉显示
+            XmlNode parentNode = (XmlNode)parentCombobox.Tag;
+            XmlNode selectedNode = parentNode.SelectSingleNode("selection[@name='" + (string)parentCombobox.SelectedItem + "']");
+            string parentValue = selectedNode.Attributes["value"].Value;
+
+            currentCombobox.Items.Clear();
+
+            XmlNode currentNode = (XmlNode)currentCombobox.Tag;
+            XmlNodeList xnl = currentNode.SelectNodes("selection[starts-with(@value, '" + parentValue + "')]");
+            foreach (XmlNode xn in xnl)
+            {
+                currentCombobox.Items.Add(xn.Attributes["name"].Value);
+            }
+            currentCombobox.SelectedIndex = 0;
+        }
+
+        private void RetirementProfessionSmallTypeCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {//服役专业小类发生改变时,改变服役专业名称下拉显示
+            if (RetirementProfessionNameCombobox != null)
+            {
+                ComboBox parentCombobox = (ComboBox)sender;
+
+                ComboBox currentCombobox = RetirementProfessionNameCombobox;
+
+                changeDropDownList(parentCombobox, currentCombobox);
+            }
+        }
+
+        private void RetirementProfessionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {//服役专业改变时,改变服役专业小类的下拉显示
+            if(RetirementProfessionSmallTypeCombobox != null)
+            {
+                ComboBox parentCombobox = (ComboBox)sender;
+
+                ComboBox currentCombobox = RetirementProfessionSmallTypeCombobox;
+
+                changeDropDownList(parentCombobox, currentCombobox);
+            }
+        }
+
+        private void MilitaryProfessionTypeNameComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {//选择地方专业改变时,改变对口专业名称的下拉显示
+            if(MilitaryProfessionNameCombobox != null)
+            {
+                ComboBox parentCombobox = (ComboBox)sender;
+
+                ComboBox currentCombobox = MilitaryProfessionNameCombobox;
+
+                changeDropDownList(parentCombobox, currentCombobox);
+            }
         }
 
         private void MilitiaEditDialog_FormClosing(object sender, FormClosingEventArgs e)
@@ -137,14 +226,8 @@ namespace MilitiaOrganizationSystem
 
                         XmlNode selectChildNode = xmlNode.SelectSingleNode("selection[@value='" + strValue + "']");
 
-                        for (int i = 0; i < xmlNode.ChildNodes.Count; i++)
-                        {
-                            if (selectChildNode == xmlNode.ChildNodes[i])
-                            {
-                                comboBox.SelectedIndex = i;
-                                break;
-                            }
-                        }
+                        comboBox.SelectedItem = selectChildNode.Attributes["name"].Value;
+
                         break;
                     case "place":
                         comboBox.Items[0] = PlaceXmlConfig.getPlaceName(strValue);
@@ -177,10 +260,10 @@ namespace MilitiaOrganizationSystem
             XmlNode crediNumberNode = MilitiaXmlConfig.getNodeByProperty("CredentialNumber");
             ComboBox crediCombobox = cList.Where(x => (XmlNode)x.Tag == crediNumberNode).First();
             //取到身份证号的输入框
-            Regex regex = new Regex("^[0-9X]{18}$");
+            Regex regex = new Regex("^[0-9]{17}[0-9X]$");
             if (!regex.IsMatch(crediCombobox.Text))
             {//检查身份证号的格式是否正确，只要不引起数据库冲突检测异常即可（字典树）
-                MessageBox.Show("身份证号输入有误，请检查！\n（身份证号长度必须为18位并且只能由数字和X组成）");
+                MessageBox.Show("身份证号输入有误，请检查！\n（身份证号长度必须为18位并且只能由数字和X组成\n且X只能在最后一位！）");
                 crediCombobox.Focus();
                 closeForm = false;
                 return;
@@ -201,7 +284,8 @@ namespace MilitiaOrganizationSystem
                 switch(xmlNode.Attributes["type"].Value)
                 {
                     case "enum":
-                        value = xmlNode.ChildNodes[cbb.SelectedIndex].Attributes["value"].Value;
+                        value = xmlNode.SelectSingleNode("selection[@name='" + (string)cbb.SelectedItem + "']")
+                            .Attributes["value"].Value;
                         break;
                     case "place":
                         value = PlaceXmlConfig.getPCD_ID(cbb.Items[0].ToString());

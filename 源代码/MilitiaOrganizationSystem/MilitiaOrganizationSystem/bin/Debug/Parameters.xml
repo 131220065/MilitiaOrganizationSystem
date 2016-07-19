@@ -244,6 +244,7 @@
     <selection value="17" name="战略导弹专业"/>
   </parameter>
   <parameter name="对口专业名称" property="MilitaryProfessionName" type="enum" search="false">
+  	<selection value="0000" name="未指定"/>
     <selection value="0101" name="维修电工"/>
     <selection value="0102" name="发电机设备安装工"/>
     <selection value="0103" name="电源调试工"/>
@@ -425,6 +426,7 @@
     <selection value="23" name="战略导弹"/>
   </parameter>
   <parameter name="服役专业小类" property="RetirementProfessionSmallType" type="enum" search="false">
+  	<selection value="0000" name="未指定"/>
     <selection value="0101" name="机关勤务人员" />
     <selection value="0102" name="油机、电源人员" />
     <selection value="0103" name="医疗卫生人员" />
@@ -657,7 +659,7 @@
     <selection value="2312" name="导弹阵地管理人员" />
   </parameter>
   <parameter name="服役专业名称" property="RetirementProfessionName" type="enum" search="false">
-
+	<selection value="0000000" name="未指定" />
     <selection value="0101002" name="保密员" />
     <selection value="0101009" name="汽车驾驶员" />
     <selection value="0102001" name="油机技师（员）" />

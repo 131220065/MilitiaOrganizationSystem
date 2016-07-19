@@ -87,10 +87,11 @@ namespace MilitiaOrganizationSystem
                         default://当做string处理
                             char[] arr = new char[] { '1', '2', '3', '4', '7', '8', '9', '5', '0', '6', 'X'};//身份证号就这几个字符
                             string value = "";
-                            for(int k = 0; k < 18; k++)
+                            for(int k = 0; k < 17; k++)
                             {
-                                value += arr[rand.Next(arr.Length)];
+                                value += arr[rand.Next(arr.Length - 1)];
                             }
+                            value += arr[rand.Next(arr.Length)];
                             mr.setProperty(node.Attributes["property"].Value, value);
                             break;
                     }
