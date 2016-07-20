@@ -226,7 +226,13 @@ namespace MilitiaOrganizationSystem
 
                         XmlNode selectChildNode = xmlNode.SelectSingleNode("selection[@value='" + strValue + "']");
 
-                        comboBox.SelectedItem = selectChildNode.Attributes["name"].Value;
+                        try
+                        {
+                            comboBox.SelectedItem = selectChildNode.Attributes["name"].Value;
+                        } catch
+                        {
+                            comboBox.SelectedIndex = 0;
+                        }
 
                         break;
                     case "place":
