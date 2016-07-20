@@ -212,7 +212,6 @@ namespace MilitiaOrganizationSystem
                 try
                 {
                     strValue = mr.getProperty(xmlNode.Attributes["property"].Value).ToString();
-
                 }
                 catch
                 {

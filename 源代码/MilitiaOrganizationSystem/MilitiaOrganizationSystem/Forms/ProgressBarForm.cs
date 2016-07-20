@@ -25,8 +25,8 @@ namespace MilitiaOrganizationSystem
         }
 
         public void setMaxValue(int vMax)
-        {///设置最大值
-            this.progressBar.Maximum = vMax;
+        {///设置最大值,实际上是加上vMax
+            this.progressBar.Maximum += vMax;
         }
 
         private void ProgressBarForm_FormClosing(object sender, FormClosingEventArgs e)

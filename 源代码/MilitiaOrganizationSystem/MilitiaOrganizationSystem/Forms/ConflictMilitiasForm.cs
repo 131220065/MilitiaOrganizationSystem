@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.IO;
 
 namespace MilitiaOrganizationSystem
 {
@@ -21,6 +22,9 @@ namespace MilitiaOrganizationSystem
         private List<int> displayedParameterIndexs = MilitiaXmlConfig.getAllDisplayedParameterIndexs();
 
         private bool closeForm;
+
+        private string conflictHandleFile = null;//要写入的处理冲突的文件名
+        private const string conflictHandleFolder = "ConflictHandleFiles"; //冲突处理保存的文件位置
 
         private void addColumnHeader()
         {//添加表头
@@ -89,6 +93,11 @@ namespace MilitiaOrganizationSystem
 
             count = 0;//最开始时是0
 
+            if(!Directory.Exists(conflictHandleFolder))
+            {//创建冲突处理保存的文件夹
+                Directory.CreateDirectory(conflictHandleFolder);
+            }
+
             conflictList = conflictDict.ToList();//冲突列表
 
             currentmlList = getConflictMilitias(0, 30);//先取30个
@@ -122,6 +131,16 @@ namespace MilitiaOrganizationSystem
             {
                 e.Cancel = true;
                 closeForm = true;
+            }
+            if (conflictHandleFile != null)
+            {
+                DialogResult re = MessageBox.Show("本次处理的冲突已保存在"
+                    + Path.GetFullPath(conflictHandleFolder + "\\" + conflictHandleFile)
+                    + "中，是否打开此文件夹？", "提示", MessageBoxButtons.OKCancel);
+                if(re == DialogResult.OK)
+                {//打开文件夹
+                    System.Diagnostics.Process.Start("explorer.exe", conflictHandleFolder);
+                }
             }
         }
 
@@ -190,14 +209,30 @@ namespace MilitiaOrganizationSystem
                 (conflictGroup_ListView.Items.Count - conflictGroup_ListView.CheckedIndices.Count) +  
                 "个未选中的民兵，确认？", "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
+                if(conflictHandleFile == null)
+                {
+                    conflictHandleFile = DateTime.Now.ToString("yyyy-MM-dd-hh：mm：ss") + "冲突处理.txt";
+                }
+                FileStream fs = new FileStream(conflictHandleFolder + "\\" + conflictHandleFile, FileMode.Append);
+                StreamWriter sw = new StreamWriter(fs);
+
                 foreach (ListViewItem lvi in conflictGroup_ListView.Items)
                 {
                     if (!lvi.Checked)
                     {
-                        FormBizs.sqlBiz.deleteMilitia((Militia)lvi.Tag);
+                        Militia militia = (Militia)lvi.Tag;
+
+                        sw.WriteLine("\"" + PlaceXmlConfig.getPlaceName(militia.Place) + "/" + militia.BasicLevelName
+                            + "\"中身份证号为\"" + militia.CredentialNumber + "\"的民兵无效"
+                            + "，请再添加一个分组为\"" + militia.Group + "\"的民兵");
+
+                        FormBizs.sqlBiz.deleteMilitia(militia);
                         FormBizs.pbf.Increase("正在删除...");
                     }
                 }
+
+                sw.Close();//关闭，释放资源
+                fs.Close();
                 FormBizs.pbf.Completed();
                 MessageBox.Show("执行成功");
 

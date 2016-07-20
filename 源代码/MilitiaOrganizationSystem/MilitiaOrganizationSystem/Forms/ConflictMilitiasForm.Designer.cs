@@ -44,7 +44,7 @@
             this.conflictGroup_ListView.CheckBoxes = true;
             this.conflictGroup_ListView.Location = new System.Drawing.Point(12, 47);
             this.conflictGroup_ListView.Name = "conflictGroup_ListView";
-            this.conflictGroup_ListView.Size = new System.Drawing.Size(613, 418);
+            this.conflictGroup_ListView.Size = new System.Drawing.Size(613, 304);
             this.conflictGroup_ListView.SmallImageList = this.militiaImageList;
             this.conflictGroup_ListView.TabIndex = 0;
             this.conflictGroup_ListView.UseCompatibleStateImageBehavior = false;
@@ -59,7 +59,7 @@
             // label_help
             // 
             this.label_help.AutoSize = true;
-            this.label_help.Location = new System.Drawing.Point(13, 13);
+            this.label_help.Location = new System.Drawing.Point(10, 18);
             this.label_help.Name = "label_help";
             this.label_help.Size = new System.Drawing.Size(161, 12);
             this.label_help.TabIndex = 1;
@@ -69,7 +69,7 @@
             // 
             this.btn_ok.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_ok.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btn_ok.Location = new System.Drawing.Point(264, 471);
+            this.btn_ok.Location = new System.Drawing.Point(273, 357);
             this.btn_ok.Name = "btn_ok";
             this.btn_ok.Size = new System.Drawing.Size(75, 44);
             this.btn_ok.TabIndex = 2;
@@ -82,7 +82,7 @@
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(637, 527);
+            this.ClientSize = new System.Drawing.Size(637, 402);
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.label_help);
             this.Controls.Add(this.conflictGroup_ListView);
