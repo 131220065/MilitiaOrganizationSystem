@@ -117,7 +117,7 @@ namespace MilitiaOrganizationSystem
                     XmlNode districtNode = districXmlDoc.DocumentElement.SelectSingleNode("District[@ID='" + IDS[2] + "']");
 
                     string place =  provinceNode.Attributes["ProvinceName"].Value + "/" + cityNode.Attributes["CityName"].Value + "/" + districtNode.Attributes["DistrictName"].Value;
-                    if(places.Length == 2)
+                    if(places.Length >= 2)
                     {//户籍地
                         place += "/" + places[1];
                     }

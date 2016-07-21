@@ -135,6 +135,12 @@ namespace MilitiaOrganizationSystem
                 MessageBox.Show("请填写具体地址！");
                 return;
             }
+            if(place_textBox.Text.Contains('|'))
+            {
+                closeForm = false;
+                MessageBox.Show("具体地址中含有非法字符，请修改！");
+                return;
+            }
             PCD_ID += "-" + cities[cCombobox.SelectedIndex - 1].Attributes["ID"].Value;
 
             PCD_ID += "-" + districts[dCombobox.SelectedIndex - 1].Attributes["ID"].Value;
