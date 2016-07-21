@@ -16,17 +16,11 @@ namespace MilitiaOrganizationSystem
         {
             InitializeComponent();
             this.Text = String.Format("关于 {0}", "民兵编队系统");
-            //AssemblyTitle == "民兵编队系统";
             this.labelProductName.Text = "民兵编队系统";
-            //AssemblyProduct == "民兵编队系统";
             this.labelVersion.Text = String.Format("版本 {0}", "2.0");
-            //AssemblyVersion == "2.0";
-            this.labelCopyright.Text = "软件工程综合实验";
-            //AssemblyCopyright == "软件工程综合实验";
-            this.labelCompanyName.Text = "组长：何志强 小组成员：刘闯，杨月洋，石稼轩，王凯军";
-            //AssemblyCompany == "组长：何志强 小组成员：刘闯，杨月洋，石稼轩，王凯军";
+            this.labelCopyright.Text = "\n软件工程综合实验";
+            this.labelCompanyName.Text = "组长：何志强 \n小组成员：刘闯，杨月洋，石稼轩，王凯军";
             this.textBoxDescription.Text = "感谢各位老师同学！";
-            //AssemblyDescription == "感谢各位老师同学！";
         }
 
         #region 程序集特性访问器

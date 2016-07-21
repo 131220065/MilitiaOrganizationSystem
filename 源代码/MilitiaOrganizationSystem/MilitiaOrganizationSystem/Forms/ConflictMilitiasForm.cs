@@ -211,7 +211,7 @@ namespace MilitiaOrganizationSystem
             {
                 if(conflictHandleFile == null)
                 {
-                    conflictHandleFile = DateTime.Now.ToString("yyyy-MM-dd-hh：mm：ss") + "冲突处理.txt";
+                    conflictHandleFile = DateTime.Now.ToString("yyyy-MM-dd-HH：mm：ss") + "冲突处理.txt";
                 }
                 FileStream fs = new FileStream(conflictHandleFolder + "\\" + conflictHandleFile, FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
