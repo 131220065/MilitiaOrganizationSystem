@@ -18,9 +18,13 @@ namespace MilitiaOrganizationSystem
 
         public string PCD_ID { get; set; }
 
+        private bool closeForm;//判断是否关闭
+
         public PlaceChooseForm(string propertyName, string PCDID)
         {
             InitializeComponent();
+
+            closeForm = true;
 
             labelPropertyName.Text = propertyName;
 
@@ -34,10 +38,25 @@ namespace MilitiaOrganizationSystem
             if (placeNames.Length >= 2)
             {
                 cCombobox.SelectedItem = placeNames[1];
-                if (placeNames.Length == 3)
+                if (placeNames.Length >= 3)
                 {
                     dCombobox.SelectedItem = placeNames[2];
                 }
+                if(placeNames.Length == 4)
+                {
+                    place_textBox.Text = placeNames[3];
+                }
+            }
+
+            FormClosing += PlaceChooseForm_FormClosing;
+        }
+
+        private void PlaceChooseForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!closeForm)
+            {
+                closeForm = true;
+                e.Cancel = true;
             }
         }
 
@@ -98,14 +117,29 @@ namespace MilitiaOrganizationSystem
         private void btn_ok_Click(object sender, EventArgs e)
         {//ok了，生成PCDID
             PCD_ID = provinces[pCombobox.SelectedIndex].Attributes["ID"].Value;
-            if(cCombobox.SelectedIndex > 0)
+            if(cCombobox.SelectedIndex <= 0)
             {
-                PCD_ID += "-" + cities[cCombobox.SelectedIndex - 1].Attributes["ID"].Value;
-                if(dCombobox.SelectedIndex > 0)
-                {
-                    PCD_ID += "-" + districts[dCombobox.SelectedIndex - 1].Attributes["ID"].Value;
-                }
+                closeForm = false;
+                MessageBox.Show("请选择市");
+                return;
             }
+            if (dCombobox.SelectedIndex <= 0)
+            {
+                closeForm = false;
+                MessageBox.Show("请选择区县");
+                return;
+            }
+            if (place_textBox.Text.Trim() == "")
+            {
+                closeForm = false;
+                MessageBox.Show("请填写具体地址！");
+                return;
+            }
+            PCD_ID += "-" + cities[cCombobox.SelectedIndex - 1].Attributes["ID"].Value;
+
+            PCD_ID += "-" + districts[dCombobox.SelectedIndex - 1].Attributes["ID"].Value;
+
+            PCD_ID += "|" + place_textBox.Text;
         }
     }
 }

@@ -92,6 +92,12 @@ namespace MilitiaOrganizationSystem
         public static string getPlaceName(string PCD_ID)
         {//根据联合的PID-CID-DID，返回地点中文名，如北京市/北京市/东城区
             //可以缺省DID和CID
+
+            string[] places = PCD_ID.Split(new char[] { '|' });//增加对户籍地的支持
+            //户籍地是PID-CID-DID|Name的形式
+
+            PCD_ID = places[0];//取PID-CID-DID
+
             string[] IDS = PCD_ID.Split(new char[] { '-' });
             XmlNode provinceNode = provinceXmlDoc.DocumentElement.SelectSingleNode("Province[@ID='" + IDS[0] + "']");
             try
@@ -106,10 +112,16 @@ namespace MilitiaOrganizationSystem
                     return provinceNode.Attributes["ProvinceName"].Value + "/" + cityNode.Attributes["CityName"].Value;
                 }
                 else if (IDS.Length == 3)
-                {
+                {//有可能是户籍地
                     XmlNode cityNode = cityXmlDoc.DocumentElement.SelectSingleNode("City[@ID='" + IDS[1] + "']");
                     XmlNode districtNode = districXmlDoc.DocumentElement.SelectSingleNode("District[@ID='" + IDS[2] + "']");
-                    return provinceNode.Attributes["ProvinceName"].Value + "/" + cityNode.Attributes["CityName"].Value + "/" + districtNode.Attributes["DistrictName"].Value;
+
+                    string place =  provinceNode.Attributes["ProvinceName"].Value + "/" + cityNode.Attributes["CityName"].Value + "/" + districtNode.Attributes["DistrictName"].Value;
+                    if(places.Length == 2)
+                    {//户籍地
+                        place += "/" + places[1];
+                    }
+                    return place;
                 }
                 else
                 {

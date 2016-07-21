@@ -144,6 +144,7 @@
             this.Controls.Add(this.propertyName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_string";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ChildConditionForm_string";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -27,7 +27,7 @@ namespace MilitiaOrganizationSystem
         public BasicLevelForm()
         {//构造函数
             InitializeComponent();
-            this.Text = LoginXmlConfig.ClientType + "主页-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place);
+            this.Text = LoginXmlConfig.ClientType + "主页-" + PlaceXmlConfig.getPlaceName(LoginXmlConfig.Place) + "/" + LoginXmlConfig.BasicLevelName;
             xmlGroupTaskForm = null;
             condition = new Condition("未分组");
             conditionLabel.Text = condition.ToString();

@@ -37,6 +37,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.btn_ok = new System.Windows.Forms.Button();
+            this.place_textBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pCombobox
@@ -124,6 +126,22 @@
             this.btn_ok.UseVisualStyleBackColor = true;
             this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
             // 
+            // place_textBox
+            // 
+            this.place_textBox.Location = new System.Drawing.Point(142, 55);
+            this.place_textBox.Name = "place_textBox";
+            this.place_textBox.Size = new System.Drawing.Size(353, 21);
+            this.place_textBox.TabIndex = 39;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(65, 58);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 12);
+            this.label1.TabIndex = 40;
+            this.label1.Text = "具体地址:";
+            // 
             // PlaceChooseForm
             // 
             this.AcceptButton = this.btn_ok;
@@ -131,6 +149,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
             this.ClientSize = new System.Drawing.Size(558, 178);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.place_textBox);
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.label6);
@@ -143,7 +163,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "PlaceChooseForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "选择地区";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,5 +180,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btn_cancel;
         private System.Windows.Forms.Button btn_ok;
+        private System.Windows.Forms.TextBox place_textBox;
+        private System.Windows.Forms.Label label1;
     }
 }

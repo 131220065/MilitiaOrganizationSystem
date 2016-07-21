@@ -81,14 +81,14 @@ namespace MilitiaOrganizationSystem
             pbf.Increase( "导出分组任务完毕");
         }
 
-        private static void exportAsZipFile(string zipFile)
+        private static bool exportAsZipFile(string zipFile)
         {//作为这个文件导出
             
             if (File.Exists(zipFile))
             {
                 if (MessageBox.Show("将覆盖" + zipFile + ", 确认？", "警告", MessageBoxButtons.OKCancel) != DialogResult.OK)
                 {
-                    return;
+                    return false;
                 }
             }
 
@@ -107,6 +107,8 @@ namespace MilitiaOrganizationSystem
             zip.close();
 
             pbf.Increase( "压缩完毕");
+
+            return true;
             
         }
 
@@ -163,9 +165,11 @@ namespace MilitiaOrganizationSystem
                         break;
                 }
 
-                exportAsZipFile(zipFile);
+                if(exportAsZipFile(zipFile))
+                {
+                    MessageBox.Show("导出完成");
+                }
 
-                MessageBox.Show("导出完成");
                 pbf.Completed();//进度条完成
             }
             

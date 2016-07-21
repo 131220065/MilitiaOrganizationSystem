@@ -95,6 +95,7 @@
             this.Controls.Add(this.groupTreeView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_group";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ChildConditionForm_group";
             this.ResumeLayout(false);
             this.PerformLayout();

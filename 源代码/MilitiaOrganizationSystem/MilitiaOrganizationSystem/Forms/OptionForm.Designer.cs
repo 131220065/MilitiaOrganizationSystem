@@ -175,7 +175,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.Name = "OptionForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "设置";
             ((System.ComponentModel.ISupportInitialize)(this.pageSize)).EndInit();
             this.ResumeLayout(false);

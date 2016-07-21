@@ -49,6 +49,7 @@
             this.stastistics = new System.Windows.Forms.ToolStripMenuItem();
             this.import = new System.Windows.Forms.ToolStripMenuItem();
             this.export = new System.Windows.Forms.ToolStripMenuItem();
+            this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCondition = new System.Windows.Forms.Label();
             this.nextPage = new System.Windows.Forms.Button();
             this.currentPage = new System.Windows.Forms.Button();
@@ -60,7 +61,6 @@
             this.finalPage = new System.Windows.Forms.Button();
             this.conditionLabel = new System.Windows.Forms.Label();
             this.firstPage = new System.Windows.Forms.Button();
-            this.about = new System.Windows.Forms.ToolStripMenuItem();
             this.rMenuStrip.SuspendLayout();
             this.menu_basicLevel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).BeginInit();
@@ -226,6 +226,13 @@
             this.export.Text = "导出数据";
             this.export.Click += new System.EventHandler(this.export_Click);
             // 
+            // about
+            // 
+            this.about.Name = "about";
+            this.about.Size = new System.Drawing.Size(44, 21);
+            this.about.Text = "关于";
+            this.about.Click += new System.EventHandler(this.about_Click);
+            // 
             // labelCondition
             // 
             this.labelCondition.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -352,13 +359,6 @@
             this.firstPage.UseVisualStyleBackColor = true;
             this.firstPage.Click += new System.EventHandler(this.firstPage_Click);
             // 
-            // about
-            // 
-            this.about.Name = "about";
-            this.about.Size = new System.Drawing.Size(44, 21);
-            this.about.Text = "关于";
-            this.about.Click += new System.EventHandler(this.about_Click);
-            // 
             // DistrictForm
             // 
             this.AllowDrop = true;
@@ -379,6 +379,7 @@
             this.Controls.Add(this.militia_ListView);
             this.Controls.Add(this.menu_basicLevel);
             this.Name = "DistrictForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "区县主页";
             this.Load += new System.EventHandler(this.BasicLevelForm_Load);
             this.rMenuStrip.ResumeLayout(false);

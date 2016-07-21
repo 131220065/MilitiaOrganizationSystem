@@ -235,7 +235,7 @@
             this.Controls.Add(this.menuStrip);
             this.DoubleBuffered = true;
             this.Name = "GroupMilitiaForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "民兵列表";
             ((System.ComponentModel.ISupportInitialize)(this.pageUpDown)).EndInit();
             this.menuStrip.ResumeLayout(false);

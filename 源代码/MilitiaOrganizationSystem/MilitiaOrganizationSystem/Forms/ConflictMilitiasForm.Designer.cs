@@ -88,7 +88,7 @@
             this.Controls.Add(this.conflictGroup_ListView);
             this.DoubleBuffered = true;
             this.Name = "ConflictMilitiasForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " 冲突检测";
             this.ResumeLayout(false);
             this.PerformLayout();

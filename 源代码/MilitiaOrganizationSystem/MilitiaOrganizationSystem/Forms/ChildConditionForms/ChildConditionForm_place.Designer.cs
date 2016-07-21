@@ -141,6 +141,7 @@
             this.Controls.Add(this.pCombobox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ChildConditionForm_place";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "筛选条件";
             this.ResumeLayout(false);
             this.PerformLayout();
