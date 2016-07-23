@@ -541,6 +541,11 @@ namespace MilitiaOrganizationSystem
         public void Militia_ListView_DragOver(object sender, DragEventArgs e)
         {//悬于..之上的时候
             MoveTag mt = (MoveTag)e.Data.GetData(typeof(MoveTag));
+            if (mt == null)
+            {//空值判断，否则可能它是从其他程序移动过来，就没有这个对象
+                e.Effect = DragDropEffects.None;
+                return;
+            }
             if (mt.source == this)
             {//如果是从自己移过来的，则啥也不做
                 e.Effect = DragDropEffects.None;
@@ -554,6 +559,11 @@ namespace MilitiaOrganizationSystem
         public void Militia_ListView_DragDrop(object sender, DragEventArgs e)
         {//鼠标松开放下时，自动的，好像当e.effect==None时不会调用这个函数
             MoveTag mt = (MoveTag)e.Data.GetData(typeof(MoveTag));
+            if(mt == null)
+            {//空值判断，否则可能它是从其他程序移动过来，就没有这个对象
+                e.Effect = DragDropEffects.None;
+                return;
+            }
             List<Militia> mList = mt.moveMilitias;
             militia_ListView.BeginUpdate();//开始更新界面
             foreach (Militia militia in mList)

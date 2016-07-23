@@ -52,6 +52,14 @@ namespace MilitiaOrganizationSystem
 
         private void Groups_treeView_DragOver(object sender, DragEventArgs e)
         {
+            MoveTag mt = (MoveTag)e.Data.GetData(typeof(MoveTag));
+            if (mt == null)
+            {//要判定一下是否为空
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+
             TreeNode node = groups_treeView.GetNodeAt(e.X - this.Location.X - groups_treeView.Location.X, e.Y - this.Location.Y - groups_treeView.Location.Y - menuStrip.Size.Height);
             
             
@@ -77,6 +85,11 @@ namespace MilitiaOrganizationSystem
             {//已经允许放时,必定已经选中了一个节点,所以node不为空; 现在已经放下，表示move
                 GroupTag gt = (GroupTag)node.Tag;//tag
                 MoveTag mt = (MoveTag)e.Data.GetData(typeof(MoveTag));
+                if(mt == null)
+                {//要判定一下是否为空
+                    e.Effect = DragDropEffects.None;
+                    return;
+                }
                 List<Militia> mList = mt.moveMilitias;
                 foreach(Militia militia in mList)
                 {
